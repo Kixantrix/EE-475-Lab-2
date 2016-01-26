@@ -35,7 +35,14 @@
 /* Main Program                                                               */
 /******************************************************************************/
 
+// Prototypes
+// Some functions here will be moved out to utilities lib.
 void testUart();
+void testSendString();
+void testSendNum();
+void sendString(char * str);
+void sendNum(int toSend);
+char* itoa(int i, char b[]);
 
 void main(void)
 {
@@ -47,8 +54,17 @@ void main(void)
 
     /* TODO <INSERT USER APPLICATION CODE HERE> */
 
+    //*********************************************
+    // Tests for System functionality
+    //*********************************************
+    
     // Test dat uart
     testUart();
+    
+    // Test send String
+    //testSendString();
+    
+    
     while(1)
     {
 
@@ -57,7 +73,7 @@ void main(void)
 }
 
 /*
- * Echooooooooo
+ * Echos whatever is sent to the PIC
  */
 void testUart()
 {
@@ -66,4 +82,80 @@ void testUart()
         data = EUSART1_Read();
         EUSART1_Write(data);
     }
+}
+
+/*
+ * Sends a string when t is pressed
+ */
+void testSendString()
+{
+    char * testString = "This is a test.";
+    volatile uint8_t data;
+    while(1) {
+        data = EUSART1_Read();
+        if(data == ((uint8_t)('t'))) {
+            sendString(testString);
+        }
+    }
+}
+
+/*
+ * Sends a number when t is pressed
+ */
+
+void testSendNum()
+{
+    int testNum = -1337;
+    volatile uint8_t data;
+    while(1) {
+        data = EUSART1_Read();
+        if(data == ((uint8_t)('t'))) {
+           sendNum(testNum);
+        }
+    }
+}
+
+/*
+ * Takes a string and sends its contents over the uart.
+ */
+void sendString(char * str)
+{
+    while((*str) != '\0') {
+         EUSART1_Write((uint8_t)(*str));
+        str++;
+    }
+}
+
+/*
+ * Takes an integer and sends it over the uart.
+ */
+void sendNum(int toSend)
+{
+    char sendBuffer[16] = "";
+    sendString(itoa(toSend, sendBuffer));
+}
+
+/*
+ * itoa implementation, found here: 
+ * http://stackoverflow.com/questions/9655202/how-to-convert-integer-to-string-in-c
+ */
+char* itoa(int i, char b[])
+{
+    char const digit[] = "0123456789";
+    char* p = b;
+    if(i<0){
+        *p++ = '-';
+        i *= -1;
+    }
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
 }
