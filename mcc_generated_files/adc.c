@@ -14,7 +14,7 @@
     This source file provides implementations for driver APIs for ADC.
     Generation Information :
         Product Revision  :  MPLAB® Code Configurator - v2.25.2
-        Device            :  PIC18F45K22
+        Device            :  PIC18F25K22
         Driver Version    :  2.00
     The generated drivers are tested against the following:
         Compiler          :  XC8 v1.34
@@ -60,26 +60,6 @@ void ADC_Initialize(void) {
 
     // GO_nDONE stop; ADON enabled; CHS AN0; 
     ADCON0 = 0x01;
-
-    // PVCFG VDD; TRIGSEL CCP5; NVCFG VSS; 
-    ADCON1 = 0x00;
-
-    // ADFM left; ACQT 0; ADCS FOSC/2; 
-    ADCON2 = 0x00;
-
-    // ADRESL 0x0; 
-    ADRESL = 0x00;
-
-    // ADRESH 0x0; 
-    ADRESH = 0x00;
-
-}
-
-void ADC_InitializeNew(void) {
-    // set the ADC to the options selected in the User Interface
-
-    // GO_nDONE stop; ADON disabled; CHS AN0; 
-    ADCON0 = 0x00;
 
     // PVCFG VDD; TRIGSEL CCP5; NVCFG VSS; 
     ADCON1 = 0x00;

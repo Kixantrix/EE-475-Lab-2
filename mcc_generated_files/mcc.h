@@ -14,7 +14,7 @@
     This header file provides implementations for driver APIs for all modules selected in the GUI.
     Generation Information :
         Product Revision  :  MPLAB® Code Configurator - v2.25.2
-        Device            :  PIC18F45K22
+        Device            :  PIC18F25K22
         Version           :  1.02
     The generated drivers are tested against the following:
         Compiler          :  XC8 v1.34
@@ -50,8 +50,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "pin_manager.h"
 #include <stdint.h>
 #include <stdbool.h>
-#include "eusart1.h"
 #include "adc.h"
+#include "eusart1.h"
 #include "spi1.h"
 
 #define _XTAL_FREQ  1000000

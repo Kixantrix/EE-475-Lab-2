@@ -14,7 +14,7 @@
     This header file provides APIs for driver for ADC.
     Generation Information :
         Product Revision  :  MPLAB® Code Configurator - v2.25.2
-        Device            :  PIC18F45K22
+        Device            :  PIC18F25K22
         Driver Version    :  2.00
     The generated drivers are tested against the following:
         Compiler          :  XC8 v1.34
@@ -123,37 +123,6 @@ extern "C" {
         </code>
      */
     void ADC_Initialize(void);
-
-    /**
-      @Summary
-        Initializes the ADC
-
-      @Description
-        This routine initializes the Initializes the ADC.
-        This routine must be called before any other ADC routine is called.
-        This routine should only be called once during system initialization.
-
-      @Preconditions
-        None
-
-      @Param
-        None
-
-      @Returns
-        None
-
-      @Comment
-    
-
-      @Example
-        <code>
-        uint16_t convertedValue;
-
-        ADC_InitializeNew();
-        convertedValue = ADC_GetConversionResult();
-        </code>
-     */
-    void ADC_InitializeNew(void);
 
     /**
       @Summary

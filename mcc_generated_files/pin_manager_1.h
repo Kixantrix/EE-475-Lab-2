@@ -1,21 +1,21 @@
 /**
-  EUSART1 Generated Driver File
+  @Generated Pin Manager Header File
 
-  @Company
+  @Company:
     Microchip Technology Inc.
 
-  @File Name
-    eusart1.c
+  @File Name:
+    pin_manager.h
 
-  @Summary
-    This is the generated driver implementation file for the EUSART1 driver using MPLAB® Code Configurator
+  @Summary:
+    This is the Pin Manager file generated using MPLAB® Code Configurator
 
-  @Description
-    This header file provides implementations for driver APIs for EUSART1.
+  @Description:
+    This header file provides implementations for pin APIs for all pins selected in the GUI.
     Generation Information :
         Product Revision  :  MPLAB® Code Configurator - v2.25.2
         Device            :  PIC18F25K22
-        Driver Version    :  2.00
+        Version           :  1.01
     The generated drivers are tested against the following:
         Compiler          :  XC8 v1.34
         MPLAB             :  MPLAB X v2.35 or v3.00
@@ -44,56 +44,47 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
  */
 
+#ifndef PIN_MANAGER_H
+#define PIN_MANAGER_H
+
+#define INPUT   1
+#define OUTPUT  0
+
+#define HIGH    1
+#define LOW     0
+
+#define ANALOG      1
+#define DIGITAL     0
+
+#define PULL_UP_ENABLED      1
+#define PULL_UP_DISABLED     0
+
+
 /**
-  Section: Included Files
+ * @Param
+    none
+ * @Returns
+    none
+ * @Description
+    GPIO and peripheral I/O initialization
+ * @Example
+    PIN_MANAGER_Initialize();
  */
-#include "eusart1.h"
+void PIN_MANAGER_Initialize(void);
 
 /**
-  Section: EUSART1 APIs
+ * @Param
+    none
+ * @Returns
+    none
+ * @Description
+    Interrupt on Change Handling routine
+ * @Example
+    PIN_MANAGER_IOC();
  */
+void PIN_MANAGER_IOC(void);
 
-void EUSART1_Initialize(void) {
-    // Set the EUSART1 module to the options selected in the user interface.
-
-    // ABDOVF no_overflow; RCIDL idle; BRG16 16bit_generator; WUE disabled; CKTXP async_noninverted_sync_fallingedge; ABDEN disabled; DTRXP not_inverted; 
-    BAUD1CON = 0x48;
-
-    // SPEN enabled; OERR no_error; RX9 8-bit; RX9D 0x0; CREN enabled; ADDEN disabled; SREN disabled; FERR no_error; 
-    RC1STA = 0x90;
-
-    // TRMT TSR_empty; TX9 8-bit; TX9D 0x0; SENDB sync_break_complete; TXEN enabled; SYNC asynchronous; BRGH hi_speed; CSRC slave_mode; 
-    TX1STA = 0x26;
-
-    // Baud Rate = 9600; SPBRGL 25; 
-    SPBRG1 = 0x19;
-
-    // Baud Rate = 9600; SPBRGH 0; 
-    SPBRGH1 = 0x00;
-
-}
-
-uint8_t EUSART1_Read(void) {
-
-    while (!PIR1bits.RC1IF) {
-    }
-
-    if (1 == RC1STAbits.OERR) {
-        // EUSART1 error - restart
-
-        RC1STAbits.CREN = 0;
-        RC1STAbits.CREN = 1;
-    }
-
-    return RCREG1;
-}
-
-void EUSART1_Write(uint8_t txData) {
-    while (0 == PIR1bits.TX1IF) {
-    }
-
-    TXREG1 = txData; // Write the data byte to the USART.
-}
+#endif // PIN_MANAGER_H
 /**
-  End of File
+ End of File
  */

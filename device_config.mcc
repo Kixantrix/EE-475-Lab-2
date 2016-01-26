@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<configuration device="PIC18F45K22" mcc_version="v2.25.2">
+<configuration device="PIC18F25K22" mcc_version="v2.25.2">
     <managers>
         <manager generated="true" name="Pin Manager" reloadPin="manual">
-            <setting name="package" option="PDIP40"/>
+            <setting name="package" option="QFN28"/>
             <setting name="sorting" option="true"/>
             <resource customName="SCK1" digital="true" direction="OUTPUT" function="SCK1" module="MSSP1" name="RC3" start="false" type="pin" wpu="false"/>
             <resource customName="SDI1" digital="true" direction="INPUT" function="SDI1" module="MSSP1" name="RC4" start="false" type="pin" wpu="false"/>
             <resource customName="SDO1" digital="true" direction="OUTPUT" function="SDO1" module="MSSP1" name="RC5" start="false" type="pin" wpu="false"/>
             <resource customName="TX1" digital="true" direction="INPUT" function="TX1" module="EUSART1" name="RC6" start="false" type="pin" wpu="false"/>
             <resource customName="RX1" digital="true" direction="INPUT" function="RX1" module="EUSART1" name="RC7" start="false" type="pin" wpu="false"/>
-            <file checksum="684041079" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
-            <file checksum="2093963735" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
+            <file checksum="3639577670" modified="false" name="pin_manager_1.c" path="mcc_generated_files/pin_manager_1.c"/>
+            <file checksum="2104422843" modified="false" name="pin_manager_1.h" path="mcc_generated_files/pin_manager_1.h"/>
+            <file checksum="3382152208" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
+            <file checksum="1389320661" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
         </manager>
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
@@ -37,7 +39,7 @@
             <setting name="WDTPS" option="32768"/>
             <setting name="WDTEN" option="OFF"/>
             <setting name="CCP2MX" option="PORTC1"/>
-            <setting name="P2BMX" option="PORTD2"/>
+            <setting name="P2BMX" option="PORTB5"/>
             <setting name="MCLRE" option="EXTMCLR"/>
             <setting name="CCP3MX" option="PORTB5"/>
             <setting name="T3CMX" option="PORTC0"/>
@@ -66,12 +68,32 @@
             <setting name="EBTR0" option="OFF"/>
             <setting name="EBTRB" option="OFF"/>
             <setting name="generateConfigBits" option="true"/>
-            <file checksum="3840162865" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
-            <file checksum="1815418597" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
+            <file checksum="4171310987" modified="false" name="mcc_1.c" path="mcc_generated_files/mcc_1.c"/>
+            <file checksum="2341276642" modified="false" name="mcc_1.h" path="mcc_generated_files/mcc_1.h"/>
+            <file checksum="3429710897" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
+            <file checksum="1385633507" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
         </manager>
     </managers>
     <modules>
-        <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="0" reloadPin="manual" type="uart_enh">
+        <module generated="true" mode="ADC" name="ADC" order="0" reloadPin="manual_auto" type="adc_sarcore_10bit">
+            <initializer comment="" name="Initialize">
+                <setting name="GO_nDONE" option="stop" register="ADCON0"/>
+                <setting name="ADON" option="enabled" register="ADCON0"/>
+                <setting name="CHS" option="AN0" register="ADCON0"/>
+                <setting name="PVCFG" option="VDD" register="ADCON1"/>
+                <setting name="TRIGSEL" option="CCP5" register="ADCON1"/>
+                <setting name="NVCFG" option="VSS" register="ADCON1"/>
+                <setting name="ADFM" option="left" register="ADCON2"/>
+                <setting name="ACQT" option="0" register="ADCON2"/>
+                <setting name="ADCS" option="FOSC/2" register="ADCON2"/>
+                <setting name="ADRESL" option="0x0" register="ADRESL"/>
+                <setting name="ADRESH" option="0x0" register="ADRESH"/>
+            </initializer>
+            <setting name="ADI" option="false"/>
+            <file checksum="87801733" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="3058147922" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
+        </module>
+        <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
             <initializer comment="" name="Initialize">
                 <setting name="ABDOVF" option="no_overflow" register="BAUD1CON"/>
                 <setting name="RCIDL" option="idle" register="BAUD1CON"/>
@@ -107,39 +129,8 @@
             <setting name="inputBuffer" option="8"/>
             <setting name="outputBuffer" option="8"/>
             <setting name="stdio" option="false"/>
-            <file checksum="3547107657" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
-            <file checksum="652896440" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
-        </module>
-        <module generated="true" mode="ADC" name="ADC" order="1" reloadPin="manual_auto" type="adc_sarcore_10bit">
-            <initializer comment="" name="Initialize">
-                <setting name="GO_nDONE" option="stop" register="ADCON0"/>
-                <setting name="ADON" option="enabled" register="ADCON0"/>
-                <setting name="CHS" option="AN0" register="ADCON0"/>
-                <setting name="PVCFG" option="VDD" register="ADCON1"/>
-                <setting name="TRIGSEL" option="CCP5" register="ADCON1"/>
-                <setting name="NVCFG" option="VSS" register="ADCON1"/>
-                <setting name="ADFM" option="left" register="ADCON2"/>
-                <setting name="ACQT" option="0" register="ADCON2"/>
-                <setting name="ADCS" option="FOSC/2" register="ADCON2"/>
-                <setting name="ADRESL" option="0x0" register="ADRESL"/>
-                <setting name="ADRESH" option="0x0" register="ADRESH"/>
-            </initializer>
-            <initializer comment="" name="InitializeNew">
-                <setting name="GO_nDONE" option="stop" register="ADCON0"/>
-                <setting name="ADON" option="disabled" register="ADCON0"/>
-                <setting name="CHS" option="AN0" register="ADCON0"/>
-                <setting name="PVCFG" option="VDD" register="ADCON1"/>
-                <setting name="TRIGSEL" option="CCP5" register="ADCON1"/>
-                <setting name="NVCFG" option="VSS" register="ADCON1"/>
-                <setting name="ADFM" option="left" register="ADCON2"/>
-                <setting name="ACQT" option="0" register="ADCON2"/>
-                <setting name="ADCS" option="FOSC/2" register="ADCON2"/>
-                <setting name="ADRESL" option="0x0" register="ADRESL"/>
-                <setting name="ADRESH" option="0x0" register="ADRESH"/>
-            </initializer>
-            <setting name="ADI" option="false"/>
-            <file checksum="3460046285" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
-            <file checksum="747786432" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
+            <file checksum="3190460743" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
+            <file checksum="197814454" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
         </module>
         <module generated="true" mode="SPI Master" name="MSSP1" order="2" reloadPin="manual" type="mssp">
             <initializer comment="" name="Initialize">
@@ -164,8 +155,9 @@
             <setting name="BCLI" option="false"/>
             <setting name="WriteBufferSize" option="8"/>
             <setting name="ReadBufferSize" option="8"/>
-            <file checksum="1983993306" modified="false" name="spi1.c" path="mcc_generated_files/spi1.c"/>
-            <file checksum="885769827" modified="false" name="spi1.h" path="mcc_generated_files/spi1.h"/>
+            <file checksum="1529697752" modified="false" name="spi1.c" path="mcc_generated_files/spi1.c"/>
+            <file checksum="13354593" modified="false" name="spi1.h" path="mcc_generated_files/spi1.h"/>
         </module>
+        <module generated="true" mode="GPIO" name="GPIO" order="3" reloadPin="manual" type="GPIO"/>
     </modules>
 </configuration>
