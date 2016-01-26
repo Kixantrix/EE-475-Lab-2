@@ -20,6 +20,11 @@
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "user.h"          /* User funct/params, such as InitApp */
 
+// Peripheral library includes
+#include "mcc_generated_files/adc.h"
+#include "mcc_generated_files/eusart1.h"
+#include "mcc_generated_files/spi1.h"
+
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
@@ -29,6 +34,8 @@
 /******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
+
+void testUart();
 
 void main(void)
 {
@@ -40,6 +47,8 @@ void main(void)
 
     /* TODO <INSERT USER APPLICATION CODE HERE> */
 
+    // Test dat uart
+    testUart();
     while(1)
     {
 
@@ -47,3 +56,14 @@ void main(void)
 
 }
 
+/*
+ * Echooooooooo
+ */
+void testUart()
+{
+    volatile uint8_t data;
+    while(1) {
+        data = EUSART1_Read();
+        EUSART1_Write(data);
+    }
+}

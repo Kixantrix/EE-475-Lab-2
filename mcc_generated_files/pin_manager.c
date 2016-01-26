@@ -50,16 +50,16 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 void PIN_MANAGER_Initialize(void) {
     LATA = 0x00;
     TRISA = 0xFF;
-    ANSELA = 0x2F;
+    ANSELA = 0x00;
 
     LATB = 0x00;
     TRISB = 0xFF;
-    ANSELB = 0x3F;
+    ANSELB = 0x00;
     WPUB = 0x00;
 
     LATC = 0x00;
     TRISC = 0xD7;
-    ANSELC = 0x04;
+    ANSELC = 0x00;
 
     INTCON2bits.nRBPU = 0x01;
 

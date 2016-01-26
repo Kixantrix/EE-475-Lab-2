@@ -19,6 +19,11 @@
 
 #include "user.h"
 
+// Peripheral library includes
+#include "mcc_generated_files/adc.h"
+#include "mcc_generated_files/eusart1.h"
+#include "mcc_generated_files/spi1.h"
+
 /******************************************************************************/
 /* User Functions                                                             */
 /******************************************************************************/
@@ -28,7 +33,28 @@
 void InitApp(void)
 {
     /* TODO Initialize User Ports/Peripherals/Project here */
-
+    // Set up ADC
+    //ADC_Initialize();
+    
+    
+    
+   /*
+    * Set up new adc channel. Commented out until we decide exactly what to do
+    * with this
+    */
+    /*
+    ADC_InitializeNew(0);
+    */
+    
+    // Get dem UART dere
+    EUSART1_Initialize();
+    
+    /*
+     * Set up SPI
+     */
+    SPI1_Initialize();
+    
+    
     /* Setup analog functionality and port direction */
 
     /* Initialize peripherals */
