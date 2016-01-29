@@ -4,8 +4,19 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="mcc_generated_files"
+                     displayName="MCC Generated Files"
+                     projectFiles="true">
+        <itemPath>mcc_generated_files/spi1.h</itemPath>
+        <itemPath>mcc_generated_files/eusart1.h</itemPath>
+        <itemPath>mcc_generated_files/adc.h</itemPath>
+        <itemPath>mcc_generated_files/pin_manager.h</itemPath>
+        <itemPath>mcc_generated_files/mcc.h</itemPath>
+      </logicalFolder>
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
+      <itemPath>optfft.h</itemPath>
+      <itemPath>spectrum.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -14,21 +25,36 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="mcc_generated_files"
+                     displayName="MCC Generated Files"
+                     projectFiles="true">
+        <itemPath>mcc_generated_files/spi1.c</itemPath>
+        <itemPath>mcc_generated_files/eusart1.c</itemPath>
+        <itemPath>mcc_generated_files/adc.c</itemPath>
+        <itemPath>mcc_generated_files/pin_manager.c</itemPath>
+        <itemPath>mcc_generated_files/mcc.c</itemPath>
+      </logicalFolder>
       <itemPath>configuration_bits.c</itemPath>
       <itemPath>interrupts.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>system.c</itemPath>
       <itemPath>user.c</itemPath>
+      <itemPath>optfft.c</itemPath>
+      <itemPath>spectrum.c</itemPath>
+      <itemPath>tables.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
+      <itemPath>device_config.mcc</itemPath>
     </logicalFolder>
     <itemPath>getting_started.txt</itemPath>
-    <itemPath>legal_disclaimer.txt</itemPath>
     <itemPath>project_information.txt</itemPath>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>mcc_generated_files</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="C18_18F87K22" type="2">
@@ -40,7 +66,7 @@
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.35</languageToolchainVersion>
-        <platform>4</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>

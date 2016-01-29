@@ -10,9 +10,9 @@ CND_CONF=C18_18F87K22
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/Lab2.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=Lab2.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=lab2.x/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/EE-475-Lab-2.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=EE-475-Lab-2.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=ee-475-lab-2/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/lab2.x/bin
+makeDirectory ${TMPDIR}/ee-475-lab-2/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/lab2.x.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/ee-475-lab-2.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/lab2.x.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/ee-475-lab-2.tar *
 checkReturnCode
 
 # Cleanup
