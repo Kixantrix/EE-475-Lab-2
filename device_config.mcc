@@ -4,7 +4,7 @@
         <manager generated="true" name="Pin Manager" reloadPin="manual">
             <setting name="package" option="SSOP28"/>
             <setting name="sorting" option="true"/>
-            <resource customName="IO_RA0" digital="true" direction="INPUT" function="RA0" module="GPIO" name="RA0" start="false" type="pin" wpu="false"/>
+            <resource customName="channel_AN0" digital="false" direction="INPUT" function="AN0" module="ADC" name="RA0" start="false" type="pin" wpu="false"/>
             <resource customName="IO_RA1" digital="true" direction="INPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
             <resource customName="IO_RA2" digital="true" direction="INPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
             <resource customName="IO_RA3" digital="true" direction="INPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
@@ -30,8 +30,8 @@
             <resource customName="RX1" digital="true" direction="INPUT" function="RX1" module="EUSART1" name="RC7" start="false" type="pin" wpu="false"/>
             <file checksum="3639577670" modified="false" name="pin_manager_1.c" path="mcc_generated_files/pin_manager_1.c"/>
             <file checksum="2104422843" modified="false" name="pin_manager_1.h" path="mcc_generated_files/pin_manager_1.h"/>
-            <file checksum="3547367514" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
-            <file checksum="2336754636" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
+            <file checksum="2572520405" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
+            <file checksum="871181407" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
         </manager>
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
@@ -89,8 +89,8 @@
             <setting name="generateConfigBits" option="true"/>
             <file checksum="4171310987" modified="false" name="mcc_1.c" path="mcc_generated_files/mcc_1.c"/>
             <file checksum="2341276642" modified="false" name="mcc_1.h" path="mcc_generated_files/mcc_1.h"/>
-            <file checksum="3718657405" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
-            <file checksum="3321631339" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
+            <file checksum="4203690676" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
+            <file checksum="3426883490" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
         </manager>
     </managers>
     <modules>
@@ -100,7 +100,7 @@
                 <setting name="ADON" option="enabled" register="ADCON0"/>
                 <setting name="CHS" option="AN0" register="ADCON0"/>
                 <setting name="PVCFG" option="VDD" register="ADCON1"/>
-                <setting name="TRIGSEL" option="CCP5" register="ADCON1"/>
+                <setting name="TRIGSEL" option="CTMU" register="ADCON1"/>
                 <setting name="NVCFG" option="VSS" register="ADCON1"/>
                 <setting name="ADFM" option="left" register="ADCON2"/>
                 <setting name="ACQT" option="0" register="ADCON2"/>
@@ -109,8 +109,9 @@
                 <setting name="ADRESH" option="0x0" register="ADRESH"/>
             </initializer>
             <setting name="ADI" option="false"/>
-            <file checksum="192919930" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
-            <file checksum="1763808529" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
+            <resource customName="channel_AN0" function="AN0" name="RA0" type="pin"/>
+            <file checksum="2563161386" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="2380898109" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
         </module>
         <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
             <initializer comment="" name="Initialize">
@@ -148,8 +149,8 @@
             <setting name="inputBuffer" option="8"/>
             <setting name="outputBuffer" option="8"/>
             <setting name="stdio" option="false"/>
-            <file checksum="94145492" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
-            <file checksum="247488857" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
+            <file checksum="1740607310" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
+            <file checksum="3558368467" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
         </module>
         <module generated="true" mode="SPI Master" name="MSSP1" order="2" reloadPin="manual" type="mssp">
             <initializer comment="" name="Initialize">
@@ -174,8 +175,8 @@
             <setting name="BCLI" option="false"/>
             <setting name="WriteBufferSize" option="8"/>
             <setting name="ReadBufferSize" option="8"/>
-            <file checksum="99438411" modified="false" name="spi1.c" path="mcc_generated_files/spi1.c"/>
-            <file checksum="814266474" modified="false" name="spi1.h" path="mcc_generated_files/spi1.h"/>
+            <file checksum="3517993669" modified="false" name="spi1.c" path="mcc_generated_files/spi1.c"/>
+            <file checksum="1242938340" modified="false" name="spi1.h" path="mcc_generated_files/spi1.h"/>
         </module>
         <module generated="true" mode="GPIO" name="GPIO" order="3" reloadPin="manual" type="GPIO">
             <resource customName="IO_RC2" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
@@ -196,7 +197,6 @@
             <resource customName="IO_RA3" digital="true" direction="INPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
             <resource customName="IO_RA2" digital="true" direction="INPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
             <resource customName="IO_RA1" digital="true" direction="INPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
-            <resource customName="IO_RA0" digital="true" direction="INPUT" function="RA0" module="GPIO" name="RA0" start="false" type="pin" wpu="false"/>
         </module>
     </modules>
 </configuration>
