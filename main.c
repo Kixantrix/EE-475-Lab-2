@@ -25,6 +25,8 @@
 #include "mcc_generated_files/eusart1.h"
 #include "mcc_generated_files/spi1.h"
 
+#include "mcc_generated_files/mcc.h"
+
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
@@ -48,6 +50,8 @@ void main(void)
 {
     /* Configure the oscillator for the device */
     ConfigureOscillator();
+    
+    SYSTEM_Initialize();
 
     /* Initialize I/O and Peripherals for application */
     InitApp();
@@ -89,14 +93,19 @@ void main(void)
  */
 void testUart()
 {
-    volatile uint8_t data;
     while(1) {
+        EUSART1_Write('c');
+    }
+    /*
+    while(1) {
+        volatile uint8_t data;
         data = EUSART1_Read();
         EUSART1_Write(data);
         if (data == ((uint8_t)('\n'))) {
             return;
         }
     }
+     */
 }
 
 /*

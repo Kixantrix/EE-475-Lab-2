@@ -56,8 +56,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 void EUSART1_Initialize(void) {
     // Set the EUSART1 module to the options selected in the user interface.
 
-    // ABDOVF no_overflow; RCIDL idle; BRG16 16bit_generator; WUE disabled; CKTXP async_noninverted_sync_fallingedge; ABDEN enabled; DTRXP not_inverted; 
-    BAUD1CON = 0x49;
+    // ABDOVF no_overflow; RCIDL idle; BRG16 16bit_generator; WUE disabled; CKTXP async_noninverted_sync_fallingedge; ABDEN disabled; DTRXP not_inverted; 
+    BAUD1CON = 0x48;
 
     // SPEN enabled; OERR no_error; RX9 8-bit; RX9D 0x0; CREN enabled; ADDEN disabled; SREN disabled; FERR no_error; 
     RC1STA = 0x90;
@@ -93,6 +93,14 @@ void EUSART1_Write(uint8_t txData) {
     }
 
     TXREG1 = txData; // Write the data byte to the USART.
+}
+
+char getch(void) {
+    return EUSART1_Read();
+}
+
+void putch(char txData) {
+    EUSART1_Write(txData);
 }
 /**
   End of File
