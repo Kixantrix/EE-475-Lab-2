@@ -60,13 +60,24 @@ void main(void)
     
     // Test dat uart
     testUart();
-    
-    // Test send String
-    //testSendString();
+    // Test sending a string
+    testSendString();
+    // Test sending a number
+    testSendNum();
     
     
     while(1)
     {
+        char inputRead = EUSART1_Read();
+        // Get input from serial and process results
+        switch(inputRead) {
+            case 'a':
+                break;
+            case 'b':
+                break;
+            default :
+                break;
+        }
 
     }
 
@@ -74,6 +85,7 @@ void main(void)
 
 /*
  * Echos whatever is sent to the PIC
+ * Returns when enter is pressed
  */
 void testUart()
 {
@@ -81,26 +93,33 @@ void testUart()
     while(1) {
         data = EUSART1_Read();
         EUSART1_Write(data);
+        if (data == ((uint8_t)('\n'))) {
+            return;
+        }
     }
 }
 
 /*
  * Sends a string when t is pressed
+ * Returns when enter is pressed
  */
 void testSendString()
 {
-    char * testString = "This is a test.";
+    char * testString = (char *) "This is a test.";
     volatile uint8_t data;
     while(1) {
         data = EUSART1_Read();
         if(data == ((uint8_t)('t'))) {
             sendString(testString);
+        } else if (data == ((uint8_t)('\n'))) {
+            return;
         }
     }
 }
 
 /*
  * Sends a number when t is pressed
+ * Returns when enter is pressed
  */
 
 void testSendNum()
@@ -111,6 +130,8 @@ void testSendNum()
         data = EUSART1_Read();
         if(data == ((uint8_t)('t'))) {
            sendNum(testNum);
+        } else if (data == ((uint8_t)('\n'))) {
+            return;
         }
     }
 }

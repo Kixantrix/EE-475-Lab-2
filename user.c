@@ -48,6 +48,7 @@ void InitApp(void)
     
     // Get dem UART dere
     EUSART1_Initialize();
+    for(int i = 0; i < 200; i++);
     
     /*
      * Set up SPI
