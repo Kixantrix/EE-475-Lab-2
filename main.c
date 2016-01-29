@@ -95,18 +95,13 @@ void main(void)
 void testUart()
 {
     while(1) {
-        EUSART1_Write('c');
-    }
-    /*
-    while(1) {
-        volatile uint8_t data;
+        char data;
         data = EUSART1_Read();
         EUSART1_Write(data);
-        if (data == ((uint8_t)('\n'))) {
+        if (data == (('\n'))) {
             return;
         }
     }
-     */
 }
 
 /*
