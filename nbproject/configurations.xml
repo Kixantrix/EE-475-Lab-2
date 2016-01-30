@@ -12,6 +12,7 @@
         <itemPath>mcc_generated_files/adc.h</itemPath>
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/mcc.h</itemPath>
+        <itemPath>mcc_generated_files/tmr0.h</itemPath>
       </logicalFolder>
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
@@ -33,6 +34,7 @@
         <itemPath>mcc_generated_files/adc.c</itemPath>
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
+        <itemPath>mcc_generated_files/tmr0.c</itemPath>
       </logicalFolder>
       <itemPath>configuration_bits.c</itemPath>
       <itemPath>interrupts.c</itemPath>
@@ -63,7 +65,7 @@
         <targetDevice>PIC18F25K22</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <platformTool>Simulator</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>1.35</languageToolchainVersion>
         <platform>2</platform>
@@ -237,6 +239,13 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </PICkit3PlatformTool>
+      <Simulator>
+        <property key="W0204_ADC_TAD_TOO_SMALL" value="report"/>
+        <property key="W0222_ADC_OVERFLOW" value="report"/>
+        <property key="W0223_ADC_UNDERFLOW" value="report"/>
+        <property key="W9602_COMP_DAC_SOURCE_UNAVAILABLE" value="report"/>
+        <property key="periphADC1.minTacq" value="5"/>
+      </Simulator>
       <XC8-config-global>
         <property key="advanced-elf" value="true"/>
         <property key="output-file-format" value="-mcof,+elf"/>

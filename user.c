@@ -18,8 +18,10 @@
 #endif
 
 #include "user.h"
+#include "spectrum.h"
 
 // Peripheral library includes
+#include "mcc_generated_files/mcc.h"
 #include "mcc_generated_files/adc.h"
 #include "mcc_generated_files/eusart1.h"
 #include "mcc_generated_files/spi1.h"
@@ -29,7 +31,7 @@
 /******************************************************************************/
 
 /* <Initialize variables in user.h and insert code for user algorithms.> */
-
+unsigned long peaks[16];
 void InitApp(void)
 {
     /* TODO Initialize User Ports/Peripherals/Project here */
@@ -47,14 +49,7 @@ void InitApp(void)
     */
     
     // Get dem UART dere
-    EUSART1_Initialize();
-    for(int i = 0; i < 200; i++);
-    
-    /*
-     * Set up SPI
-     */
-    SPI1_Initialize();
-    
+    SYSTEM_Initialize();
     
     /* Setup analog functionality and port direction */
 

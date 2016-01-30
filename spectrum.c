@@ -8,33 +8,43 @@
 #include <xc.h>
 #include <stdint.h>
 #include "optfft.h"
+#include "mcc_generated_files/mcc.h"
 #include "mcc_generated_files/adc.h"
 #include "spectrum.h"
 
 #define FFT_CHANNEL 0
+#define FFT_LEN 256
+#define FFT_LEN_BITS 8
+
 uint16_t readADC() {
-//    // start a conversion
-//    ADCON0bits.GO = 1;
-//    
-//    // wait for the value
-//    while (ADCON0bits.GO) ;
-//    return ADRES;
     return (uint16_t)ADC_GetConversion(FFT_CHANNEL);
 }
 
-#define FFT_LEN 256
 int16_t fftReal[FFT_LEN];
 int16_t fftImag[FFT_LEN];
+// global for easier debugging
+int16_t max_index;
+unsigned long sample_freq;
+unsigned long peak_freq;
 // returns the peak frequency
-uint16_t fftSingleCycle() {
-    // assumes a six bit value (between 0 and 64)
+unsigned long fftSingleCycle() {
+    // 10 bits to 6 bits unsigned, range [0, 63]
+    // then shift so have range [-32, 31]
+    uint16_t start_t = TMR0;
     for (int i = 0; i < FFT_LEN; i++)
-        fftReal[i] = (int16_t)(readADC()>>4) - 32;
+        fftReal[i] = (int16_t)(readADC() >> 4) - 31;
     
-    for (int i = 0; i < FFT_LEN; i++) {
+    uint16_t stop_t = TMR0;
+    // Timer clock is Fosc/4, so do >>2
+    sample_freq = (_XTAL_FREQ>>2)/((stop_t > start_t) 
+                            ? (stop_t - start_t) 
+                            : ((1 << 16) - start_t + stop_t)) << FFT_LEN_BITS;
+    
+    // Reset the imaginary array
+    for (int i = 0; i < FFT_LEN; i++)
         fftImag[i] = 0;
-    }
     
-    int16_t max_index = optfft(fftReal, fftImag);
-    return (uint16_t)max_index;
+    max_index = optfft(fftReal, fftImag);
+    peak_freq = (sample_freq >> FFT_LEN_BITS) * max_index;
+    return peak_freq;
 }
