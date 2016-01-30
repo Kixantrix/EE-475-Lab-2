@@ -29,6 +29,11 @@
 
 #include "mcc_generated_files/mcc.h"
 
+//For Bus switching case statement
+#define BUS_SRAM_READ 1
+#define BUS_SRAM_WRITE 2
+#define BUS_SRAM_ADDR 3
+#define BUS_COUNTER_READ 4
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
@@ -47,6 +52,7 @@ void testSendNum();
 void measureFreq(int resolution);
 void measurePeriod(int resolution);
 void measureCount(int resolution);
+void switchBus(int ID);
 int getCount(int resolution);
 void printInfo();
 
@@ -208,7 +214,6 @@ void testSendString()
  * Sends a number when t is pressed
  * Returns when enter is pressed
  */
-
 void testSendNum()
 {
     int testNum = -1337;
@@ -223,3 +228,12 @@ void testSendNum()
     }
 }
 
+/*
+ * Switch the 12 bit bus to ID, where
+ * ID is one of several int values
+ * representing the counter, SRAM R/W, and
+ * SRAM address. 
+ */
+void switchBus(int ID) {
+    //Lots of GPIO maddness here. 
+}
