@@ -18,7 +18,20 @@ void writeBus(uint16_t data) {
  * SRAM address. 
  */
 void switchBus(int ID) {
-    //Lots of GPIO maddness here. 
+    switch(ID) {
+        case BUS_SRAM_READ: 
+            break;
+            setBusDir(0x0FFF);
+        case BUS_SRAM_WRITE:
+            setBusDir(0x0000);
+            break;
+        case BUS_SRAM_ADDR:
+            setBusDir(0x0000);
+            break;
+        case BUS_COUNTER_READ: 
+            setBusDir(0x00FF);
+            break;
+    }
 }
 
 // Sets direction of port in to dir passed in.
