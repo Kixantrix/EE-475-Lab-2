@@ -95,8 +95,8 @@
             <setting name="preemptHigh" option="true"/>
             <setting name="preemptLow" option="true"/>
             <setting name="useIPEN" option="false"/>
-            <file checksum="1729700529" modified="false" name="interrupt_manager.c" path="mcc_generated_files/interrupt_manager.c"/>
-            <file checksum="1195851009" modified="false" name="interrupt_manager.h" path="mcc_generated_files/interrupt_manager.h"/>
+            <file checksum="3105236523" modified="false" name="interrupt_manager.c" path="mcc_generated_files/interrupt_manager.c"/>
+            <file checksum="651182203" modified="false" name="interrupt_manager.h" path="mcc_generated_files/interrupt_manager.h"/>
             <interrupt module="MSSP1" name="SSPI" priority="2"/>
             <interrupt module="MSSP1" name="BCLI" priority="2"/>
         </manager>
@@ -218,8 +218,8 @@
             <setting name="readbufferchanged" option="8"/>
             <setting name="writebufferchanged" option="8"/>
             <setting name="addressMode" option="true"/>
-            <file checksum="432509986" modified="false" name="i2c1.c" path="mcc_generated_files/i2c1.c"/>
-            <file checksum="3522921436" modified="false" name="i2c1.h" path="mcc_generated_files/i2c1.h"/>
+            <file checksum="1374263196" modified="false" name="i2c1.c" path="mcc_generated_files/i2c1.c"/>
+            <file checksum="2997651286" modified="false" name="i2c1.h" path="mcc_generated_files/i2c1.h"/>
         </module>
         <module generated="true" mode="Timer" name="TMR0" order="4" reloadPin="manual" type="tmr_timer0">
             <initializer comment="" name="Initialize">

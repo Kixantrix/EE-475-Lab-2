@@ -18,7 +18,6 @@
 #endif
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
-#include "user.h"          /* User funct/params, such as InitApp */
 #include "spectrum.h"
 #include "uartcomms.h"
 #include "bus.h"
@@ -27,8 +26,6 @@
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
 #include "mcc_generated_files/eusart1.h"
-#include "mcc_generated_files/spi1.h"
-
 #include "mcc_generated_files/mcc.h"
 
 //For Bus switching case statement
@@ -63,9 +60,6 @@ void main(void)
     ConfigureOscillator();
     
     SYSTEM_Initialize();
-
-    /* Initialize I/O and Peripherals for application */
-    InitApp();
 
     /* TODO <INSERT USER APPLICATION CODE HERE> */
 
