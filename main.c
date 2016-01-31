@@ -30,7 +30,6 @@
 
 // Defines for functionality
 #define MODE_FREQ
-#define 
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
@@ -47,6 +46,7 @@
 void testUart();
 void testSendString();
 void testSendNum();
+void testSRAM();
 void measureFreq(int resolution);
 void measurePeriod(int resolution);
 void measureCount(int resolution);
@@ -74,6 +74,8 @@ void main(void)
     testSendString();
     // Test sending a number
     testSendNum();
+    // Test SRAM read/write
+    testSRAM();
     
     // Default Posedge activation.
     int edgeActivation = 0;
@@ -98,9 +100,6 @@ void main(void)
         if(PIR1bits.RC1IF) {
             inputRead = EUSART1_Read();
         }
-        
-        // Resolution switch button
-        if()
 
         // Disp switch button
         
@@ -229,4 +228,26 @@ void testSendNum()
             return;
         }
     }
+}
+
+void testSRAM() {
+    uint8_t writedata = 0xAC; // 172
+    uint8_t readdata;
+    uint8_t addr = 2;
+    
+    sendString("Testing SRAM...\n");
+    writeSRAM(addr, writedata);
+    readdata = readSRAM(addr);
+    
+    sendString("At address");
+    sendInt(addr);
+    sendString("\nWrote:");
+    sendInt(writedata);
+    sendString("\nRead:");
+    sendInt(readdata);
+    
+    if (writedata == readdata)
+        sendString("\nSRAM test successful :)");
+    else
+        sendString("\nSRAM test failed :(");
 }
