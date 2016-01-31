@@ -22,11 +22,10 @@ void send(uint8_t value, uint8_t mode);
 void pulseEnable(uint8_t _data);
 void expanderWrite(uint8_t _data);
 inline void command(uint8_t value);
-inline void write(uint8_t value);
 void send(uint8_t value, uint8_t mode);
-void write4bits(uint8_t value);
+void lcd_write4bits(uint8_t value);
 
-void init(void) {
+void lcd_init(void) {
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
 	begin(_cols, _rows, 0);  
 }
@@ -57,19 +56,19 @@ void begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 	// figure 24, pg 46
 	
 	// we start in 8bit mode, try to set 4 bit mode
-	write4bits(0x03);
+	lcd_write4bits(0x03);
 	__delay_us(4500); // wait min 4.1ms
 	
 	// second try
-	write4bits(0x03);
+	lcd_write4bits(0x03);
 	__delay_us(4500); // wait min 4.1ms
 	
 	// third go!
-	write4bits(0x03); 
+	lcd_write4bits(0x03); 
 	__delay_us(150);
 	
 	// finally, set to 4-bit interface
-	write4bits(0x02); 
+	lcd_write4bits(0x02); 
 
 
 	// set # lines, font size, etc.
@@ -178,7 +177,7 @@ void createChar(uint8_t location, uint8_t charmap[]) {
 	location &= 0x7; // we only have 8 locations 0-7
 	command(LCD_SETCGRAMADDR | (location << 3));
 	for (int i=0; i<8; i++) {
-		write(charmap[i]);
+		lcd_write(charmap[i]);
 	}
 }
 
@@ -197,19 +196,19 @@ inline void command(uint8_t value) {
 	send(value, 0);
 }
 
-inline void write(uint8_t value) {
+inline void lcd_write(uint8_t value) {
 	send(value, Rs);
 }
 
-// write either command or data
+// lcd_write either command or data
 void send(uint8_t value, uint8_t mode) {
 	uint8_t highnib=value&0xf0;
 	uint8_t lownib=(value<<4)&0xf0;
-    write4bits((highnib)|mode);
-	write4bits((lownib)|mode); 
+    lcd_write4bits((highnib)|mode);
+	lcd_write4bits((lownib)|mode); 
 }
 
-void write4bits(uint8_t value) {
+void lcd_write4bits(uint8_t value) {
 	expanderWrite(value);
 	pulseEnable(value);
 }
@@ -220,7 +219,7 @@ void expanderWrite(uint8_t _data){
 	//Wire.endTransmission();  
 	uint8_t dataArray[1];
     dataArray[0] = _data;
-	writeI2CData(LCD_ADDR, 1, dataArray); 
+	lcd_writeI2CData(LCD_ADDR, 1, dataArray); 
 }
 
 void pulseEnable(uint8_t _data){
@@ -233,11 +232,11 @@ void pulseEnable(uint8_t _data){
 
 
  /*
- Function to write arbitrary data to I2C. 
+ Function to lcd_write arbitrary data to I2C. 
  Enter the I2C adderess, the size of the data to send, and the data. 
  Probably move this to i2c for phase 2
  */
-void writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
+void lcd_writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
 	
 	uint16_t        counter, timeOut;
 
@@ -245,7 +244,7 @@ void writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah d
 
     while(status != I2C1_MESSAGE_FAIL)
     {
-        // write one byte to EEPROM (3 is the number of bytes to write)
+        // lcd_write one byte to EEPROM (3 is the number of bytes to lcd_write)
         I2C1_MasterWrite(sourceData, size, addr, &status);
 
         // wait for the message to be sent or status has changed.
@@ -257,7 +256,7 @@ void writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah d
         // if status is  I2C1_MESSAGE_ADDRESS_NO_ACK,
         //               or I2C1_DATA_NO_ACK,
         // The device may be busy and needs more time for the last
-        // write so we can retry writing the data, this is why we
+        // lcd_write so we can retry writing the data, this is why we
         // use a while loop here
 
         // check for max retry and skip this byte
