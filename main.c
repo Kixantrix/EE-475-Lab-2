@@ -23,7 +23,8 @@
 #include "bus.h"
 #include "sram.h"
 #include "lcd.h"
-#include <plib/i2c.h>
+/*#include <plib/i2c.h>*/
+#include "mcc_generated_files/i2c1.h"
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
@@ -71,29 +72,46 @@ int getCount(int resolution);
 void printInfo();
 void testLCD();
 
+static	I2C1_MESSAGE_STATUS I2C_Wflag, I2C_Rflag;
+
 void main(void)
 {
     /* Configure the oscillator for the device */
     ConfigureOscillator();
     
     SYSTEM_Initialize();
-    
+    // Enable Global Interrupts
+    INTERRUPT_GlobalInterruptEnable();
+    // Enable Peripheral Interrupts
+    INTERRUPT_PeripheralInterruptEnable();
     //Init I2c
     
+    uint8_t command[2];
+    command[0] = 0xFF;
+    command[1] = 0xF1; 
+    uint8_t length = 2;   
+    uint8_t address = 0x3F;
     
-    init_SRAM();
+    I2C1_MasterWrite( command, length,
+                           address, &I2C_Wflag);
+        if (I2C_Wflag == I2C1_MESSAGE_FAIL)
+            while (1)        // Something wrong
+                LATB = 0x0F;
+        while (I2C_Wflag != I2C1_MESSAGE_COMPLETE);
+    
+    //init_SRAM();
 
     //*********************************************
     // Tests for System functionality
     //*********************************************
     // Test dat uart
-    testUart();
+    //testUart();
     // Test sending a string
-    testSendString();
+    //testSendString();
     // Test sending a number
-    testSendNum();
+    //testSendNum();
     // Test SRAM read/write
-    testSRAM();
+    //testSRAM();
     // Test LCD
     testLCD();
     // Default Posedge activation.
@@ -266,16 +284,17 @@ void testUart()
 void testLCD()
 {
     lcd_init();
-    while(1) {
-        char data = EUSART1_Read();
-        if(data == 't') {
-            lcd_write('c');
-            lcd_write('d');
-            lcd_write('e');
-        } else if (data == ('\n') || data == '\r') {
-            return;
-        }
-    }
+    lcd_write('c');
+    //while(1) {
+        //char data = EUSART1_Read();
+        //if(data == 't') {
+        //    lcd_write('c');
+        //    lcd_write('d');
+        //    lcd_write('e');
+        //} else if (data == ('\n') || data == '\r') {
+        //    return;
+        //}
+    //}
 }
 
 /*

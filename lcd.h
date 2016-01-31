@@ -77,7 +77,7 @@ void createChar(uint8_t location, uint8_t charmap[]);
 inline void lcd_write(uint8_t value);
 void noBacklight(void);
 void backlight(void);
-void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]);
+void lcd_writeI2CData(uint8_t addr, uint16_t length, uint8_t data[]);
 
 
 #endif

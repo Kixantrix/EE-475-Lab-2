@@ -4,10 +4,10 @@ Driver for the 4 row 16 char LCD.
 
 #include "lcd.h"
 #include "mcc_generated_files/i2c1.h"
-#include <pic18.h>
+//#include <pic18.h>
 #include <stdint.h>
 #include "mcc_generated_files/mcc.h"
-#include <plib/i2c.h>
+/*#include <plib/i2c.h>*/
 
 
 uint8_t  _cols = 20;
@@ -27,7 +27,7 @@ void send(uint8_t value, uint8_t mode);
 void lcd_write4bits(uint8_t value);
 
 void lcd_init(void) {
-    _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+    _displayfunction = LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS;
 	begin(_cols, _rows, 0);  
 }
 
@@ -46,7 +46,7 @@ void begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
 	// SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
 	// according to datasheet, we need at least 40ms after power rises above 2.7V
 	// before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-	__delay_us(50000); 
+	//__delay_us(50000); 
   
 	// Now we pull both RS and R/W low to begin commands
 	expanderWrite(_backlightval);	// reset expanderand turn backlight off (Bit 8 =1)
@@ -231,17 +231,26 @@ void pulseEnable(uint8_t _data){
 	__delay_us(50);		// commands need > 37us to settle
 } 
 
+static	I2C1_MESSAGE_STATUS I2C_Wflag, I2C_Rflag;
 
-
-/*void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) {
-
-}*/
+void lcd_writeI2CData(uint8_t addr, uint16_t length, uint8_t data[]) {
+    I2C1_MasterWrite( data, length,
+                           LCD_ADDR, &I2C_Wflag);
+        if (I2C_Wflag == I2C1_MESSAGE_FAIL)
+            while (1)        // Something wrong
+                LATB = 0x0F;
+        while (1) {
+            if(I2C_Wflag == I2C1_MESSAGE_COMPLETE || I2C_Wflag == I2C1_DATA_NO_ACK) {
+                break;
+            }
+        }
+}
 
  /*
  Function to lcd_write arbitrary data to I2C. 
  Enter the I2C adderess, the size of the data to send, and the data. 
  Probably move this to i2c for phase 2
- */
+ 
 void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
 	
 	//uint16_t        counter, timeOut;
@@ -271,4 +280,4 @@ void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) { //Yea
         //else
         //    timeOut++;
     }
-}
+}*/
