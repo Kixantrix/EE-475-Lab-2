@@ -1,5 +1,6 @@
 #include "uartcomms.h"
 #include "mcc_generated_files/eusart1.h"
+#include <stdint.h>
 
 /*
  * Takes a string and sends its contents over the uart.
