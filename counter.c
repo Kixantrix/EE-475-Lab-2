@@ -7,6 +7,9 @@
 uint16_t readCounter() {
 	// Switch bus to read from counter.
 	switchBus(BUS_COUNTER_READ);
+	// Set to read from counter.
+	COUNTER_ENABLE_SetHigh();
+	// Count of events
 	uint16_t count = 0;
 	// Add masked/shifted value from bit 6 A shifted to 11.
 	uint16_t maskedABits = 0x070 & PORTA << 5;
@@ -17,5 +20,7 @@ uint16_t readCounter() {
 	// Add masked and shifted value from bottom 3 bits C shifted to 8;
 	uint16_t maskedCBits= 0x007 & PORTC << 8;
 	count += maskedCBits;
+	// Set to not read from counter.
+	COUNTER_ENABLE_SetLow();
 	return count;
 }
