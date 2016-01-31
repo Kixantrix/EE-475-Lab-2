@@ -50,9 +50,10 @@ void writeBus(uint16_t data);
  */
 void switchBus(int ID);
 
-// Sets direction of port in to dir passed in.
+// Sets direction of pins on the ports corresponding to data
+// Dir bits 0-11 specify direction of the 12 data lines.
 // 1 input 0 output
-void setBusDir(int dir);
+void setBusDir(uint16_t dir);
 
 
 #endif	/* BUS_H */
