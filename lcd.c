@@ -7,6 +7,7 @@ Driver for the 4 row 16 char LCD.
 #include <pic18.h>
 #include <stdint.h>
 #include "mcc_generated_files/mcc.h"
+#include <plib/i2c.h>
 
 
 uint8_t  _cols = 20;
@@ -231,6 +232,11 @@ void pulseEnable(uint8_t _data){
 } 
 
 
+
+/*void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) {
+
+}*/
+
  /*
  Function to lcd_write arbitrary data to I2C. 
  Enter the I2C adderess, the size of the data to send, and the data. 
@@ -246,12 +252,12 @@ void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) { //Yea
     {
         // lcd_write one byte to EEPROM (3 is the number of bytes to lcd_write)
         I2C1_MasterWrite(sourceData, size, addr, &status);
-        __delay_us(100);
+        //__delay_us(100);
         // wait for the message to be sent or status has changed.
-        //while(status == I2C1_MESSAGE_PENDING);
+        while(status == I2C1_MESSAGE_PENDING);
 
-        //if (status == I2C1_MESSAGE_COMPLETE)
-        break;
+        if (status == I2C1_MESSAGE_COMPLETE)
+            break;
 
         // if status is  I2C1_MESSAGE_ADDRESS_NO_ACK,
         //               or I2C1_DATA_NO_ACK,
