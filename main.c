@@ -81,7 +81,7 @@ void main(void)
     //Init I2c
     
     
-    /* TODO <INSERT USER APPLICATION CODE HERE> */
+    init_SRAM();
 
     //*********************************************
     // Tests for System functionality
