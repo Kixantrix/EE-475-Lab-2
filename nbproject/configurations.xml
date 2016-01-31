@@ -13,11 +13,14 @@
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/mcc.h</itemPath>
         <itemPath>mcc_generated_files/tmr0.h</itemPath>
+        <itemPath>mcc_generated_files/i2c1.h</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
       </logicalFolder>
       <itemPath>system.h</itemPath>
       <itemPath>user.h</itemPath>
       <itemPath>optfft.h</itemPath>
       <itemPath>spectrum.h</itemPath>
+      <itemPath>uartcomms.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -35,6 +38,8 @@
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/tmr0.c</itemPath>
+        <itemPath>mcc_generated_files/i2c1.c</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
       </logicalFolder>
       <itemPath>configuration_bits.c</itemPath>
       <itemPath>interrupts.c</itemPath>
@@ -44,6 +49,7 @@
       <itemPath>optfft.c</itemPath>
       <itemPath>spectrum.c</itemPath>
       <itemPath>tables.c</itemPath>
+      <itemPath>uartcomms.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
