@@ -23,6 +23,7 @@
 #include "bus.h"
 #include "sram.h"
 #include "lcd.h"
+#include <plib/i2c.h>
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
@@ -78,7 +79,7 @@ void main(void)
     SYSTEM_Initialize();
     
     //Init I2c
-    I2C1_Initialize();
+    
     
     /* TODO <INSERT USER APPLICATION CODE HERE> */
 
