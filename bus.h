@@ -42,12 +42,6 @@
 #define BUS_SRAM_ADDR 3
 #define BUS_COUNTER_READ 4
 
-// Returns 12 bits of data from the bus stored in bottom bits of the uint16_t
-uint16_t readBus();
-
-// Writes bottom 12 bits of data from 16 bit data passed in to the bus
-void writeBus(uint16_t data);
-
 /*
  * Switch the 12 bit bus to ID, where
  * ID is one of several int values
