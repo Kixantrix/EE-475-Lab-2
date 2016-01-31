@@ -28,7 +28,7 @@ void write4bits(uint8_t value);
 
 void init(void) {
     _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
-	begin(_cols, _rows);  
+	begin(_cols, _rows, 0);  
 }
 
 
