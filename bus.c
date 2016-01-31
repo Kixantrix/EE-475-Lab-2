@@ -48,10 +48,9 @@ void setBusDir(uint16_t dir) {
 	uint8_t cdir = TRISC;
 	// Port C Bottom 3 bits dir bits 8-10 shift of 8
 	uint8_t maskedCDir = 0x0700 & dir >> 8;
-		// And bit 6.
+	// And bottom 3 bits.
 	cdir &= (0xF8 | maskedCDir);
-	// Or rest of bits
+	// Or bottom 3 bits.
 	cdir |= maskedCDir;
 	TRISC = cdir;
-
 }
