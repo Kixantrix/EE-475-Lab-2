@@ -55,6 +55,26 @@ Header file for controlling our LCD display
 #define Rw B00000010  // Read/Write bit
 #define Rs B00000001  // Register select bit
 
+void init();
+void home();
+void clear();
+void setCursor(uint8_t col, uint8_t row);
+void noDisplay();
+void display();
+void noCursor();
+void cursor();
+void noBlink();
+void blink();
+void scrollDisplayLeft(void);
+void scrollDisplayRight(void);
+void leftToRight(void);
+void rightToLeft(void);
+void autoscroll(void);
+void noAutoscroll(void);
+void createChar(uint8_t location, uint8_t charmap[]);
+void noBacklight(void);
+void backlight(void);
+void writeI2CData(uint16_t dataAddress, uint16_t nCount, uint8_t sourceData[]);
 
 
 #endif
