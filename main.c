@@ -22,6 +22,7 @@
 #include "uartcomms.h"
 #include "bus.h"
 #include "sram.h"
+#include "lcd.h"
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
@@ -67,6 +68,7 @@ void measurePeriod(int resolution);
 void measureCount(int resolution);
 int getCount(int resolution);
 void printInfo();
+void testLCD();
 
 void main(void)
 {
@@ -91,7 +93,8 @@ void main(void)
     testSendNum();
     // Test SRAM read/write
     testSRAM();
-    
+    // Test LCD
+    testLCD();
     // Default Posedge activation.
     int edgeActivation = 0;
     
@@ -251,6 +254,24 @@ void testUart()
         data = EUSART1_Read();
         EUSART1_Write(data);
         if (data == '\n' || data == '\r') {
+            return;
+        }
+    }
+}
+
+/*
+* Test I2C functionality
+*/
+void testLCD()
+{
+    lcd_init();
+    while(1) {
+        char data = EUSART1_Read();
+        if(data == 't') {
+            lcd_write('c');
+            lcd_write('d');
+            lcd_write('e');
+        } else if (data == ('\n') || data == '\r') {
             return;
         }
     }

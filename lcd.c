@@ -236,9 +236,9 @@ void pulseEnable(uint8_t _data){
  Enter the I2C adderess, the size of the data to send, and the data. 
  Probably move this to i2c for phase 2
  */
-void lcd_writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
+void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
 	
-	uint16_t        counter, timeOut;
+	//uint16_t        counter, timeOut;
 
 	I2C1_MESSAGE_STATUS status = I2C1_MESSAGE_PENDING;
 
@@ -246,12 +246,12 @@ void lcd_writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Ye
     {
         // lcd_write one byte to EEPROM (3 is the number of bytes to lcd_write)
         I2C1_MasterWrite(sourceData, size, addr, &status);
-
+        __delay_us(100);
         // wait for the message to be sent or status has changed.
-        while(status == I2C1_MESSAGE_PENDING);
+        //while(status == I2C1_MESSAGE_PENDING);
 
-        if (status == I2C1_MESSAGE_COMPLETE)
-            break;
+        //if (status == I2C1_MESSAGE_COMPLETE)
+        break;
 
         // if status is  I2C1_MESSAGE_ADDRESS_NO_ACK,
         //               or I2C1_DATA_NO_ACK,
@@ -260,9 +260,9 @@ void lcd_writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Ye
         // use a while loop here
 
         // check for max retry and skip this byte
-        if (timeOut == SLAVE_I2C_GENERIC_RETRY_MAX)
-            break;
-        else
-            timeOut++;
+        //if (timeOut == SLAVE_I2C_GENERIC_RETRY_MAX)
+        //    break;
+        //else
+        //    timeOut++;
     }
 }
