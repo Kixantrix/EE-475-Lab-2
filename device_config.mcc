@@ -112,13 +112,13 @@
                 <setting name="NVCFG" option="VSS" register="ADCON1"/>
                 <setting name="ADFM" option="right" register="ADCON2"/>
                 <setting name="ACQT" option="0" register="ADCON2"/>
-                <setting name="ADCS" option="FOSC/2" register="ADCON2"/>
+                <setting name="ADCS" option="FOSC/32" register="ADCON2"/>
                 <setting name="ADRESL" option="0x0" register="ADRESL"/>
                 <setting name="ADRESH" option="0x0" register="ADRESH"/>
             </initializer>
             <setting name="ADI" option="false"/>
             <resource customName="channel_AN0" function="AN0" name="RA0" type="pin"/>
-            <file checksum="380353957" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="2223357402" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
             <file checksum="2380898109" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
         </module>
         <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
@@ -225,7 +225,7 @@
             <initializer comment="" name="Initialize">
                 <setting name="T08BIT" option="16-bit" register="T0CON"/>
                 <setting name="T0SE" option="Increment_hi_lo" register="T0CON"/>
-                <setting name="T0PS" option="1:256" register="T0CON"/>
+                <setting name="T0PS" option="1:16" register="T0CON"/>
                 <setting name="T0CS" option="FOSC/4" register="T0CON"/>
                 <setting name="TMR0ON" option="enabled" register="T0CON"/>
                 <setting name="PSA" option="not_assigned" register="T0CON"/>
@@ -238,7 +238,7 @@
             </initializer>
             <setting name="TMRI" option="false"/>
             <setting name="ticker" option="0"/>
-            <file checksum="493749228" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
+            <file checksum="1798964146" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
             <file checksum="2914042823" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
         </module>
     </modules>

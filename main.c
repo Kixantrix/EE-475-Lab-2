@@ -71,7 +71,6 @@ void main(void)
     //*********************************************
     // Tests for System functionality
     //*********************************************
-    
     // Test dat uart
     testUart();
     // Test sending a string
