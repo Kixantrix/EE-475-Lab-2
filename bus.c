@@ -1,5 +1,6 @@
 #include "mcc_generated_files/pin_manager.h"
-
+#include "bus.h"
+#include <stdint.h>
 
 /*
  * Switch the 12 bit bus to ID, where

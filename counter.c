@@ -1,5 +1,6 @@
 #include "counter.h"
 #include "bus.h"
+#include <stdint.h>
 #include "mcc_generated_files/pin_manager.h"
 
 // Returns the value stored on the counter;
