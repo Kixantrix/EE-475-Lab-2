@@ -21,6 +21,8 @@
 #include "user.h"          /* User funct/params, such as InitApp */
 #include "spectrum.h"
 #include "uartcomms.h"
+#include "bus.h"
+#include "sram.h"
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
@@ -52,7 +54,6 @@ void testSendNum();
 void measureFreq(int resolution);
 void measurePeriod(int resolution);
 void measureCount(int resolution);
-void switchBus(int ID);
 int getCount(int resolution);
 void printInfo();
 
@@ -228,14 +229,4 @@ void testSendNum()
             return;
         }
     }
-}
-
-/*
- * Switch the 12 bit bus to ID, where
- * ID is one of several int values
- * representing the counter, SRAM R/W, and
- * SRAM address. 
- */
-void switchBus(int ID) {
-    //Lots of GPIO maddness here. 
 }

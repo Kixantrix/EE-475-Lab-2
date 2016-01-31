@@ -9,3 +9,14 @@ uint16_t readBus() {
 void writeBus(uint16_t data) {
 
 }
+
+/*
+ * Switch the 12 bit bus to ID, where
+ * ID is one of several int values
+ * representing the counter, SRAM R/W, and
+ * SRAM address. 
+ */
+void switchBus(int ID) {
+    //Lots of GPIO maddness here. 
+}
+
