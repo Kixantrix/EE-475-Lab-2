@@ -32,6 +32,7 @@
 #define	COUNTER_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
+#include <stdint.h>
 
 // Returns the value stored on the counter;
 uint16_t readCounter();

@@ -6,7 +6,7 @@
 // Returns the value stored on the counter;
 uint16_t readCounter() {
 	// Switch bus to read from counter.
-	void switchBus(BUS_COUNTER_READ);
+	switchBus(BUS_COUNTER_READ);
 	uint16_t count = 0;
 	// Add masked/shifted value from bit 6 A shifted to 11.
 	uint16_t maskedABits = 0x070 & PORTA << 5;

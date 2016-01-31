@@ -32,6 +32,7 @@
 #define	BUS_H
 
 #include <xc.h> // include processor files - each processor file is guarded. 
+#include <stdint.h>
 
 #define INPUT 1
 #define OUTPUT 0 
