@@ -28,11 +28,6 @@
 #include "mcc_generated_files/eusart1.h"
 #include "mcc_generated_files/mcc.h"
 
-//For Bus switching case statement
-#define BUS_SRAM_READ 1
-#define BUS_SRAM_WRITE 2
-#define BUS_SRAM_ADDR 3
-#define BUS_COUNTER_READ 4
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
