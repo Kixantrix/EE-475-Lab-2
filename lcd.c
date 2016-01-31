@@ -3,13 +3,17 @@ Driver for the 4 row 16 char LCD.
 */
 
 #include "lcd.h"
-#include "i2c1.h"
+#include "mcc_generated_files/i2c1.h"
 #include "pic18.h"
 
 
 uint8_t  _cols = 20;
 uint8_t  _rows = 4;
 uint8_t  _backlightval = LCD_BACKLIGHT;
+uint8_t _displayfunction;
+uint8_t _displaycontrol;
+uint8_t _displaymode;
+uint8_t _numlines;
 
 
 void init(){
@@ -98,7 +102,7 @@ void setCursor(uint8_t col, uint8_t row){
 
 // Turn the display on/off (quickly)
 void noDisplay() {
-	uint_displaycontrol &= ~LCD_DISPLAYON;
+	_displaycontrol &= ~LCD_DISPLAYON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 void display() {
@@ -204,7 +208,8 @@ void expanderWrite(uint8_t _data){
 	//Wire.beginTransmission(LCD_ADDR);
 	//Wire.send((int)(_data) | _backlightval);
 	//Wire.endTransmission();  
-	uint8_t [1] dataArray = _data;
+	uint8_t dataArray[1];
+    dataArray[0] = _data;
 	writeI2CData(LCD_ADDR, 1, dataArray); 
 }
 
@@ -222,65 +227,37 @@ void pulseEnable(uint8_t _data){
  Enter the I2C adderess, the size of the data to send, and the data. 
  Probably move this to i2c for phase 2
  */
-void writeI2CData(uint16_t dataAddress, uint16_t nCount, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
+void writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
 	
-	uint8_t         *pData;
-
-	uint8_t         writeBuffer[3];
-	uint8_t         *pD;
 	uint16_t        counter, timeOut;
 
 	I2C1_MESSAGE_STATUS status = I2C1_MESSAGE_PENDING;
 
-	pD = sourceData;                // initialize the source of the data
+    while(status != I2C1_MESSAGE_FAIL)
+    {
+        // write one byte to EEPROM (3 is the number of bytes to write)
+        I2C1_MasterWrite(sourceData, size, addr, &status);
 
-	for (counter = 0; counter < nCount; counter++)
-	{
+        // wait for the message to be sent or status has changed.
+        while(status == I2C1_MESSAGE_PENDING);
 
-	    // build the write buffer first
-	    // starting address of the EEPROM memory
-	    writeBuffer[0] = (dataAddress >> 8);                // high address
-	    writeBuffer[1] = (uint8_t)(dataAddress);            // low low address
+        if (status == I2C1_MESSAGE_COMPLETE)
+            break;
 
-	    // data to be written
-	    writeBuffer[2] = *pD++;
+        // if status is  I2C1_MESSAGE_ADDRESS_NO_ACK,
+        //               or I2C1_DATA_NO_ACK,
+        // The device may be busy and needs more time for the last
+        // write so we can retry writing the data, this is why we
+        // use a while loop here
 
-	    // Now it is possible that the slave device will be slow.
-	    // As a work around on these slaves, the application can
-	    // retry sending the transaction
-	    timeOut = 0;
-	    while(status != I2C1_MESSAGE_FAIL)
-	    {
-	        // write one byte to EEPROM (3 is the number of bytes to write)
-	        I2C1_MasterWrite(  writeBuffer,
-	                                3,
-	                                slaveDeviceAddress,
-	                                &status);
-
-	        // wait for the message to be sent or status has changed.
-	        while(status == I2C1_MESSAGE_PENDING);
-
-	        if (status == I2C1_MESSAGE_COMPLETE)
-	            break;
-
-	        // if status is  I2C1_MESSAGE_ADDRESS_NO_ACK,
-	        //               or I2C1_DATA_NO_ACK,
-	        // The device may be busy and needs more time for the last
-	        // write so we can retry writing the data, this is why we
-	        // use a while loop here
-
-	        // check for max retry and skip this byte
-	        if (timeOut == SLAVE_I2C_GENERIC_RETRY_MAX)
-	            break;
-	        else
-	            timeOut++;
-	    }
-
-	    if (status == I2C1_MESSAGE_FAIL)
-	    {
-	        break;
-	    }
-	    dataAddress++;
-
-	}
+        // check for max retry and skip this byte
+        if (timeOut == SLAVE_I2C_GENERIC_RETRY_MAX)
+            break;
+        else
+            timeOut++;
+    }
+    if (status == I2C1_MESSAGE_FAIL)
+    {
+        break;
+    }
 }
