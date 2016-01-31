@@ -3,13 +3,17 @@ Driver for the 4 row 16 char LCD.
 */
 
 #include "lcd.h"
-#include "i2c1.h"
+#include "mcc_generated_files/i2c1.h"
 #include "pic18.h"
 
 
 uint8_t  _cols = 20;
 uint8_t  _rows = 4;
 uint8_t  _backlightval = LCD_BACKLIGHT;
+uint8_t _displayfunction;
+uint8_t _displaycontrol;
+uint8_t _displaymode;
+uint8_t _numlines;
 
 
 void init(){
@@ -98,7 +102,7 @@ void setCursor(uint8_t col, uint8_t row){
 
 // Turn the display on/off (quickly)
 void noDisplay() {
-	uint_displaycontrol &= ~LCD_DISPLAYON;
+	_displaycontrol &= ~LCD_DISPLAYON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 void display() {
