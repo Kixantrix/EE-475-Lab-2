@@ -36,6 +36,17 @@
 #define MODE_ANALYSIS 3
 #define NUM_MODES 20
 
+#define TEST_LOOP(CODE) \
+    char data; \
+    while(1) { \
+        data = EUSART1_Read(); \
+        if(data == 't') { \
+            CODE \
+        } else if (data == ('\n') || data == '\r') { \
+            return; \
+        } \
+    } 
+
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
@@ -303,6 +314,7 @@ void testSendNum()
 }
 
 void testSRAM() {
+  TEST_LOOP(
     uint8_t writedata = 0xAC; // 172
     uint8_t readdata;
     uint8_t addr = 2;
@@ -322,4 +334,5 @@ void testSRAM() {
         sendString("\nSRAM test successful :)");
     else
         sendString("\nSRAM test failed :(");
+  )
 }
