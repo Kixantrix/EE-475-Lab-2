@@ -17,6 +17,14 @@ SRAM control signals are active low
 
 void set_addr(uint8_t addr);
 
+// Set the SRAM in a known state
+void init_SRAM() {
+    SRAM_READ = 0;
+    SRAM_WRITE = 0;
+    SRAM_ADDR = 0;
+    CE = 1; WE = 1; OE = 1;
+}
+
 void set_addr(uint8_t addr) {
     // enable correct inputs/outputs
     switchBus(BUS_SRAM_ADDR);

@@ -40,6 +40,9 @@ SRAM control signals are active low
 // Reads one byte of data and returns it. 
 uint8_t readSRAM(uint8_t addr);
 
+// Put the SRAM in a known state
+void init_SRAM();
+
 // Writes one byte of data to addr in SRAM
 void writeSRAM(uint8_t addr, uint8_t data);
 
