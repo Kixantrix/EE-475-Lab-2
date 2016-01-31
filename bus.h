@@ -36,6 +36,12 @@
 #define INPUT 1
 #define OUTPUT 0 
 
+//For Bus switching case statement
+#define BUS_SRAM_READ 1
+#define BUS_SRAM_WRITE 2
+#define BUS_SRAM_ADDR 3
+#define BUS_COUNTER_READ 4
+
 // Returns 12 bits of data from the bus stored in bottom bits of the uint16_t
 uint16_t readBus();
 
