@@ -25,7 +25,11 @@ inline void command(uint8_t value);
 inline void write(uint8_t value);
 void send(uint8_t value, uint8_t mode);
 void write4bits(uint8_t value);
-void init(void);
+
+void init(void) {
+    _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+	begin(_cols, _rows);  
+}
 
 
 void begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
