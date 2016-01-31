@@ -5,6 +5,8 @@ Header file for controlling our LCD display
 #ifndef LCD_H
 #define	LCD_H
 
+#include <stdint.h>
+
 #define SLAVE_I2C_GENERIC_RETRY_MAX     100
 #define LCD_ADDR 0x3F
 
@@ -51,20 +53,20 @@ Header file for controlling our LCD display
 #define LCD_BACKLIGHT 0x08
 #define LCD_NOBACKLIGHT 0x00
 
-#define En B00000100  // Enable bit
-#define Rw B00000010  // Read/Write bit
-#define Rs B00000001  // Register select bit
+#define En 4  // Enable bit
+#define Rw 2  // Read/Write bit
+#define Rs 1  // Register select bit
 
-void init();
-void home();
-void clear();
+void init(void);
+void home(void);
+void clear(void);
 void setCursor(uint8_t col, uint8_t row);
-void noDisplay();
-void display();
-void noCursor();
-void cursor();
-void noBlink();
-void blink();
+void noDisplay(void);
+void display(void);
+void noCursor(void);
+void cursor(void);
+void noBlink(void);
+void blink(void);
 void scrollDisplayLeft(void);
 void scrollDisplayRight(void);
 void leftToRight(void);

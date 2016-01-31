@@ -4,7 +4,9 @@ Driver for the 4 row 16 char LCD.
 
 #include "lcd.h"
 #include "mcc_generated_files/i2c1.h"
-#include "pic18.h"
+#include <pic18.h>
+#include <stdint.h>
+#include "mcc_generated_files/mcc.h"
 
 
 uint8_t  _cols = 20;
@@ -15,11 +17,15 @@ uint8_t _displaycontrol;
 uint8_t _displaymode;
 uint8_t _numlines;
 
-
-void init(){
-	_displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
-	begin(_cols, _rows);  
-}
+void begin(uint8_t cols, uint8_t lines, uint8_t dotsize);
+void send(uint8_t value, uint8_t mode);
+void pulseEnable(uint8_t _data);
+void expanderWrite(uint8_t _data);
+inline void command(uint8_t value);
+inline void write(uint8_t value);
+void send(uint8_t value, uint8_t mode);
+void write4bits(uint8_t value);
+void init(void);
 
 
 void begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
@@ -82,12 +88,12 @@ void begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
   
 }
 
-void clear(){
+void clear(void){
 	command(LCD_CLEARDISPLAY);// clear display, set cursor position to zero
 	__delay_us(2000);  // this command takes a long time!
 }
 
-void home(){
+void home(void){
 	command(LCD_RETURNHOME);  // set cursor position to zero
 	__delay_us(2000);  // this command takes a long time!
 }
@@ -101,31 +107,31 @@ void setCursor(uint8_t col, uint8_t row){
 }
 
 // Turn the display on/off (quickly)
-void noDisplay() {
+void noDisplay(void) {
 	_displaycontrol &= ~LCD_DISPLAYON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
-void display() {
+void display(void) {
 	_displaycontrol |= LCD_DISPLAYON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
 // Turns the underline cursor on/off
-void noCursor() {
+void noCursor(void) {
 	_displaycontrol &= ~LCD_CURSORON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
-void cursor() {
+void cursor(void) {
 	_displaycontrol |= LCD_CURSORON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
 
 // Turn on and off the blinking cursor
-void noBlink() {
+void noBlink(void) {
 	_displaycontrol &= ~LCD_BLINKON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
-void blink() {
+void blink(void) {
 	_displaycontrol |= LCD_BLINKON;
 	command(LCD_DISPLAYCONTROL | _displaycontrol);
 }
@@ -255,9 +261,5 @@ void writeI2CData(uint16_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah d
             break;
         else
             timeOut++;
-    }
-    if (status == I2C1_MESSAGE_FAIL)
-    {
-        break;
     }
 }
