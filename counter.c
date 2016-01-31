@@ -2,13 +2,21 @@
 #include "bus.h"
 #include <stdint.h>
 #include "mcc_generated_files/pin_manager.h"
+#include <pic18.h>
+
+#include "mcc_generated_files/mcc.h"
 
 // Returns the value stored on the counter;
-uint16_t readCounter() {
+// Takes delay time in microseconds.
+uint16_t readCounter(int delayTime) {
 	// Switch bus to read from counter.
 	switchBus(BUS_COUNTER_READ);
 	// Set to read from counter.
 	COUNTER_ENABLE_SetHigh();
+
+	// Gather events for time length
+	__delay_us(delayTime);
+
 	// Count of events
 	uint16_t count = 0;
 	// Add masked/shifted value from bit 6 A shifted to 11.

@@ -7,7 +7,7 @@ Driver for the 4 row 16 char LCD.
 #include <pic18.h>
 #include <stdint.h>
 #include "mcc_generated_files/mcc.h"
-#include <plib/i2c.h>
+//#include <plib/i2c.h>
 
 
 uint8_t  _cols = 20;

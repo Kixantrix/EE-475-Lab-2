@@ -35,7 +35,8 @@
 #include <stdint.h>
 
 // Returns the value stored on the counter;
-uint16_t readCounter();
+// Takes delay time in microseconds.
+uint16_t readCounter(int delayTime);
 
 #endif	/* COUNTER_H */
 

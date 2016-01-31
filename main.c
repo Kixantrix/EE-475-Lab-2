@@ -23,7 +23,7 @@
 #include "bus.h"
 #include "sram.h"
 #include "lcd.h"
-#include <plib/i2c.h>
+//#include <plib/i2c.h>
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
