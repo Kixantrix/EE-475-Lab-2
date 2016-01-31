@@ -28,6 +28,10 @@
 #include "mcc_generated_files/eusart1.h"
 #include "mcc_generated_files/mcc.h"
 
+// Defines for functionality
+#define MODE_FREQ
+#define 
+
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
@@ -55,7 +59,10 @@ void main(void)
     ConfigureOscillator();
     
     SYSTEM_Initialize();
-
+    
+    //Init I2c
+    I2C1_Initialize();
+    
     /* TODO <INSERT USER APPLICATION CODE HERE> */
 
     //*********************************************
@@ -78,6 +85,9 @@ void main(void)
     int frequency = 0;
     
     unsigned long peak_f = 0;
+
+    // When high, runs a test, when low does not.
+    int runTestFlag;
     
     while(1)
     {
@@ -89,8 +99,10 @@ void main(void)
             inputRead = EUSART1_Read();
         }
         
-        /* Something to capture button input here
-         */
+        // Resolution switch button
+        if()
+
+        // Disp switch button
         
         // Select function based on input
         if(inputRead != ' ') {
