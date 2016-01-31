@@ -29,8 +29,11 @@
 #include "mcc_generated_files/mcc.h"
 
 // Defines for functionality
-#define MODE_FREQ
-#define 
+#define MODE_FREQ 0
+#define MODE_PER 1
+#define MODE_COUNT 2
+#define MODE_ANALYSIS 3
+#define NUM_MODES 20
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
@@ -87,7 +90,9 @@ void main(void)
     unsigned long peak_f = 0;
 
     // When high, runs a test, when low does not.
-    int runTestFlag;
+    int runTestFlag = 0;
+
+    int measureMode = 0;
     
     while(1)
     {
@@ -97,31 +102,40 @@ void main(void)
         // If there is a char to read, read it.
         if(PIR1bits.RC1IF) {
             inputRead = EUSART1_Read();
+            runTestFlag = 1;
         }
         
-        // Resolution switch button
-        if()
+        // Switch from high to low resolution on button switch
+        if(!RES_SWITCH_GetValue()) {
+            while(!RES_SWITCH_GetValue());
+            resolution = !resolution;
+        }
 
-        // Disp switch button
+        // Toggle measure/display mode
+        if(!DISP_TOGGLE_GetValue()) {
+            while(!DISP_TOGGLE_GetValue());
+            measureMode = (measureMode + 1) % NUM_MODES;
+            runTestFlag = 1;
+        }
         
         // Select function based on input
         if(inputRead != ' ') {
             switch(inputRead) {
                 // Frequency
                 case 'f':
-                    measureFreq(resolution);
+                    measureMode = MODE_FREQ;
                     break;
                 // Period
                 case 'p':
-                    measurePeriod(resolution);
+                    measureMode = MODE_PER;
                     break;
                 // Count
                 case 'c':
-                    measureCount(resolution);
+                    measureMode = MODE_COUNT;
                     break;
                 // Analysis
                 case 'a':
-                    peak_f = fftSingleCycle();
+                    measureMode = MODE_ANALYSIS;
                     break;
                 // Set resolution high
                 case 'h':
@@ -134,7 +148,40 @@ void main(void)
                 // Print help information
                 case 'i':
                     break;
+                // Prints from sram
+                case 's':
+                    break;
+                // Toggles mode
+                case 't':
+                    measureMode = (measureMode + 1) % NUM_MODES;
                 default :
+                    break;
+            }
+        }
+
+        // Run operations
+        if(runTestFlag) {
+            runTestFlag = 0;
+            switch(measureMode) {
+                // Frequency
+                case MODE_FREQ:
+                    measureFreq(resolution);
+                    break;
+                case MODE_PER:
+                    measurePeriod(resolution);
+                    break;
+                case MODE_COUNT:
+                    measureCount(resolution);
+                    break;
+                case MODE_ANALYSIS:
+                    peak_f = fftSingleCycle();
+                    break;
+                // Read from memory location if <20
+                default :
+                    // Read from SRAM locations 1-16
+                    if((measureMode > 3) && (measureMode < NUM_MODES)) {
+                        // Read location measureMode - 4 
+                    }
                     break;
             }
         }
