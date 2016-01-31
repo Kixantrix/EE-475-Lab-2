@@ -239,7 +239,7 @@ void testUart()
         char data;
         data = EUSART1_Read();
         EUSART1_Write(data);
-        if (data == '\n') {
+        if (data == '\n' || data == '\r') {
             return;
         }
     }
@@ -257,7 +257,7 @@ void testSendString()
         data = EUSART1_Read();
         if(data == 't') {
             sendString(testString);
-        } else if (data == ('\n')) {
+        } else if (data == ('\n') || data == '\r') {
             return;
         }
     }
@@ -275,7 +275,7 @@ void testSendNum()
         data = EUSART1_Read();
         if(data == 't') {
            sendInt(testNum);
-        } else if (data == ('\n')) {
+        } else if (data == ('\n')  || data == '\r') {
             return;
         }
     }
