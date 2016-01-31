@@ -1,6 +1,6 @@
 #ifndef _H_SPECTRUM_
 #define _H_SPECTRUM_
 
-uint16_t fftSingleCycle();
+unsigned long fftSingleCycle();
 
 #endif  // _H_SPECTRUM_

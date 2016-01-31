@@ -88,6 +88,8 @@ void main(void)
     // Default low frequency measuring
     int frequency = 0;
     
+    unsigned long peak_f = 0;
+    
     while(1)
     {
         // Char to capture command from uart or elsewhere
@@ -118,7 +120,7 @@ void main(void)
                     break;
                 // Analysis
                 case 'a':
-                    // FFT Things here
+                    peak_f = fftSingleCycle();
                     break;
                 // Set resolution high
                 case 'h':

@@ -47,7 +47,7 @@ signed int i, i1, j, l, l1, l2, t1, t2, u;
 		for(j=0;j<l1;j++){
 			for(i=j;i<256;i+=l2){
 				i1 = i + l1;
-				t1 = (u1[u]*real[i1] - u2[u]*imag[i1])/32; 
+				t1 = (u1[u]*real[i1] - u2[u]*imag[i1])/32;
 				t2 = (u1[u]*imag[i1] + u2[u]*real[i1])/32;
 				real[i1] = real[i]-t1;
 				imag[i1] = imag[i]-t2;
