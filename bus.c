@@ -11,8 +11,8 @@
 void switchBus(int ID) {
     switch(ID) {
         case BUS_SRAM_READ: 
-            break;
             setBusDir(0x0FFF);
+            break;
         case BUS_SRAM_WRITE:
             setBusDir(0x0000);
             break;
