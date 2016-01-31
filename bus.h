@@ -31,7 +31,10 @@
 #ifndef BUS_H
 #define	BUS_H
 
-#include <xc.h> // include processor files - each processor file is guarded.  
+#include <xc.h> // include processor files - each processor file is guarded. 
+
+#define INPUT 1
+#define OUTPUT 0 
 
 // Returns 12 bits of data from the bus stored in bottom bits of the uint16_t
 uint16_t readBus();
@@ -46,6 +49,10 @@ void writeBus(uint16_t data);
  * SRAM address. 
  */
 void switchBus(int ID);
+
+// Sets direction of port in to dir passed in.
+// 1 input 0 output
+void setBusDir(int dir);
 
 
 #endif	/* BUS_H */

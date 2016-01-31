@@ -3,6 +3,7 @@
 // Returns 12 bits of data from the bus stored in bottom bits of the uint16_t
 uint16_t readBus() {
 	uint16_t data;
+
 }
 
 // Writes bottom 12 bits of data from 16 bit data passed in to the bus
@@ -20,3 +21,8 @@ void switchBus(int ID) {
     //Lots of GPIO maddness here. 
 }
 
+// Sets direction of port in to dir passed in.
+// 1 input 0 output
+void setBusDir(int dir) {
+	
+}
