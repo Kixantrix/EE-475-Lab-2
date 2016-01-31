@@ -22,6 +22,7 @@
 #include "uartcomms.h"
 #include "bus.h"
 #include "sram.h"
+#include "lcd.h"
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
@@ -34,6 +35,17 @@
 #define MODE_COUNT 2
 #define MODE_ANALYSIS 3
 #define NUM_MODES 20
+
+#define TEST_LOOP(CODE) \
+    char data; \
+    while(1) { \
+        data = EUSART1_Read(); \
+        if(data == 't') { \
+            CODE \
+        } else if (data == ('\n') || data == '\r') { \
+            return; \
+        } \
+    } 
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
@@ -56,6 +68,7 @@ void measurePeriod(int resolution);
 void measureCount(int resolution);
 int getCount(int resolution);
 void printInfo();
+void testLCD();
 
 void main(void)
 {
@@ -80,7 +93,8 @@ void main(void)
     testSendNum();
     // Test SRAM read/write
     testSRAM();
-    
+    // Test LCD
+    testLCD();
     // Default Posedge activation.
     int edgeActivation = 0;
     
@@ -246,6 +260,24 @@ void testUart()
 }
 
 /*
+* Test I2C functionality
+*/
+void testLCD()
+{
+    lcd_init();
+    while(1) {
+        char data = EUSART1_Read();
+        if(data == 't') {
+            lcd_write('c');
+            lcd_write('d');
+            lcd_write('e');
+        } else if (data == ('\n') || data == '\r') {
+            return;
+        }
+    }
+}
+
+/*
  * Sends a string when t is pressed
  * Returns when enter is pressed
  */
@@ -282,6 +314,7 @@ void testSendNum()
 }
 
 void testSRAM() {
+  TEST_LOOP(
     uint8_t writedata = 0xAC; // 172
     uint8_t readdata;
     uint8_t addr = 2;
@@ -301,4 +334,5 @@ void testSRAM() {
         sendString("\nSRAM test successful :)");
     else
         sendString("\nSRAM test failed :(");
+  )
 }

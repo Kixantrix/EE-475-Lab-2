@@ -6,9 +6,9 @@
 SRAM control signals are active low
 */
 
-#define SRAM_READ PORTAbits.RA4
-#define SRAM_WRITE PORTAbits.RA5
-#define SRAM_ADDR PORTAbits.RA6
+#define SRAM_READ PORTAbits.RA2
+#define SRAM_WRITE PORTAbits.RA3
+#define SRAM_ADDR PORTAbits.RA4
 #define BUS PORTB
 
 #define OE PORTAbits.RA6
