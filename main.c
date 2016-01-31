@@ -55,7 +55,10 @@ void main(void)
     ConfigureOscillator();
     
     SYSTEM_Initialize();
-
+    
+    //Init I2c
+    I2C1_Initialize();
+    
     /* TODO <INSERT USER APPLICATION CODE HERE> */
 
     //*********************************************
