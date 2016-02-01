@@ -75,6 +75,19 @@ void testLCD();
 void printHelpInfo();
 void printFromSRAM(uint8_t currAddr);
 
+enum DataType {
+    NONE,
+    FREQ_HIGH, 
+    FREQ_LOW, 
+    PERIOD_HIGH, 
+    PERIOD_LOW, 
+    COUNT_HIGH, 
+    COUNT_LOW, 
+    ANALYSIS
+};
+
+enum DataType sramDataTypes[16] = {NONE};
+
 void main(void)
 {
     /* Configure the oscillator for the device */
@@ -228,6 +241,7 @@ void main(void)
                     // Write bottom 16 bits to memory
                     writeSRAM(currAddr, (uint8_t) (0x0FF & peak_f));
                     writeSRAM((currAddr + 1) % 32, (uint8_t) (0xFFF00 & peak_f >> 8));
+                    sramDataTypes[currAddr/2] = ANALYSIS;
                     // Increment currAddr.
                     currAddr = (currAddr + 2) % 32;
                     // Print message
@@ -258,19 +272,6 @@ void printHelpInfo() {
         Accepted inputs from buttons: switch resolution, toggle display state.\r\n" );\
 }
 
-enum DataType {
-    NONE,
-    FREQ_HIGH, 
-    FREQ_LOW, 
-    PERIOD_HIGH, 
-    PERIOD_LOW, 
-    COUNT_HIGH, 
-    COUNT_LOW, 
-    ANALYSYS
-};
-
-enum DataType sramDataTypes[16] = {NONE};
-
 /*
 Prints 16 bits of data from sram stored at currAddr.
 */
@@ -290,6 +291,8 @@ void printFromSRAM(uint8_t currAddr) {
         sprintf(message, "%d: %02d events in 10 ms\r\n", currAddr/2, (data2 << 8) | data1);
     else if (sramDataTypes[currAddr/2] == COUNT_LOW)
         sprintf(message, "%d: %02d events in 1 s\r\n", currAddr/2, (data2 << 8) | data1);
+    else if (sramDataTypes[currAddr/2] == ANALYSIS)
+        sprintf(message, "%d: %lu Hz \r\n", currAddr/2, (unsigned long)((data2 << 8) | data1));
     else
         sprintf(message, "%d: Unknown datatype\r\n", currAddr/2);
         
