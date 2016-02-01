@@ -7,21 +7,17 @@
 SRAM control signals are active low
 */
 
-#define SRAM_READ PORTAbits.RA2
-#define SRAM_WRITE PORTAbits.RA3
-#define SRAM_ADDR PORTAbits.RA4
+#define SRAM_ADDR SRAM_ADDR_PORT
 #define BUS PORTB
 
-#define OE PORTAbits.RA6
-#define WE PORTCbits.RC0
-#define CE PORTCbits.RC1
+#define OE OE_PORT
+#define WE WE_PORT
+#define CE CE_PORT
 
 void set_addr(uint8_t addr);
 
 // Set the SRAM in a known state
 void init_SRAM() {
-    SRAM_READ = 0;
-    SRAM_WRITE = 0;
     SRAM_ADDR = 0;
     CE = 1; WE = 1; OE = 1;
 }
@@ -29,6 +25,8 @@ void init_SRAM() {
 void set_addr(uint8_t addr) {
     // enable correct inputs/outputs
     switchBus(BUS_SRAM_ADDR);
+    
+    // set the data
     BUS = addr;
     
     // trigger the register
@@ -45,14 +43,13 @@ uint8_t readSRAM(uint8_t addr) {
     // configure the bus for read
     switchBus(BUS_SRAM_READ);
     
-    // trigger the buffer
-    SRAM_READ = 1;
-    
+    // trigger read
     CE = 0; WE = 1; OE = 0;
+    
+    // grab the data
     uint8_t data = BUS;
     
     // reset state
-    SRAM_READ = 0;
     CE = 1; WE = 1; OE = 1;
 	return data;
 }
@@ -64,13 +61,12 @@ void writeSRAM(uint8_t addr, uint8_t data) {
     // configure the bus for write
     switchBus(BUS_SRAM_WRITE);
     
+    // set the data
     BUS = data;
     
-    // trigger the buffer
-    SRAM_WRITE = 1;
+    // trigger write
     CE = 0; WE = 0; OE = 1;
     
     // reset state
-    SRAM_WRITE = 0;
     CE = 1; WE = 1; OE = 1;
 }
