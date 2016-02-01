@@ -20,7 +20,7 @@ void switchBus(int ID) {
             setBusDir(0x0000);
             break;
         case BUS_COUNTER_READ: 
-            setBusDir(0x00FF);
+            setBusDir(0x0FFF);
             break;
     }
 }
