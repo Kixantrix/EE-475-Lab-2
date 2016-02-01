@@ -1,274 +1,248 @@
-/*
-Driver for the 4 row 16 char LCD. 
-*/
-
-#include "lcd.h"
-#include "mcc_generated_files/i2c1.h"
-#include <pic18.h>
 #include <stdint.h>
-#include "mcc_generated_files/mcc.h"
-//#include <plib/i2c.h>
 
+#include "xc.h"
+#include "i2c.h"
+//#include "utils.h"
+#include "lcd.h"
 
-uint8_t  _cols = 20;
-uint8_t  _rows = 4;
-uint8_t  _backlightval = LCD_BACKLIGHT;
-uint8_t _displayfunction;
-uint8_t _displaycontrol;
-uint8_t _displaymode;
-uint8_t _numlines;
-
-void begin(uint8_t cols, uint8_t lines, uint8_t dotsize);
-void send(uint8_t value, uint8_t mode);
-void pulseEnable(uint8_t _data);
-void expanderWrite(uint8_t _data);
-inline void command(uint8_t value);
-void send(uint8_t value, uint8_t mode);
-void lcd_write4bits(uint8_t value);
-
-void lcd_init(void) {
-    _displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
-	begin(_cols, _rows, 0);  
+void LCD_Open()
+{
+    IdleI2C();
+    OpenI2C(MASTER, SLEW_OFF);           // Begin transfer, claim I2C BUS
+    SSPADD = 0x09;
+    IdleI2C();
+    StartI2C();
+    IdleI2C();
+    WriteI2C(LCD_PIC_I2C_ADDR);          // Tell all I2C devices you are talking to LCD_PIC_I2C_ADDR
+}
+void LCD_Close()
+{
+    IdleI2C();
+    CloseI2C();
 }
 
-
-void begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
-	if (lines > 1) {
-		_displayfunction |= LCD_2LINE;
-	}
-	_numlines = lines;
-
-	// for some 1 line displays you can select a 10 pixel high font
-	if ((dotsize != 0) && (lines == 1)) {
-		_displayfunction |= LCD_5x10DOTS;
-	}
-
-	// SEE PAGE 45/46 FOR INITIALIZATION SPECIFICATION!
-	// according to datasheet, we need at least 40ms after power rises above 2.7V
-	// before sending commands. Arduino can turn on way befer 4.5V so we'll wait 50
-	__delay_us(50000); 
-  
-	// Now we pull both RS and R/W low to begin commands
-	expanderWrite(_backlightval);	// reset expanderand turn backlight off (Bit 8 =1)
-	__delay_us(1000);
-
-  	//put the LCD into 4 bit mode
-	// this is according to the hitachi HD44780 datasheet
-	// figure 24, pg 46
-	
-	// we start in 8bit mode, try to set 4 bit mode
-	lcd_write4bits(0x03);
-	__delay_us(4500); // wait min 4.1ms
-	
-	// second try
-	lcd_write4bits(0x03);
-	__delay_us(4500); // wait min 4.1ms
-	
-	// third go!
-	lcd_write4bits(0x03); 
-	__delay_us(150);
-	
-	// finally, set to 4-bit interface
-	lcd_write4bits(0x02); 
-
-
-	// set # lines, font size, etc.
-	command(LCD_FUNCTIONSET | _displayfunction);  
-	
-	// turn the display on with no cursor or blinking default
-	_displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
-	display();
-	
-	// clear it off
-	clear();
-	
-	// Initialize to default text direction (for roman languages)
-	_displaymode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
-	
-	// set the entry mode
-	command(LCD_ENTRYMODESET | _displaymode);
-	
-	home();
-  
+void LCD_BL(uint8_t status)
+{
+    LCD_BL_Status = status;
+    LCD_Write_Byte(0x00, 0x00);
 }
 
-void clear(void){
-	command(LCD_CLEARDISPLAY);// clear display, set cursor position to zero
-	__delay_us(2000);  // this command takes a long time!
+void LCD_Init()
+{
+    LCD_Open();
+    
+    // Following bytes are all Command bytes, i.e. address = 0x00
+    LCD_Write_Byte(0x00, 0x03);   // Write Nibble 0x03 three times (per HD44780U initialization spec)
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x03);   //
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x03);   //
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x02);   // Write Nibble 0x02 once (per HD44780U initialization spec)
+    __delay_ms(5);
+    LCD_Write_Byte(0x00, 0x02);   // Write Nibble 0x02 once (per HD44780U initialization spec)
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x01);   // Set mode: 4-bit, 2+lines, 5x8 dots
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x0C);   // Display ON 0x0C
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x01);   // Clear display
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    LCD_Write_Byte(0x00, 0x06);   // Set cursor to increment
+    __delay_ms(5);                // (per HD44780U initialization spec)
+    
+    LCD_Close();
 }
 
-void home(void){
-	command(LCD_RETURNHOME);  // set cursor position to zero
-	__delay_us(2000);  // this command takes a long time!
+void LCD_Goto(uint8_t x, uint8_t y)
+{
+uint8_t address;
+
+   switch(y)
+     {
+      case 1:
+        address = LCD_PIC_LINE_1_ADDRESS;
+        break;
+
+      case 2:
+        address = LCD_PIC_LINE_2_ADDRESS;
+        break;
+
+      case 3:
+        address = LCD_PIC_LINE_3_ADDRESS;
+        break;
+
+      case 4:
+        address = LCD_PIC_LINE_4_ADDRESS;
+        break;
+
+      default:
+        address = LCD_PIC_LINE_1_ADDRESS;
+        break;
+     }
+
+   address += x-1;
+   LCD_Write_Byte(0, 0x80 | address);
 }
 
-void setCursor(uint8_t col, uint8_t row){
-	int row_offsets[] = { 0x00, 0x40, 0x14, 0x54 };
-	if ( row > _numlines ) {
-		row = _numlines-1;    // we count rows starting w/0
-	}
-	command(LCD_SETDDRAMADDR | (col + row_offsets[row]));
+//===================================
+void LCD_Write_String(const char *str)
+{
+   // Writes a string text[] to LCD via I2C
+   pin_RS  = 1;
+   pin_RW  = 0;
+   pin_E   = 0;
+   pin_BL  = LCD_BL_Status;
+
+   while (*str)
+   {
+        // Send upper nibble
+        _LCD_Write_Upper_Nibble(*str);
+
+        // Send lower nibble
+        _LCD_Write_Lower_Nibble(*str);
+
+        str++;
+   }
 }
 
-// Turn the display on/off (quickly)
-void noDisplay(void) {
-	_displaycontrol &= ~LCD_DISPLAYON;
-	command(LCD_DISPLAYCONTROL | _displaycontrol);
-}
-void display(void) {
-	_displaycontrol |= LCD_DISPLAYON;
-	command(LCD_DISPLAYCONTROL | _displaycontrol);
+void LCD_Write_Char(char c)
+{
+    LCD_Write_Byte(0x01,c);
 }
 
-// Turns the underline cursor on/off
-void noCursor(void) {
-	_displaycontrol &= ~LCD_CURSORON;
-	command(LCD_DISPLAYCONTROL | _displaycontrol);
-}
-void cursor(void) {
-	_displaycontrol |= LCD_CURSORON;
-	command(LCD_DISPLAYCONTROL | _displaycontrol);
-}
+void LCD_Write_Int(int32_t num)
+{
+    if (num < 0) { LCD_Write_String("-"); num *= -1; }
 
-// Turn on and off the blinking cursor
-void noBlink(void) {
-	_displaycontrol &= ~LCD_BLINKON;
-	command(LCD_DISPLAYCONTROL | _displaycontrol);
-}
-void blink(void) {
-	_displaycontrol |= LCD_BLINKON;
-	command(LCD_DISPLAYCONTROL | _displaycontrol);
-}
+    uint8_t number[10];
+    uint8_t num_count = 0;
 
-// These commands scroll the display without changing the RAM
-void scrollDisplayLeft(void) {
-	command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVELEFT);
-}
-void scrollDisplayRight(void) {
-	command(LCD_CURSORSHIFT | LCD_DISPLAYMOVE | LCD_MOVERIGHT);
-}
+    do {        
+        number[num_count] = num % 10;
+        num_count++;
+        num /= 10;
+    } while (num > 0);
 
-// This is for text that flows Left to Right
-void leftToRight(void) {
-	_displaymode |= LCD_ENTRYLEFT;
-	command(LCD_ENTRYMODESET | _displaymode);
-}
-
-// This is for text that flows Right to Left
-void rightToLeft(void) {
-	_displaymode &= ~LCD_ENTRYLEFT;
-	command(LCD_ENTRYMODESET | _displaymode);
-}
-
-// This will 'right justify' text from the cursor
-void autoscroll(void) {
-	_displaymode |= LCD_ENTRYSHIFTINCREMENT;
-	command(LCD_ENTRYMODESET | _displaymode);
-}
-
-// This will 'left justify' text from the cursor
-void noAutoscroll(void) {
-	_displaymode &= ~LCD_ENTRYSHIFTINCREMENT;
-	command(LCD_ENTRYMODESET | _displaymode);
-}
-
-// Allows us to fill the first 8 CGRAM locations
-// with custom characters
-void createChar(uint8_t location, uint8_t charmap[]) {
-	location &= 0x7; // we only have 8 locations 0-7
-	command(LCD_SETCGRAMADDR | (location << 3));
-	for (int i=0; i<8; i++) {
-		lcd_write(charmap[i]);
-	}
-}
-
-// Turn the (optional) backlight off/on
-void noBacklight(void) {
-	_backlightval=LCD_NOBACKLIGHT;
-	expanderWrite(0);
-}
-
-void backlight(void) {
-	_backlightval=LCD_BACKLIGHT;
-	expanderWrite(0);
-}
-
-inline void command(uint8_t value) {
-	send(value, 0);
-}
-
-inline void lcd_write(uint8_t value) {
-	send(value, Rs);
-}
-
-// lcd_write either command or data
-void send(uint8_t value, uint8_t mode) {
-	uint8_t highnib=value&0xf0;
-	uint8_t lownib=(value<<4)&0xf0;
-    lcd_write4bits((highnib)|mode);
-	lcd_write4bits((lownib)|mode); 
-}
-
-void lcd_write4bits(uint8_t value) {
-	expanderWrite(value);
-	pulseEnable(value);
-}
-
-void expanderWrite(uint8_t _data){                                        
-	//Wire.beginTransmission(LCD_ADDR);
-	//Wire.send((int)(_data) | _backlightval);
-	//Wire.endTransmission();  
-	uint8_t dataArray[1];
-    dataArray[0] = _data;
-	lcd_writeI2CData(LCD_ADDR, 1, dataArray); 
-}
-
-void pulseEnable(uint8_t _data){
-	expanderWrite(_data | En);	// En high
-	__delay_us(1);		// enable pulse must be >450ns
-	
-	expanderWrite(_data & ~En);	// En low
-	__delay_us(50);		// commands need > 37us to settle
-} 
-
-
-
-/*void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) {
-
-}*/
-
- /*
- Function to lcd_write arbitrary data to I2C. 
- Enter the I2C adderess, the size of the data to send, and the data. 
- Probably move this to i2c for phase 2
- */
-void lcd_writeI2CData(uint8_t addr, uint16_t size, uint8_t sourceData[]) { //Yeah don't pass in ncount > sourceData length
-	
-	//uint16_t        counter, timeOut;
-
-	I2C1_MESSAGE_STATUS status = I2C1_MESSAGE_PENDING;
-
-    while(status != I2C1_MESSAGE_FAIL)
+    for (int i = num_count-1; i>= 0; i--)
     {
-        // lcd_write one byte to EEPROM (3 is the number of bytes to lcd_write)
-        I2C1_MasterWrite(sourceData, size, addr, &status);
-        //__delay_us(100);
-        // wait for the message to be sent or status has changed.
-        while(status == I2C1_MESSAGE_PENDING);
-
-        if (status == I2C1_MESSAGE_COMPLETE)
-            break;
-
-        // if status is  I2C1_MESSAGE_ADDRESS_NO_ACK,
-        //               or I2C1_DATA_NO_ACK,
-        // The device may be busy and needs more time for the last
-        // lcd_write so we can retry writing the data, this is why we
-        // use a while loop here
-
-        // check for max retry and skip this byte
-        //if (timeOut == SLAVE_I2C_GENERIC_RETRY_MAX)
-        //    break;
-        //else
-        //    timeOut++;
+        LCD_Write_Char(number[i] + 0b00110000);
     }
+}
+
+//===================================
+void LCD_Write_Byte(uint8_t address, uint8_t n)
+{
+    if (address)
+    {
+        pin_RS=1;   // Data
+    }
+    else
+    {
+        pin_RS=0;   // Command
+    }
+
+    pin_RW  = 0;
+    pin_E   = 0;
+    pin_BL  = LCD_BL_Status;
+
+    // Send upper nibble
+   _LCD_Write_Upper_Nibble(n);
+
+    // Send lower nibble
+   _LCD_Write_Lower_Nibble(n);
+}
+
+void LCD_Clear()
+{
+    LCD_Write_Byte(0x00,0x01);
+    __delay_ms(5);
+}
+
+void LCD_Clear_Line(uint8_t line)
+{
+    LCD_Goto(1,line);
+    for (int i = 0; i<20; i++)
+    {
+        LCD_Write_String(" ");
+    }
+    LCD_Goto(1,line);
+}
+
+void _LCD_Write_Upper_Nibble(uint8_t u)
+{
+    // Send upper nibble
+    if(bit_test(u,7))
+        pin_D7=1;
+    else
+        pin_D7=0;
+
+    if(bit_test(u,6))
+        pin_D6=1;
+    else
+        pin_D6=0;
+
+    if(bit_test(u,5))
+        pin_D5=1;
+    else
+        pin_D5=0;
+
+    if(bit_test(u,4))
+        pin_D4=1;
+    else
+        pin_D4=0;
+
+   pin_E = 0;
+   WriteI2C(_LCD_Build_Byte());
+   pin_E = 1;
+   WriteI2C(_LCD_Build_Byte());
+   pin_E = 0;
+   WriteI2C(_LCD_Build_Byte());
+}
+
+void _LCD_Write_Lower_Nibble(uint8_t l)
+{
+    // Send lower nibble
+    if(bit_test(l,3))
+        pin_D7=1;
+    else
+        pin_D7=0;
+
+    if(bit_test(l,2))
+        pin_D6=1;
+    else
+        pin_D6=0;
+
+    if(bit_test(l,1))
+        pin_D5=1;
+    else
+        pin_D5=0;
+
+    if(bit_test(l,0))
+        pin_D4=1;
+    else
+        pin_D4=0;
+
+    pin_E = 0;
+    WriteI2C(_LCD_Build_Byte());
+    pin_E = 1;
+    WriteI2C(_LCD_Build_Byte());
+    pin_E = 0;
+    WriteI2C(_LCD_Build_Byte());
+}
+
+uint8_t _LCD_Build_Byte()
+{
+    uint8_t ret = 0x00;
+
+    ret |= pin_E    << 2;
+    ret |= pin_RW   << 1;
+    ret |= pin_RS   << 0;
+    ret |= pin_D4   << 4;
+    ret |= pin_D5   << 5;
+    ret |= pin_D6   << 6;
+    ret |= pin_D7   << 7;
+    ret |= pin_BL   << 3;
+
+    return ret;
 }
