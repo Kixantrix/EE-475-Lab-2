@@ -79,8 +79,8 @@ void main(void)
 {
     /* Configure the oscillator for the device */
     ConfigureOscillator();
-    INTERRUPT_GlobalInterruptEnable();
-    INTERRUPT_PeripheralInterruptEnable();
+    //INTERRUPT_GlobalInterruptEnable();
+    //INTERRUPT_PeripheralInterruptEnable();
     SYSTEM_Initialize();
     
     //Init I2c

@@ -36,7 +36,7 @@
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
                 <setting name="SCS" option="FOSC" register="OSCCON"/>
-                <setting name="IRCF" option="1MHz_HFINTOSC/16" register="OSCCON"/>
+                <setting name="IRCF" option="4MHz_HFINTOSC/4" register="OSCCON"/>
                 <setting name="IDLEN" option="disabled" register="OSCCON"/>
                 <setting name="PRISD" option="enabled" register="OSCCON2"/>
                 <setting name="SOSCGO" option="disabled" register="OSCCON2"/>
@@ -89,17 +89,17 @@
             <setting name="generateConfigBits" option="true"/>
             <file checksum="4171310987" modified="false" name="mcc_1.c" path="mcc_generated_files/mcc_1.c"/>
             <file checksum="2341276642" modified="false" name="mcc_1.h" path="mcc_generated_files/mcc_1.h"/>
-            <file checksum="374164251" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
-            <file checksum="2870814575" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
+            <file checksum="3757984493" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
+            <file checksum="2979932018" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
         </manager>
         <manager generated="true" name="Interrupt Manager" reloadPin="manual">
             <setting name="preemptHigh" option="false"/>
             <setting name="preemptLow" option="true"/>
             <setting name="useIPEN" option="false"/>
-            <interrupt module="MSSP1" name="SSPI" priority="2"/>
-            <interrupt module="MSSP1" name="BCLI" priority="2"/>
             <file checksum="1700731086" modified="false" name="interrupt_manager.c" path="mcc_generated_files/interrupt_manager.c"/>
             <file checksum="1088176999" modified="false" name="interrupt_manager.h" path="mcc_generated_files/interrupt_manager.h"/>
+            <interrupt module="MSSP1" name="SSPI" priority="2"/>
+            <interrupt module="MSSP1" name="BCLI" priority="2"/>
         </manager>
     </managers>
     <modules>
@@ -113,14 +113,14 @@
                 <setting name="NVCFG" option="VSS" register="ADCON1"/>
                 <setting name="ADFM" option="right" register="ADCON2"/>
                 <setting name="ACQT" option="0" register="ADCON2"/>
-                <setting name="ADCS" option="FOSC/16" register="ADCON2"/>
+                <setting name="ADCS" option="FOSC/2" register="ADCON2"/>
                 <setting name="ADRESL" option="0x0" register="ADRESL"/>
                 <setting name="ADRESH" option="0x0" register="ADRESH"/>
             </initializer>
             <setting name="ADI" option="false"/>
             <resource customName="channel_AN0" function="AN0" name="RA0" type="pin"/>
-            <file checksum="2540748255" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
-            <file checksum="2380898109" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
+            <file checksum="2236530742" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="2846206225" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
         </module>
         <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
             <initializer comment="" name="Initialize">
@@ -147,7 +147,7 @@
                 <setting name="SYNC" option="asynchronous" register="TX1STA"/>
                 <setting name="BRGH" option="hi_speed" register="TX1STA"/>
                 <setting name="CSRC" option="slave_mode" register="TX1STA"/>
-                <setting name="SPBRGL" option="25" register="SPBRG1"/>
+                <setting name="SPBRGL" option="103" register="SPBRG1"/>
                 <setting name="SPBRGH" option="0" register="SPBRGH1"/>
                 <setting name="TXREG" option="0" register="TXREG1"/>
                 <setting name="RCREG" option="0" register="RCREG1"/>
@@ -158,8 +158,8 @@
             <setting name="inputBuffer" option="8"/>
             <setting name="outputBuffer" option="8"/>
             <setting name="stdio" option="true"/>
-            <file checksum="3787108350" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
-            <file checksum="4153764663" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
+            <file checksum="2991567395" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
+            <file checksum="567701287" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
         </module>
         <module generated="true" mode="GPIO" name="GPIO" order="2" reloadPin="manual" type="GPIO">
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
@@ -199,8 +199,8 @@
             </initializer>
             <setting name="TMRI" option="false"/>
             <setting name="ticker" option="0"/>
-            <file checksum="493749228" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
-            <file checksum="2914042823" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
+            <file checksum="2590639819" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
+            <file checksum="1097846925" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
         </module>
         <module generated="true" mode="I2C Master Interrupt" name="MSSP1" order="4" reloadPin="manual" type="mssp">
             <initializer comment="" name="Initialize">
