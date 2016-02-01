@@ -50,6 +50,6 @@ unsigned long fftSingleCycle() {
         fftImag[i] = 0;
     
     max_index = optfft(fftReal, fftImag);
-    peak_freq = (max_index * sample_freq) >> (FFT_LEN_BITS);
+    peak_freq = (max_index * sample_freq) >> (FFT_LEN_BITS+2);
     return peak_freq;
 }
