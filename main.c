@@ -419,8 +419,17 @@ void testLCD()
     while(1) {
         char data = EUSART1_Read();
         if(data == 't') {
-            sendString("LCD Test");
-            //lcd_init();
+            sendString("\r\nLCD Test\r\n");
+            lcd_init();
+            write_str("Testing...", 1);
+            write_str("Testing...", 2);
+            write_str("Testing...", 3);
+            write_str("Testing...", 4);
+            //lcd_write('H');
+            //backlight();
+            //__delay_ms(100);
+            //noBacklight();
+            //__delay_ms(100);
             //LCD_Write_String("LCD Test");
         } else if (data == ('\n') || data == '\r') {
             return;
@@ -434,7 +443,7 @@ void testLCD()
  */
 void testSendString()
 {
-    char * testString = (char *) "This is a test.";
+    char * testString = (char *) "\r\nThis is a test.\r\n";
     char data;
     while(1) {
         data = EUSART1_Read();
@@ -470,20 +479,20 @@ void testSRAM() {
     uint8_t readdata;
     uint8_t addr = 0xA;
     
-    sendString("Testing SRAM...\n");
+    sendString("\r\nTesting SRAM...\r\n");
     writeSRAM(addr, writedata);
     readdata = readSRAM(addr);
     
-    sendString("At address");
+    sendString("At address: ");
     sendInt(addr);
-    sendString("\nWrote:");
+    sendString("\r\nWrote: ");
     sendInt(writedata);
-    sendString("\nRead:");
+    sendString("\r\nRead: ");
     sendInt(readdata);
     
     if (writedata == readdata)
-        sendString("\nSRAM test successful :)");
+        sendString("\r\nSRAM test successful :)");
     else
-        sendString("\nSRAM test failed :(");
+        sendString("\r\nSRAM test failed :(");
   )
 }
