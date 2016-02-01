@@ -12,24 +12,26 @@
             <resource customName="RES_SWITCH" digital="true" direction="INPUT" function="RA5" module="GPIO" name="RA5" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_11_OE" digital="true" direction="INPUT" function="RA6" module="GPIO" name="RA6" start="false" type="pin" wpu="false"/>
             <resource customName="DISP_TOGGLE" digital="true" direction="INPUT" function="RA7" module="GPIO" name="RA7" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_0" digital="true" direction="INPUT" function="RB0" module="GPIO" name="RB0" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_1" digital="true" direction="INPUT" function="RB1" module="GPIO" name="RB1" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_2" digital="true" direction="INPUT" function="RB2" module="GPIO" name="RB2" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_3" digital="true" direction="INPUT" function="RB3" module="GPIO" name="RB3" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_4" digital="true" direction="INPUT" function="RB4" ioc="0" module="GPIO" name="RB4" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_5" digital="true" direction="INPUT" function="RB5" ioc="0" module="GPIO" name="RB5" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_6" digital="true" direction="INPUT" function="RB6" ioc="0" module="GPIO" name="RB6" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_7" digital="true" direction="INPUT" function="RB7" ioc="0" module="GPIO" name="RB7" start="false" type="pin" wpu="false"/>
+            <resource customName="DATA_0" digital="true" direction="INPUT" function="RB0" module="GPIO" name="RB0" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_1" digital="true" direction="INPUT" function="RB1" module="GPIO" name="RB1" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_2" digital="true" direction="INPUT" function="RB2" module="GPIO" name="RB2" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_3" digital="true" direction="INPUT" function="RB3" module="GPIO" name="RB3" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_4" digital="true" direction="INPUT" function="RB4" ioc="0" module="GPIO" name="RB4" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_5" digital="true" direction="INPUT" function="RB5" ioc="0" module="GPIO" name="RB5" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_6" digital="true" direction="INPUT" function="RB6" ioc="0" module="GPIO" name="RB6" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_7" digital="true" direction="INPUT" function="RB7" ioc="0" module="GPIO" name="RB7" start="false" type="pin" wpu="true"/>
             <resource customName="DATA_8" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_9" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
+            <resource customName="SCL1" digital="true" direction="BIDIRECTIONAL" function="SCL1" module="MSSP1" name="RC3" start="true" type="pin" wpu="false"/>
+            <resource customName="SDA1" digital="true" direction="BIDIRECTIONAL" function="SDA1" module="MSSP1" name="RC4" start="true" type="pin" wpu="false"/>
             <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
             <resource customName="TX1" digital="true" direction="INPUT" function="TX1" module="EUSART1" name="RC6" start="false" type="pin" wpu="false"/>
             <resource customName="RX1" digital="true" direction="INPUT" function="RX1" module="EUSART1" name="RC7" start="false" type="pin" wpu="false"/>
             <file checksum="3639577670" modified="false" name="pin_manager_1.c" path="mcc_generated_files/pin_manager_1.c"/>
             <file checksum="2104422843" modified="false" name="pin_manager_1.h" path="mcc_generated_files/pin_manager_1.h"/>
-            <file checksum="2398522329" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
-            <file checksum="3600217766" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
+            <file checksum="3023277067" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
+            <file checksum="78276071" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
         </manager>
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
@@ -87,8 +89,17 @@
             <setting name="generateConfigBits" option="true"/>
             <file checksum="4171310987" modified="false" name="mcc_1.c" path="mcc_generated_files/mcc_1.c"/>
             <file checksum="2341276642" modified="false" name="mcc_1.h" path="mcc_generated_files/mcc_1.h"/>
-            <file checksum="43399866" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
-            <file checksum="3643152296" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
+            <file checksum="374164251" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
+            <file checksum="2870814575" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
+        </manager>
+        <manager generated="true" name="Interrupt Manager" reloadPin="manual">
+            <setting name="preemptHigh" option="false"/>
+            <setting name="preemptLow" option="true"/>
+            <setting name="useIPEN" option="false"/>
+            <interrupt module="MSSP1" name="SSPI" priority="2"/>
+            <interrupt module="MSSP1" name="BCLI" priority="2"/>
+            <file checksum="1700731086" modified="false" name="interrupt_manager.c" path="mcc_generated_files/interrupt_manager.c"/>
+            <file checksum="1088176999" modified="false" name="interrupt_manager.h" path="mcc_generated_files/interrupt_manager.h"/>
         </manager>
     </managers>
     <modules>
@@ -154,14 +165,14 @@
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_9" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_8" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_7" digital="true" direction="INPUT" function="RB7" ioc="0" module="GPIO" name="RB7" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_6" digital="true" direction="INPUT" function="RB6" ioc="0" module="GPIO" name="RB6" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_5" digital="true" direction="INPUT" function="RB5" ioc="0" module="GPIO" name="RB5" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_4" digital="true" direction="INPUT" function="RB4" ioc="0" module="GPIO" name="RB4" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_3" digital="true" direction="INPUT" function="RB3" module="GPIO" name="RB3" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_2" digital="true" direction="INPUT" function="RB2" module="GPIO" name="RB2" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_1" digital="true" direction="INPUT" function="RB1" module="GPIO" name="RB1" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_0" digital="true" direction="INPUT" function="RB0" module="GPIO" name="RB0" start="false" type="pin" wpu="false"/>
+            <resource customName="DATA_7" digital="true" direction="INPUT" function="RB7" ioc="0" module="GPIO" name="RB7" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_6" digital="true" direction="INPUT" function="RB6" ioc="0" module="GPIO" name="RB6" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_5" digital="true" direction="INPUT" function="RB5" ioc="0" module="GPIO" name="RB5" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_4" digital="true" direction="INPUT" function="RB4" ioc="0" module="GPIO" name="RB4" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_3" digital="true" direction="INPUT" function="RB3" module="GPIO" name="RB3" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_2" digital="true" direction="INPUT" function="RB2" module="GPIO" name="RB2" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_1" digital="true" direction="INPUT" function="RB1" module="GPIO" name="RB1" start="false" type="pin" wpu="true"/>
+            <resource customName="DATA_0" digital="true" direction="INPUT" function="RB0" module="GPIO" name="RB0" start="false" type="pin" wpu="true"/>
             <resource customName="DISP_TOGGLE" digital="true" direction="INPUT" function="RA7" module="GPIO" name="RA7" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_11_OE" digital="true" direction="INPUT" function="RA6" module="GPIO" name="RA6" start="false" type="pin" wpu="false"/>
             <resource customName="RES_SWITCH" digital="true" direction="INPUT" function="RA5" module="GPIO" name="RA5" start="false" type="pin" wpu="false"/>
@@ -190,6 +201,47 @@
             <setting name="ticker" option="0"/>
             <file checksum="493749228" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
             <file checksum="2914042823" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
+        </module>
+        <module generated="true" mode="I2C Master Interrupt" name="MSSP1" order="4" reloadPin="manual" type="mssp">
+            <initializer comment="" name="Initialize">
+                <setting name="R_nW" option="write_noTX" register="SSP1STAT"/>
+                <setting name="P" option="stopbit_notdetected" register="SSP1STAT"/>
+                <setting name="S" option="startbit_notdetected" register="SSP1STAT"/>
+                <setting name="BF" option="RCinprocess_TXcomplete" register="SSP1STAT"/>
+                <setting name="SMP" option="Sample At Middle" register="SSP1STAT"/>
+                <setting name="UA" option="dontupdate" register="SSP1STAT"/>
+                <setting name="CKE" option="Idle to Active" register="SSP1STAT"/>
+                <setting name="D_nA" option="lastbyte_address" register="SSP1STAT"/>
+                <setting name="SSPEN" option="enabled" register="SSP1CON1"/>
+                <setting name="WCOL" option="no_collision" register="SSP1CON1"/>
+                <setting name="CKP" option="Idle:Low, Active:High" register="SSP1CON1"/>
+                <setting name="SSPM" option="FOSC/4_SSPxADD" register="SSP1CON1"/>
+                <setting name="SSPOV" option="no_overflow" register="SSP1CON1"/>
+                <setting name="ACKEN" option="disabled" register="SSP1CON2"/>
+                <setting name="GCEN" option="disabled" register="SSP1CON2"/>
+                <setting name="PEN" option="disabled" register="SSP1CON2"/>
+                <setting name="ACKDT" option="acknowledge" register="SSP1CON2"/>
+                <setting name="RSEN" option="disabled" register="SSP1CON2"/>
+                <setting name="RCEN" option="disabled" register="SSP1CON2"/>
+                <setting name="ACKSTAT" option="received" register="SSP1CON2"/>
+                <setting name="SEN" option="disabled" register="SSP1CON2"/>
+                <setting name="ACKTIM" option="ackseq" register="SSP1CON3"/>
+                <setting name="SBCDE" option="disabled" register="SSP1CON3"/>
+                <setting name="BOEN" option="disabled" register="SSP1CON3"/>
+                <setting name="SCIE" option="disabled" register="SSP1CON3"/>
+                <setting name="PCIE" option="disabled" register="SSP1CON3"/>
+                <setting name="DHEN" option="disabled" register="SSP1CON3"/>
+                <setting name="SDAHT" option="100ns" register="SSP1CON3"/>
+                <setting name="AHEN" option="disabled" register="SSP1CON3"/>
+                <setting name="MSK0" option="0x0" register="SSP1MSK"/>
+                <setting name="SSPBUF" option="0x0" register="SSP1BUF"/>
+                <setting name="SSP1ADD" option="3" register="SSP1ADD"/>
+            </initializer>
+            <setting name="readbufferchanged" option="8"/>
+            <setting name="writebufferchanged" option="8"/>
+            <setting name="addressMode" option="true"/>
+            <file checksum="519484877" modified="false" name="i2c1.c" path="mcc_generated_files/i2c1.c"/>
+            <file checksum="1292019547" modified="false" name="i2c1.h" path="mcc_generated_files/i2c1.h"/>
         </module>
     </modules>
 </configuration>

@@ -32,6 +32,7 @@
 #include "mcc_generated_files/adc.h"
 #include "mcc_generated_files/eusart1.h"
 #include "mcc_generated_files/mcc.h"
+#include "mcc_generated_files/interrupt_manager.h"
 
 // Defines for functionality
 #define MODE_FREQ 0
@@ -78,7 +79,8 @@ void main(void)
 {
     /* Configure the oscillator for the device */
     ConfigureOscillator();
-    
+    INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
     SYSTEM_Initialize();
     
     //Init I2c
