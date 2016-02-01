@@ -39,6 +39,7 @@
 #define MODE_PER 1
 #define MODE_COUNT 2
 #define MODE_ANALYSIS 3
+#define MODE_INTERVAL 4
 #define NUM_MODES 20
 
 #define TEST_LOOP(CODE) \
@@ -71,6 +72,7 @@ void testSRAM();
 void measureFreq(int resolution, uint8_t currAddr);
 void measurePeriod(int resolution, uint8_t currAddr);
 void measureCount(int resolution, uint8_t currAddr);
+void measureInterval(int resolution, uint8_t currAddr);
 void testLCD();
 void printHelpInfo();
 void printFromSRAM(uint8_t currAddr);
@@ -83,6 +85,8 @@ enum DataType {
     PERIOD_LOW, 
     COUNT_HIGH, 
     COUNT_LOW, 
+    INTERVAL_HIGH,
+    INTERVAL_LOW,
     ANALYSIS
 };
 
@@ -200,10 +204,10 @@ void main(void)
                     break;
                 // Prints from sram
                 case 's':
-                    if(measureMode < 4) {
-                        measureMode = 4;    
-                    } else if(measureMode == 19) {
-                        measureMode = 4;
+                    if(measureMode < 5) {
+                        measureMode = 5;    
+                    } else if(measureMode == 20) {
+                        measureMode = 5;
                     } else {
                         measureMode += 1;
                     }
@@ -234,6 +238,10 @@ void main(void)
                     break;
                 case MODE_COUNT:
                     measureCount(resolution, currAddr);
+                    currAddr = (currAddr + 2) % 32;
+                    break;
+                case MODE_INTERVAL:
+                    measureInterval(resolution, currAddr);
                     currAddr = (currAddr + 2) % 32;
                     break;
                 case MODE_ANALYSIS:
@@ -286,6 +294,10 @@ void printFromSRAM(uint8_t currAddr) {
     else if (sramDataTypes[currAddr/2] == PERIOD_HIGH)
         sprintf(message, "%d: %02d.%02d ms\r\n", currAddr/2, (int)data1, (int)data2);
     else if (sramDataTypes[currAddr/2] == PERIOD_LOW)
+        sprintf(message, "%d: %02d.%02d s\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (sramDataTypes[currAddr/2] == INTERVAL_HIGH)
+        sprintf(message, "%d: %02d.%02d ms\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (sramDataTypes[currAddr/2] == INTERVAL_LOW)
         sprintf(message, "%d: %02d.%02d s\r\n", currAddr/2, (int)data1, (int)data2);
     else if (sramDataTypes[currAddr/2] == COUNT_HIGH)
         sprintf(message, "%d: %02d events in 10 ms\r\n", currAddr/2, (data2 << 8) | data1);
@@ -365,6 +377,45 @@ void measurePeriod(int resolution, uint8_t currAddr) {
     /*
     Write to LCD here
     */
+}
+
+
+void measureInterval(int resolution, uint8_t currAddr) {
+    uint16_t delay = 0;
+    char message[32];
+    uint16_t start_count;
+    
+    switchBus(BUS_COUNTER_READ);
+    COUNTER_ENABLE_SetHigh();
+    
+    start_count = PORTB;
+    while (start_count == PORTB) ;
+    start_count = PORTB;
+    if(resolution) {
+        while(start_count != PORTB) {
+            __delay_us(10);
+            delay++;
+        }
+        
+        sprintf(message, "time interval of %02d.%02d ms\r\n", delay / 100, delay % 100);
+        sramDataTypes[currAddr/2] = INTERVAL_HIGH;
+    } else {
+        while(start_count != PORTB) {
+            __delay_ms(10);
+            delay++;
+        }
+        
+        sprintf(message, "time interval of %02d.%02d s\r\n", delay / 100, delay % 100);
+        sramDataTypes[currAddr/2] = INTERVAL_LOW;
+    }
+    
+	COUNTER_ENABLE_SetLow();
+    
+    // Print on serial
+    sendString(message);
+    // Print to two places in SRAM
+    writeSRAM(currAddr, (uint8_t)(delay / 100));
+    writeSRAM((currAddr + 1) % 32, (uint8_t)(delay % 100));
 }
 
 /*
