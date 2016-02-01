@@ -194,8 +194,8 @@ void main(void)
                     } else {
                         measureMode += 1;
                     }
-                    break;
                     runTestFlag = 1;
+                    break;
                 // Toggles mode
                 case 't':
                     measureMode = (measureMode + 1) % NUM_MODES;
@@ -240,7 +240,7 @@ void main(void)
                     // Read from SRAM locations 1-16
                     if((measureMode > 3) && (measureMode < NUM_MODES)) {
                         // Read location measureMode - 4 
-                        printFromSRAM(currAddr);
+                        printFromSRAM(measureMode - 4);
                     } else {
                         measureMode = 0;
                     }
