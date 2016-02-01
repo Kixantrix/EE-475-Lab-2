@@ -17,9 +17,9 @@ uint16_t readCounter(int delayTime) {
 	// Gather events for time length
 
 	if(delayTime == LOW_RES) {
-        for(int i = 0; i < 100; i++) {
-			__delay_ms(LOW_RES);	        	
-        }
+		for(int i = 0; i < 10; i++) {
+			__delay_ms(LOW_RES);	
+		}
 	} else {
 		__delay_ms(HIGH_RES);
 	}

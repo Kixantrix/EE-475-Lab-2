@@ -5,6 +5,7 @@
 #include "i2c.h"
 //#include "utils.h"
 #include "lcd.h"
+#include "mcc_generated_files/mcc.h"
 
 void LCD_Open()
 {
