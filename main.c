@@ -23,7 +23,7 @@
 #include "uartcomms.h"
 #include "bus.h"
 #include "sram.h"
-#include "lcd.h"
+#include "lcd_2.h"
 #include "counter.h"
 #include <pic18.h>
 //#include <plib/i2c.h>
@@ -79,8 +79,8 @@ void main(void)
 {
     /* Configure the oscillator for the device */
     ConfigureOscillator();
-    //INTERRUPT_GlobalInterruptEnable();
-    //INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
     SYSTEM_Initialize();
     
     //Init I2c
@@ -240,7 +240,7 @@ void main(void)
                     // Read from SRAM locations 1-16
                     if((measureMode > 3) && (measureMode < NUM_MODES)) {
                         // Read location measureMode - 4 
-                        printFromSRAM(measureMode - 4);
+                        printFromSRAM((measureMode - 4)*2);
                     } else {
                         measureMode = 0;
                     }
@@ -413,12 +413,12 @@ void testUart()
 */
 void testLCD()
 {
-    LCD_Init();
     while(1) {
         char data = EUSART1_Read();
         if(data == 't') {
             sendString("LCD Test");
-            LCD_Write_String("LCD Test");
+            //lcd_init();
+            //LCD_Write_String("LCD Test");
         } else if (data == ('\n') || data == '\r') {
             return;
         }
