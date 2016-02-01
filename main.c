@@ -207,8 +207,8 @@ void main(void)
                 case MODE_ANALYSIS:
                     peak_f = fftSingleCycle();
                     // Write bottom 16 bits to memory
-                    wireSRAM(currAddr, (uint8_t) (0x0FF & peak_f));
-                    wireSRAM((currAddr + 1) % 32, (uint8_t) (0xFFF00 & peak_f >> 8));
+                    writeSRAM(currAddr, (uint8_t) (0x0FF & peak_f));
+                    writeSRAM((currAddr + 1) % 32, (uint8_t) (0xFFF00 & peak_f >> 8));
                     // Increment currAddr.
                     currAddr = (currAddr + 2) % 32;
                     // Print message

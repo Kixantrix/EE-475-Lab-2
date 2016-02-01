@@ -34,6 +34,11 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include <stdint.h>
 
+// Number of miliseconds in low res mode.  10 seconds.
+#define LOW_RES 100
+// Number of miliseconds in high res mode. 10 ms.
+#define HIGH_RES 10
+
 // Returns the value stored on the counter;
 // Takes delay time in microseconds.
 uint16_t readCounter(int delayTime);

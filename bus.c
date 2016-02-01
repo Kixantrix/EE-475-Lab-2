@@ -31,7 +31,7 @@ void switchBus(int ID) {
 void setBusDir(uint16_t dir) {
 	uint8_t adir = TRISA;
 	// Port a bit 6, dir bit 11 shift of 5
-	uint8_t maskedADir = 0x0800 & dir >> 5;
+	uint8_t maskedADir = (uint8_t) 0x0800 & dir >> 5;
 	// And bit 6.
 	adir &= (0xBF | maskedADir);
 	// Or rest of bits
@@ -48,7 +48,7 @@ void setBusDir(uint16_t dir) {
 
 	uint8_t cdir = TRISC;
 	// Port C Bottom 3 bits dir bits 8-10 shift of 8
-	uint8_t maskedCDir = 0x0700 & dir >> 8;
+	uint8_t maskedCDir = (uint8_t) 0x0700 & dir >> 8;
 	// And bottom 3 bits.
 	cdir &= (0xF8 | maskedCDir);
 	// Or bottom 3 bits.
