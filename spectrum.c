@@ -30,21 +30,20 @@ unsigned long peak_freq;
 unsigned long fftSingleCycle() {
     // 10 bits to 6 bits unsigned, range [0, 63]
     // then shift so have range [-32, 31]
-    //uint16_t start_t = TMR0;
+    uint16_t start_t = TMR0;
     for (int i = 0; i < FFT_LEN; i++)
         fftReal[i] = readADC();
     
-    //uint16_t stop_t = TMR0;
+    uint16_t stop_t = TMR0;
     
     // pre-process for the fft
     for (int i = 0; i < FFT_LEN; i++)
         fftReal[i] = (int16_t)((uint16_t)fftReal[i] >> 4) - 31;
     
     // Timer clock is Fosc/4, so do >>2
-    //sample_freq = ((_XTAL_FREQ >> 2)/((stop_t > start_t) 
-    //                        ? (stop_t - start_t) 
-    //                        : ((1 << 16) - start_t + stop_t))) << FFT_LEN_BITS;
-    sample_freq = 2717;
+    sample_freq = ((_XTAL_FREQ)/((stop_t > start_t) 
+                            ? (stop_t - start_t) 
+                            : ((1 << 16) - start_t + stop_t))) << FFT_LEN_BITS;
     
     // Reset the imaginary array
     for (int i = 0; i < FFT_LEN; i++)

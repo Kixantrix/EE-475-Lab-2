@@ -102,13 +102,13 @@
                 <setting name="NVCFG" option="VSS" register="ADCON1"/>
                 <setting name="ADFM" option="right" register="ADCON2"/>
                 <setting name="ACQT" option="0" register="ADCON2"/>
-                <setting name="ADCS" option="FOSC/32" register="ADCON2"/>
+                <setting name="ADCS" option="FOSC/16" register="ADCON2"/>
                 <setting name="ADRESL" option="0x0" register="ADRESL"/>
                 <setting name="ADRESH" option="0x0" register="ADRESH"/>
             </initializer>
             <setting name="ADI" option="false"/>
             <resource customName="channel_AN0" function="AN0" name="RA0" type="pin"/>
-            <file checksum="2223357402" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="2540748255" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
             <file checksum="2380898109" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
         </module>
         <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
