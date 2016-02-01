@@ -174,9 +174,17 @@ void main(void)
                     break;
                 // Print help information
                 case 'i':
+                    printHelpInfo();
                     break;
                 // Prints from sram
                 case 's':
+                    if(measureMode < 4) {
+                        measureMode = 4;    
+                    } else if(measureMode == 19) {
+                        measureMode = 4;
+                    } else {
+                        measureMode += 1;
+                    }
                     break;
                 // Toggles mode
                 case 't':
@@ -283,14 +291,57 @@ void measureFreq(int resolution, uint8_t currAddr) {
  */
 
 void measurePeriod(int resolution, uint8_t currAddr) {
-    
+    uint16_t count = 0;
+    float per = 0;
+    char message[32];
+    if(resolution) {
+        // small period measurement
+        count = readCounter(HIGH_RES);
+        // period in ms
+        per = 10.0 / count;
+        sprintf(message, "%02d.%02d ms\r\n", (int)per, (int)((per-(int)(per))*1000));
+    } else {
+        // large period measurement
+        count = readCounter(LOW_RES);
+        // Period in s.
+        per = 10.0 / count;
+        sprintf(message, "%02d.%02d s\r\n", (int)per, (int)((per-(int)(per))*1000));
+
+    }
+    // Print on serial
+    sendString(message);
+    // Print to two places in SRAM
+    writeSRAM(currAddr, (uint8_t)per);
+    writeSRAM((currAddr + 1) % 32, (uint8_t)(per-(int)(per))*1000);
+    /*
+    Write to LCD here
+    */
 }
 
 /*
  * Measures a count of events over a period specified by resolution
  */
 void measureCount(int resolution, uint8_t currAddr) {
-    
+    uint16_t count = 0;
+    char message[32];
+    if(resolution) {
+        // short time measurement
+        count = readCounter(HIGH_RES);
+        sprintf(message, "%02d events\r\n", count);
+    } else {
+        // long time measurement
+        count = readCounter(LOW_RES);
+        // Period in s.
+        sprintf(message, "%02d events\r\n", count);
+    }
+    // Print on serial
+    sendString(message);
+    // Print to two places in SRAM
+    writeSRAM(currAddr, (uint8_t) 0x0FF & count);
+    writeSRAM((currAddr + 1) % 32, (uint8_t) 0x0FF00 * count >> 8);
+    /*
+    Write to LCD here
+    */
 }
 
 /*
