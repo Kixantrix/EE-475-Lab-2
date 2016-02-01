@@ -5,7 +5,7 @@
             <setting name="package" option="SSOP28"/>
             <setting name="sorting" option="true"/>
             <resource customName="channel_AN0" digital="false" direction="INPUT" function="AN0" module="ADC" name="RA0" start="false" type="pin" wpu="false"/>
-            <resource customName="COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
+            <resource customName="NOT_COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
             <resource customName="OE" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
             <resource customName="WE" digital="true" direction="OUTPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
             <resource customName="SRAM_ADDR" digital="true" direction="OUTPUT" function="RA4" module="GPIO" name="RA4" start="false" type="pin" wpu="false"/>
@@ -23,13 +23,13 @@
             <resource customName="DATA_8" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_9" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
-            <resource customName="IO_RC5" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
+            <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
             <resource customName="TX1" digital="true" direction="INPUT" function="TX1" module="EUSART1" name="RC6" start="false" type="pin" wpu="false"/>
             <resource customName="RX1" digital="true" direction="INPUT" function="RX1" module="EUSART1" name="RC7" start="false" type="pin" wpu="false"/>
             <file checksum="3639577670" modified="false" name="pin_manager_1.c" path="mcc_generated_files/pin_manager_1.c"/>
             <file checksum="2104422843" modified="false" name="pin_manager_1.h" path="mcc_generated_files/pin_manager_1.h"/>
             <file checksum="2398522329" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
-            <file checksum="2017592986" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
+            <file checksum="3249473477" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
         </manager>
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
@@ -168,8 +168,8 @@
             <resource customName="SRAM_ADDR" digital="true" direction="OUTPUT" function="RA4" module="GPIO" name="RA4" start="false" type="pin" wpu="false"/>
             <resource customName="WE" digital="true" direction="OUTPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
             <resource customName="OE" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
-            <resource customName="COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
-            <resource customName="IO_RC5" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
+            <resource customName="NOT_COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
+            <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
         </module>
         <module generated="true" mode="Timer" name="TMR0" order="3" reloadPin="manual" type="tmr_timer0">
             <initializer comment="" name="Initialize">
