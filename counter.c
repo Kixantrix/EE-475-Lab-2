@@ -17,9 +17,9 @@ uint16_t readCounter(int delayTime) {
 	// Gather events for time length
 
 	if(delayTime == LOW_RES) {
-        for(int i = 0; i < 100; i++) {
-			__delay_ms(LOW_RES);	        	
-        }
+		for(int i = 0; i < 10; i++) {
+			__delay_ms(LOW_RES);	
+		}
 	} else {
 		__delay_ms(HIGH_RES);
 	}
@@ -27,13 +27,13 @@ uint16_t readCounter(int delayTime) {
 	// Count of events
 	uint16_t count = 0;
 	// Add masked/shifted value from bit 6 A shifted to 11.
-	uint16_t maskedABits = 0x070 & PORTA << 5;
+	uint16_t maskedABits = (0x040 & PORTA) << 5;
 	count += maskedABits;
 	// Add masked value from bottom 8 bits B with no shift.
-	uint16_t maskedBBits = 0x0FF & PORTB;
+	uint16_t maskedBBits = (0x0FF & PORTB);
 	count += maskedBBits;
 	// Add masked and shifted value from bottom 3 bits C shifted to 8;
-	uint16_t maskedCBits= 0x007 & PORTC << 8;
+	uint16_t maskedCBits= (0x007 & PORTC) << 8;
 	count += maskedCBits;
 	// Set to not read from counter.
 	COUNTER_ENABLE_SetLow();
