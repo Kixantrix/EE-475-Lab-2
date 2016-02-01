@@ -2,12 +2,12 @@
 <configuration device="PIC18F25K22" mcc_version="v2.25.2">
     <managers>
         <manager generated="true" name="Pin Manager" reloadPin="manual">
-            <setting name="package" option="PDIP28"/>
+            <setting name="package" option="SSOP28"/>
             <setting name="sorting" option="true"/>
             <resource customName="channel_AN0" digital="false" direction="INPUT" function="AN0" module="ADC" name="RA0" start="false" type="pin" wpu="false"/>
-            <resource customName="COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
-            <resource customName="SRAM_READ" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
-            <resource customName="SRAM_WRITE" digital="true" direction="OUTPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
+            <resource customName="NOT_COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
+            <resource customName="OE" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
+            <resource customName="WE" digital="true" direction="OUTPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
             <resource customName="SRAM_ADDR" digital="true" direction="OUTPUT" function="RA4" module="GPIO" name="RA4" start="false" type="pin" wpu="false"/>
             <resource customName="RES_SWITCH" digital="true" direction="INPUT" function="RA5" module="GPIO" name="RA5" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_11_OE" digital="true" direction="INPUT" function="RA6" module="GPIO" name="RA6" start="false" type="pin" wpu="false"/>
@@ -20,26 +20,27 @@
             <resource customName="DATA_5" digital="true" direction="INPUT" function="RB5" ioc="0" module="GPIO" name="RB5" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_6" digital="true" direction="INPUT" function="RB6" ioc="0" module="GPIO" name="RB6" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_7" digital="true" direction="INPUT" function="RB7" ioc="0" module="GPIO" name="RB7" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_8_W" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_9CE" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
+            <resource customName="DATA_8" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
+            <resource customName="DATA_9" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
+            <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
             <resource customName="TX1" digital="true" direction="INPUT" function="TX1" module="EUSART1" name="RC6" start="false" type="pin" wpu="false"/>
             <resource customName="RX1" digital="true" direction="INPUT" function="RX1" module="EUSART1" name="RC7" start="false" type="pin" wpu="false"/>
             <file checksum="3639577670" modified="false" name="pin_manager_1.c" path="mcc_generated_files/pin_manager_1.c"/>
             <file checksum="2104422843" modified="false" name="pin_manager_1.h" path="mcc_generated_files/pin_manager_1.h"/>
-            <file checksum="2406255579" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
-            <file checksum="957257531" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
+            <file checksum="2398522329" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
+            <file checksum="3249473477" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
         </manager>
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
                 <setting name="SCS" option="FOSC" register="OSCCON"/>
-                <setting name="IRCF" option="1MHz_HFINTOSC/16" register="OSCCON"/>
+                <setting name="IRCF" option="2MHz_HFINTOSC/8" register="OSCCON"/>
                 <setting name="IDLEN" option="disabled" register="OSCCON"/>
                 <setting name="PRISD" option="enabled" register="OSCCON2"/>
                 <setting name="SOSCGO" option="disabled" register="OSCCON2"/>
                 <setting name="MFIOSEL" option="disabled" register="OSCCON2"/>
                 <setting name="INTSRC" option="disabled" register="OSCTUNE"/>
-                <setting name="PLLEN" option="disabled" register="OSCTUNE"/>
+                <setting name="PLLEN" option="enabled" register="OSCTUNE"/>
                 <setting name="TUN" option="0x00" register="OSCTUNE"/>
                 <additionalSetting name="pllMultiplier" option=""/>
                 <additionalSetting name="extclk" option="1.0 MHz"/>
@@ -86,8 +87,8 @@
             <setting name="generateConfigBits" option="true"/>
             <file checksum="4171310987" modified="false" name="mcc_1.c" path="mcc_generated_files/mcc_1.c"/>
             <file checksum="2341276642" modified="false" name="mcc_1.h" path="mcc_generated_files/mcc_1.h"/>
-            <file checksum="43399866" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
-            <file checksum="3643152296" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
+            <file checksum="2525444644" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
+            <file checksum="3677427625" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
         </manager>
     </managers>
     <modules>
@@ -101,13 +102,13 @@
                 <setting name="NVCFG" option="VSS" register="ADCON1"/>
                 <setting name="ADFM" option="right" register="ADCON2"/>
                 <setting name="ACQT" option="0" register="ADCON2"/>
-                <setting name="ADCS" option="FOSC/32" register="ADCON2"/>
+                <setting name="ADCS" option="FOSC/2" register="ADCON2"/>
                 <setting name="ADRESL" option="0x0" register="ADRESL"/>
                 <setting name="ADRESH" option="0x0" register="ADRESH"/>
             </initializer>
             <setting name="ADI" option="false"/>
             <resource customName="channel_AN0" function="AN0" name="RA0" type="pin"/>
-            <file checksum="2223357402" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="380353957" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
             <file checksum="2380898109" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
         </module>
         <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
@@ -135,7 +136,7 @@
                 <setting name="SYNC" option="asynchronous" register="TX1STA"/>
                 <setting name="BRGH" option="hi_speed" register="TX1STA"/>
                 <setting name="CSRC" option="slave_mode" register="TX1STA"/>
-                <setting name="SPBRGL" option="25" register="SPBRG1"/>
+                <setting name="SPBRGL" option="51" register="SPBRG1"/>
                 <setting name="SPBRGH" option="0" register="SPBRGH1"/>
                 <setting name="TXREG" option="0" register="TXREG1"/>
                 <setting name="RCREG" option="0" register="RCREG1"/>
@@ -146,13 +147,13 @@
             <setting name="inputBuffer" option="8"/>
             <setting name="outputBuffer" option="8"/>
             <setting name="stdio" option="true"/>
-            <file checksum="3787108350" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
+            <file checksum="3605573625" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
             <file checksum="4153764663" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
         </module>
         <module generated="true" mode="GPIO" name="GPIO" order="2" reloadPin="manual" type="GPIO">
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_9CE" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
-            <resource customName="DATA_8_W" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
+            <resource customName="DATA_9" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
+            <resource customName="DATA_8" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_7" digital="true" direction="INPUT" function="RB7" ioc="0" module="GPIO" name="RB7" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_6" digital="true" direction="INPUT" function="RB6" ioc="0" module="GPIO" name="RB6" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_5" digital="true" direction="INPUT" function="RB5" ioc="0" module="GPIO" name="RB5" start="false" type="pin" wpu="false"/>
@@ -165,15 +166,16 @@
             <resource customName="DATA_11_OE" digital="true" direction="INPUT" function="RA6" module="GPIO" name="RA6" start="false" type="pin" wpu="false"/>
             <resource customName="RES_SWITCH" digital="true" direction="INPUT" function="RA5" module="GPIO" name="RA5" start="false" type="pin" wpu="false"/>
             <resource customName="SRAM_ADDR" digital="true" direction="OUTPUT" function="RA4" module="GPIO" name="RA4" start="false" type="pin" wpu="false"/>
-            <resource customName="SRAM_WRITE" digital="true" direction="OUTPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
-            <resource customName="SRAM_READ" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
-            <resource customName="COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
+            <resource customName="WE" digital="true" direction="OUTPUT" function="RA3" module="GPIO" name="RA3" start="false" type="pin" wpu="false"/>
+            <resource customName="OE" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
+            <resource customName="NOT_COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
+            <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
         </module>
         <module generated="true" mode="Timer" name="TMR0" order="3" reloadPin="manual" type="tmr_timer0">
             <initializer comment="" name="Initialize">
                 <setting name="T08BIT" option="16-bit" register="T0CON"/>
                 <setting name="T0SE" option="Increment_hi_lo" register="T0CON"/>
-                <setting name="T0PS" option="1:16" register="T0CON"/>
+                <setting name="T0PS" option="1:256" register="T0CON"/>
                 <setting name="T0CS" option="FOSC/4" register="T0CON"/>
                 <setting name="TMR0ON" option="enabled" register="T0CON"/>
                 <setting name="PSA" option="not_assigned" register="T0CON"/>
@@ -186,7 +188,7 @@
             </initializer>
             <setting name="TMRI" option="false"/>
             <setting name="ticker" option="0"/>
-            <file checksum="1798964146" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
+            <file checksum="493749228" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
             <file checksum="2914042823" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
         </module>
     </modules>
