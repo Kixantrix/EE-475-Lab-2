@@ -1,12 +1,13 @@
 #include <stdint.h>
 
 #include "xc.h"
-#include "mcc_generated_files/i2c1.h"
 #include "mcc_generated_files/mcc.h"
 #define I2C_IO_V1 //make sure we use the right pins
-#include "i2c.h"
+//#include "i2c_simple.h"
 //#include "utils.h"
+#include <i2c.h>
 #include "lcd.h"
+
 
 
 /*void I2C1_Initialize(void) {
@@ -43,7 +44,7 @@ void LCD_BL(uint8_t status)
 
 void LCD_Init()
 {
-    I2C1_Initialize();
+    //I2C1_Initialize();
     LCD_Open();
     
     // Following bytes are all Command bytes, i.e. address = 0x00

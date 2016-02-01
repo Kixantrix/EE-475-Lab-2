@@ -2,7 +2,7 @@
 <configuration device="PIC18F25K22" mcc_version="v2.25.2">
     <managers>
         <manager generated="true" name="Pin Manager" reloadPin="manual">
-            <setting name="package" option="SSOP28"/>
+            <setting name="package" option="PDIP28"/>
             <setting name="sorting" option="true"/>
             <resource customName="channel_AN0" digital="false" direction="INPUT" function="AN0" module="ADC" name="RA0" start="false" type="pin" wpu="false"/>
             <resource customName="COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
@@ -23,15 +23,15 @@
             <resource customName="DATA_8" digital="true" direction="INPUT" function="RC0" module="GPIO" name="RC0" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_9" digital="true" direction="INPUT" function="RC1" module="GPIO" name="RC1" start="false" type="pin" wpu="false"/>
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
-            <resource customName="SCL1" digital="true" direction="BIDIRECTIONAL" function="SCL1" module="MSSP1" name="RC3" start="true" type="pin" wpu="false"/>
-            <resource customName="SDA1" digital="true" direction="BIDIRECTIONAL" function="SDA1" module="MSSP1" name="RC4" start="true" type="pin" wpu="false"/>
+            <resource customName="IO_RC3" digital="true" direction="OUTPUT" function="RC3" module="GPIO" name="RC3" start="true" type="pin" wpu="false"/>
+            <resource customName="IO_RC4" digital="true" direction="OUTPUT" function="RC4" module="GPIO" name="RC4" start="true" type="pin" wpu="false"/>
             <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
             <resource customName="TX1" digital="true" direction="INPUT" function="TX1" module="EUSART1" name="RC6" start="false" type="pin" wpu="false"/>
             <resource customName="RX1" digital="true" direction="INPUT" function="RX1" module="EUSART1" name="RC7" start="false" type="pin" wpu="false"/>
             <file checksum="3639577670" modified="false" name="pin_manager_1.c" path="mcc_generated_files/pin_manager_1.c"/>
             <file checksum="2104422843" modified="false" name="pin_manager_1.h" path="mcc_generated_files/pin_manager_1.h"/>
-            <file checksum="3023277067" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
-            <file checksum="78276071" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
+            <file checksum="2665057268" modified="false" name="pin_manager.c" path="mcc_generated_files/pin_manager.c"/>
+            <file checksum="3938674092" modified="false" name="pin_manager.h" path="mcc_generated_files/pin_manager.h"/>
         </manager>
         <manager generated="true" name="System" reloadPin="manual">
             <initializer comment="" name="Initialize">
@@ -89,17 +89,8 @@
             <setting name="generateConfigBits" option="true"/>
             <file checksum="4171310987" modified="false" name="mcc_1.c" path="mcc_generated_files/mcc_1.c"/>
             <file checksum="2341276642" modified="false" name="mcc_1.h" path="mcc_generated_files/mcc_1.h"/>
-            <file checksum="3757984493" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
-            <file checksum="2979932018" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
-        </manager>
-        <manager generated="true" name="Interrupt Manager" reloadPin="manual">
-            <setting name="preemptHigh" option="false"/>
-            <setting name="preemptLow" option="true"/>
-            <setting name="useIPEN" option="false"/>
-            <file checksum="1700731086" modified="false" name="interrupt_manager.c" path="mcc_generated_files/interrupt_manager.c"/>
-            <file checksum="1088176999" modified="false" name="interrupt_manager.h" path="mcc_generated_files/interrupt_manager.h"/>
-            <interrupt module="MSSP1" name="SSPI" priority="2"/>
-            <interrupt module="MSSP1" name="BCLI" priority="2"/>
+            <file checksum="3728095884" modified="false" name="mcc.c" path="mcc_generated_files/mcc.c"/>
+            <file checksum="3745978283" modified="false" name="mcc.h" path="mcc_generated_files/mcc.h"/>
         </manager>
     </managers>
     <modules>
@@ -119,8 +110,8 @@
             </initializer>
             <setting name="ADI" option="false"/>
             <resource customName="channel_AN0" function="AN0" name="RA0" type="pin"/>
-            <file checksum="2236530742" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
-            <file checksum="2846206225" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
+            <file checksum="380353957" modified="false" name="adc.c" path="mcc_generated_files/adc.c"/>
+            <file checksum="2380898109" modified="false" name="adc.h" path="mcc_generated_files/adc.h"/>
         </module>
         <module generated="true" mode="EUSART Asynchronous(NRZ)" name="EUSART1" order="1" reloadPin="manual" type="uart_enh">
             <initializer comment="" name="Initialize">
@@ -158,8 +149,8 @@
             <setting name="inputBuffer" option="8"/>
             <setting name="outputBuffer" option="8"/>
             <setting name="stdio" option="true"/>
-            <file checksum="2991567395" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
-            <file checksum="567701287" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
+            <file checksum="1697165358" modified="false" name="eusart1.c" path="mcc_generated_files/eusart1.c"/>
+            <file checksum="4153764663" modified="false" name="eusart1.h" path="mcc_generated_files/eusart1.h"/>
         </module>
         <module generated="true" mode="GPIO" name="GPIO" order="2" reloadPin="manual" type="GPIO">
             <resource customName="DATA_10" digital="true" direction="INPUT" function="RC2" module="GPIO" name="RC2" start="false" type="pin" wpu="false"/>
@@ -181,6 +172,8 @@
             <resource customName="OE" digital="true" direction="OUTPUT" function="RA2" module="GPIO" name="RA2" start="false" type="pin" wpu="false"/>
             <resource customName="COUNTER_ENABLE" digital="true" direction="OUTPUT" function="RA1" module="GPIO" name="RA1" start="false" type="pin" wpu="false"/>
             <resource customName="CE" digital="true" direction="INPUT" function="RC5" module="GPIO" name="RC5" start="false" type="pin" wpu="false"/>
+            <resource customName="IO_RC3" digital="true" direction="OUTPUT" function="RC3" module="GPIO" name="RC3" start="true" type="pin" wpu="false"/>
+            <resource customName="IO_RC4" digital="true" direction="OUTPUT" function="RC4" module="GPIO" name="RC4" start="true" type="pin" wpu="false"/>
         </module>
         <module generated="true" mode="Timer" name="TMR0" order="3" reloadPin="manual" type="tmr_timer0">
             <initializer comment="" name="Initialize">
@@ -199,49 +192,8 @@
             </initializer>
             <setting name="TMRI" option="false"/>
             <setting name="ticker" option="0"/>
-            <file checksum="2590639819" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
-            <file checksum="1097846925" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
-        </module>
-        <module generated="true" mode="I2C Master Interrupt" name="MSSP1" order="4" reloadPin="manual" type="mssp">
-            <initializer comment="" name="Initialize">
-                <setting name="R_nW" option="write_noTX" register="SSP1STAT"/>
-                <setting name="P" option="stopbit_notdetected" register="SSP1STAT"/>
-                <setting name="S" option="startbit_notdetected" register="SSP1STAT"/>
-                <setting name="BF" option="RCinprocess_TXcomplete" register="SSP1STAT"/>
-                <setting name="SMP" option="Sample At Middle" register="SSP1STAT"/>
-                <setting name="UA" option="dontupdate" register="SSP1STAT"/>
-                <setting name="CKE" option="Idle to Active" register="SSP1STAT"/>
-                <setting name="D_nA" option="lastbyte_address" register="SSP1STAT"/>
-                <setting name="SSPEN" option="enabled" register="SSP1CON1"/>
-                <setting name="WCOL" option="no_collision" register="SSP1CON1"/>
-                <setting name="CKP" option="Idle:Low, Active:High" register="SSP1CON1"/>
-                <setting name="SSPM" option="FOSC/4_SSPxADD" register="SSP1CON1"/>
-                <setting name="SSPOV" option="no_overflow" register="SSP1CON1"/>
-                <setting name="ACKEN" option="disabled" register="SSP1CON2"/>
-                <setting name="GCEN" option="disabled" register="SSP1CON2"/>
-                <setting name="PEN" option="disabled" register="SSP1CON2"/>
-                <setting name="ACKDT" option="acknowledge" register="SSP1CON2"/>
-                <setting name="RSEN" option="disabled" register="SSP1CON2"/>
-                <setting name="RCEN" option="disabled" register="SSP1CON2"/>
-                <setting name="ACKSTAT" option="received" register="SSP1CON2"/>
-                <setting name="SEN" option="disabled" register="SSP1CON2"/>
-                <setting name="ACKTIM" option="ackseq" register="SSP1CON3"/>
-                <setting name="SBCDE" option="disabled" register="SSP1CON3"/>
-                <setting name="BOEN" option="disabled" register="SSP1CON3"/>
-                <setting name="SCIE" option="disabled" register="SSP1CON3"/>
-                <setting name="PCIE" option="disabled" register="SSP1CON3"/>
-                <setting name="DHEN" option="disabled" register="SSP1CON3"/>
-                <setting name="SDAHT" option="100ns" register="SSP1CON3"/>
-                <setting name="AHEN" option="disabled" register="SSP1CON3"/>
-                <setting name="MSK0" option="0x0" register="SSP1MSK"/>
-                <setting name="SSPBUF" option="0x0" register="SSP1BUF"/>
-                <setting name="SSP1ADD" option="3" register="SSP1ADD"/>
-            </initializer>
-            <setting name="readbufferchanged" option="8"/>
-            <setting name="writebufferchanged" option="8"/>
-            <setting name="addressMode" option="true"/>
-            <file checksum="519484877" modified="false" name="i2c1.c" path="mcc_generated_files/i2c1.c"/>
-            <file checksum="1292019547" modified="false" name="i2c1.h" path="mcc_generated_files/i2c1.h"/>
+            <file checksum="493749228" modified="false" name="tmr0.c" path="mcc_generated_files/tmr0.c"/>
+            <file checksum="2914042823" modified="false" name="tmr0.h" path="mcc_generated_files/tmr0.h"/>
         </module>
     </modules>
 </configuration>
