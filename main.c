@@ -182,6 +182,12 @@ void main(void)
                     sendString("Counting Mode\r\n");
                     runTestFlag = 1;
                     break;
+                // Time Interval
+                case 'd':
+                    measureMode = MODE_INTERVAL;
+                    sendString("Interval Mode\r\n");
+                    runTestFlag = 1;
+                    break;
                 // Analysis
                 case 'a':
                     measureMode = MODE_ANALYSIS;
