@@ -7,7 +7,7 @@
 #include "mcc_generated_files/mcc.h"
 
 // Returns the value stored on the counter;
-// Takes delay time in microseconds.
+// Takes delay time in miliseconds.
 uint16_t readCounter(int delayTime) {
 	// Switch bus to read from counter.
 	switchBus(BUS_COUNTER_READ);
@@ -15,7 +15,7 @@ uint16_t readCounter(int delayTime) {
 	COUNTER_ENABLE_SetHigh();
 
 	// Gather events for time length
-	__delay_us(delayTime);
+	__delay_ms(delayTime);
 
 	// Count of events
 	uint16_t count = 0;

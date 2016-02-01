@@ -14,6 +14,7 @@
 
 #include <stdint.h>        /* For uint8_t definition */
 #include <stdbool.h>       /* For true/false definition */
+#include <stdio.h>
 
 #endif
 
@@ -23,6 +24,8 @@
 #include "bus.h"
 #include "sram.h"
 #include "lcd.h"
+#include "counter.h"
+#include <pic18.h>
 //#include <plib/i2c.h>
 
 // Peripheral library includes
@@ -36,6 +39,11 @@
 #define MODE_COUNT 2
 #define MODE_ANALYSIS 3
 #define NUM_MODES 20
+
+// Number of miliseconds in low res mode.  10 seconds.
+#define LOW_RES 10000
+// Number of miliseconds in high res mode. 10 ms.
+#define HIGH_RES 10
 
 #define TEST_LOOP(CODE) \
     char data; \
@@ -64,12 +72,12 @@ void testUart();
 void testSendString();
 void testSendNum();
 void testSRAM();
-void measureFreq(int resolution);
-void measurePeriod(int resolution);
-void measureCount(int resolution);
-int getCount(int resolution);
-void printInfo();
+void measureFreq(int resolution, uint8_t currAddr);
+void measurePeriod(int resolution, uint8_t currAddr);
+void measureCount(int resolution, uint8_t currAddr);
 void testLCD();
+void printHelpInfo();
+void printFromSRAM(uint8_t currAddr);
 
 void main(void)
 {
@@ -112,6 +120,7 @@ void main(void)
 
     int measureMode = 0;
     
+    uint8_t currAddr = 0;
     while(1)
     {
         // Char to capture command from uart or elsewhere
@@ -172,6 +181,7 @@ void main(void)
                 // Toggles mode
                 case 't':
                     measureMode = (measureMode + 1) % NUM_MODES;
+                    break;
                 default :
                     break;
             }
@@ -183,22 +193,35 @@ void main(void)
             switch(measureMode) {
                 // Frequency
                 case MODE_FREQ:
-                    measureFreq(resolution);
+                    measureFreq(resolution, currAddr);
+                    currAddr = (currAddr + 2) % 32; 
                     break;
                 case MODE_PER:
-                    measurePeriod(resolution);
+                    measurePeriod(resolution, currAddr);
+                    currAddr = (currAddr + 2) % 32;
                     break;
                 case MODE_COUNT:
-                    measureCount(resolution);
+                    measureCount(resolution, currAddr);
+                    currAddr = (currAddr + 2) % 32;
                     break;
                 case MODE_ANALYSIS:
                     peak_f = fftSingleCycle();
+                    // Write bottom 16 bits to memory
+                    wireSRAM(currAddr, (uint8_t) (0x0FF & peak_f));
+                    wireSRAM((currAddr + 1) % 32, (uint8_t) (0xFFF00 & peak_f >> 8));
+                    // Increment currAddr.
+                    currAddr = (currAddr + 2) % 32;
+                    // Print message
+                    char message[32];
+                    sprintf(message, "f: %lu Hz \r\n", peak_f);
+                    sendString(message);
                     break;
                 // Read from memory location if <20
                 default :
                     // Read from SRAM locations 1-16
                     if((measureMode > 3) && (measureMode < NUM_MODES)) {
                         // Read location measureMode - 4 
+                        printFromSRAM(currAddr);
                     }
                     break;
             }
@@ -206,41 +229,67 @@ void main(void)
     }
 }
 
+// Prints help information for how to use device.
+void printHelpInfo() {
+    sendString("Accepted characters from command line: \r\n f: measure frequency, p: measure period,\
+        c: measure count, a: analyze noise, h: set resolution high, l: set resolution low, i: print help information,\
+        s: print data from sram, t: toggle through modes. Can be used to toggle through addresses of sram.\r\n\
+        Accepted inputs from buttons: switch resolution, toggle display state.\r\n" );\
+}
+
+/*
+Prints 16 bits of data from sram stored at currAddr.
+*/
+void printFromSRAM(uint8_t currAddr) {
+    uint8_t data1 = readSRAM(currAddr);
+    uint8_t data2 = readSRAM((currAddr + 1) % 32);
+    char message[32];
+    sprintf(message, "%d: %d, %d: %d \r\n", currAddr, data1, (currAddr + 1) % 32, data2);
+    sendString(message); 
+}
+
 /*
  * Measure frequency through counting
  */
-void measureFreq(int resolution) {
-    
+void measureFreq(int resolution, uint8_t currAddr) {
+    uint16_t count = 0;
+    float freq = 0;
+    char message[32];
+    if(resolution) {
+        // High frequency measurement
+        count = readCounter(HIGH_RES);
+        // Frequency in KHZ
+        freq = 1.0 * count / 10;
+        sprintf(message, "%02d.%02d KHz\r\n", (int)freq, (int)((freq-(int)(freq))*1000));
+    } else {
+        // Low frequency measurement
+        count = readCounter(LOW_RES);
+        freq = 1.0 * count / 10;
+        sprintf(message, "%02d.%02d Hz\r\n", (int)freq, (int)((freq-(int)(freq))*1000));
+
+    }
+    // Print on serial
+    sendString(message);
+    // Print to two places in SRAM
+    writeSRAM(currAddr, (uint8_t)freq);
+    writeSRAM((currAddr + 1) % 32, (uint8_t)(freq-(int)(freq))*1000);
+    /*
+    Write to LCD here
+    */
 }
 
 /*
  * Measure period of signal through counting
  */
 
-void measurePeriod(int resolution) {
+void measurePeriod(int resolution, uint8_t currAddr) {
     
 }
 
 /*
  * Measures a count of events over a period specified by resolution
  */
-void measureCount(int resolution) {
-    
-}
-
-/*
- * Returns the count for a time period specified by resolution
- */
-int getCount(int resolution) {
-    int count = 0;
-    return count;
-}
-
-/*
- * Prints help information
- */
-
-void printInfo() {
+void measureCount(int resolution, uint8_t currAddr) {
     
 }
 

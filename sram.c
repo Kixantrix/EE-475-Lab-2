@@ -1,6 +1,7 @@
 #include "bus.h"
 #include "mcc_generated_files/pin_manager.h"
 #include <stdint.h>
+#include "sram.h"
 
 /*
 SRAM control signals are active low
