@@ -40,11 +40,6 @@
 #define MODE_ANALYSIS 3
 #define NUM_MODES 20
 
-// Number of miliseconds in low res mode.  10 seconds.
-#define LOW_RES 10000
-// Number of miliseconds in high res mode. 10 ms.
-#define HIGH_RES 10
-
 #define TEST_LOOP(CODE) \
     char data; \
     while(1) { \
@@ -103,7 +98,7 @@ void main(void)
     // Test SRAM read/write
     testSRAM();
     // Test LCD
-    testLCD();
+    //testLCD();
     // Default Posedge activation.
     int edgeActivation = 0;
     
@@ -129,20 +124,22 @@ void main(void)
         // If there is a char to read, read it.
         if(PIR1bits.RC1IF) {
             inputRead = EUSART1_Read();
-            runTestFlag = 1;
         }
         
         // Switch from high to low resolution on button switch
         if(!RES_SWITCH_GetValue()) {
             while(!RES_SWITCH_GetValue());
-            resolution = !resolution;
+            if(resolution) {
+                inputRead = 'l';
+            } else {
+                inputRead = 'h';
+            }
         }
 
         // Toggle measure/display mode
         if(!DISP_TOGGLE_GetValue()) {
             while(!DISP_TOGGLE_GetValue());
-            measureMode = (measureMode + 1) % NUM_MODES;
-            runTestFlag = 1;
+            inputRead = 't';
         }
         
         // Select function based on input
@@ -151,26 +148,36 @@ void main(void)
                 // Frequency
                 case 'f':
                     measureMode = MODE_FREQ;
+                    sendString("Frequency Mode\r\n");
+                    runTestFlag = 1;
                     break;
                 // Period
                 case 'p':
                     measureMode = MODE_PER;
+                    sendString("Periodic Mode\r\n");
+                    runTestFlag = 1;
                     break;
                 // Count
                 case 'c':
                     measureMode = MODE_COUNT;
+                    sendString("Counting Mode\r\n");
+                    runTestFlag = 1;
                     break;
                 // Analysis
                 case 'a':
                     measureMode = MODE_ANALYSIS;
+                    sendString("Analysis Mode\r\n");
+                    runTestFlag = 1;
                     break;
                 // Set resolution high
                 case 'h':
                     resolution = 1;
+                    sendString("High Resolution\r\n");
                     break;
                 // Set resolution low
                 case 'l':
                     resolution = 0;
+                    sendString("Low Resolution\r\n");
                     break;
                 // Print help information
                 case 'i':
@@ -186,9 +193,11 @@ void main(void)
                         measureMode += 1;
                     }
                     break;
+                    runTestFlag = 1;
                 // Toggles mode
                 case 't':
                     measureMode = (measureMode + 1) % NUM_MODES;
+                    runTestFlag = 1;
                     break;
                 default :
                     break;
@@ -230,6 +239,8 @@ void main(void)
                     if((measureMode > 3) && (measureMode < NUM_MODES)) {
                         // Read location measureMode - 4 
                         printFromSRAM(currAddr);
+                    } else {
+                        measureMode = 0;
                     }
                     break;
             }
