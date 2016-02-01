@@ -41,15 +41,15 @@ unsigned long fftSingleCycle() {
         fftReal[i] = (int16_t)((uint16_t)fftReal[i] >> 4) - 31;
     
     // Timer clock is Fosc/4, so do >>2
-    sample_freq = ((_XTAL_FREQ)/((stop_t > start_t) 
+    sample_freq = (_XTAL_FREQ << (FFT_LEN_BITS))/((stop_t > start_t) 
                             ? (stop_t - start_t) 
-                            : ((1 << 16) - start_t + stop_t))) << FFT_LEN_BITS;
+                            : (65536 - start_t + stop_t));
     
     // Reset the imaginary array
     for (int i = 0; i < FFT_LEN; i++)
         fftImag[i] = 0;
     
     max_index = optfft(fftReal, fftImag);
-    peak_freq = (max_index * sample_freq) >> FFT_LEN_BITS;
+    peak_freq = (max_index * sample_freq) >> (FFT_LEN_BITS);
     return peak_freq;
 }
