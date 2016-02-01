@@ -98,7 +98,7 @@ void main(void)
     // Test SRAM read/write
     testSRAM();
     // Test LCD
-    //testLCD();
+    testLCD();
     // Default Posedge activation.
     int edgeActivation = 0;
     
@@ -283,7 +283,7 @@ void measureFreq(int resolution, uint8_t currAddr) {
     } else {
         // Low frequency measurement
         count = readCounter(LOW_RES);
-        freq = 1.0 * count / 10;
+        freq = 1.0 * count;
         sprintf(message, "%02d.%02d Hz\r\n", (int)freq, (int)((freq-(int)(freq))*1000));
 
     }
@@ -309,13 +309,13 @@ void measurePeriod(int resolution, uint8_t currAddr) {
         // small period measurement
         count = readCounter(HIGH_RES);
         // period in ms
-        per = 10.0 / count;
+        per = 1.0 / count;
         sprintf(message, "%02d.%02d ms\r\n", (int)per, (int)((per-(int)(per))*1000));
     } else {
         // large period measurement
         count = readCounter(LOW_RES);
         // Period in s.
-        per = 10.0 / count;
+        per = 0.1 / count;
         sprintf(message, "%02d.%02d s\r\n", (int)per, (int)((per-(int)(per))*1000));
 
     }
@@ -338,12 +338,12 @@ void measureCount(int resolution, uint8_t currAddr) {
     if(resolution) {
         // short time measurement
         count = readCounter(HIGH_RES);
-        sprintf(message, "%02d events\r\n", count);
+        sprintf(message, "%02d events in 10 ms\r\n", count);
     } else {
         // long time measurement
         count = readCounter(LOW_RES);
         // Period in s.
-        sprintf(message, "%02d events\r\n", count);
+        sprintf(message, "%02d events in 1s\r\n", count);
     }
     // Print on serial
     sendString(message);
@@ -376,13 +376,12 @@ void testUart()
 */
 void testLCD()
 {
-    lcd_init();
+    LCD_Init();
     while(1) {
         char data = EUSART1_Read();
         if(data == 't') {
-            lcd_write('c');
-            lcd_write('d');
-            lcd_write('e');
+            sendString("LCD Test");
+            LCD_Write_String("LCD Test");
         } else if (data == ('\n') || data == '\r') {
             return;
         }
