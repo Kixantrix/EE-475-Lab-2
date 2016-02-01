@@ -240,7 +240,7 @@ void main(void)
                     // Read from SRAM locations 1-16
                     if((measureMode > 3) && (measureMode < NUM_MODES)) {
                         // Read location measureMode - 4 
-                        printFromSRAM(measureMode - 4);
+                        printFromSRAM((measureMode - 4)*2);
                     } else {
                         measureMode = 0;
                     }
