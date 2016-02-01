@@ -5,11 +5,10 @@
 #define I2C_IO_V1 //make sure we use the right pins
 #include "i2c.h"
 //#include "utils.h"
-#include "lcd.h"
-#include "mcc_generated_files/mcc.h"
+#include "mcc_generated_files/i2c1.h"
 
 
-void I2C1_Initialize(void) {
+/*void I2C1_Initialize(void) {
     // R_nW write_noTX; P stopbit_notdetected; S startbit_notdetected; BF RCinprocess_TXcomplete; SMP Sample At Middle; UA dontupdate; CKE Idle to Active; D_nA lastbyte_address; 
     SSP1STAT = 0x00;
     // SSPEN enabled; WCOL no_collision; CKP Idle:Low, Active:High; SSPM FOSC/4_SSPxADD; SSPOV no_overflow; 
@@ -18,7 +17,7 @@ void I2C1_Initialize(void) {
     SSP1CON3 = 0x00;
     // Baud Rate Generator Value: SSP1ADD 3;   
     SSP1ADD = 0x03;
-}
+}*/
 
 void LCD_Open()
 {
@@ -43,7 +42,7 @@ void LCD_BL(uint8_t status)
 
 void LCD_Init()
 {
-    I2C1_Initialize(void);
+    I2C1_Initialize();
     LCD_Open();
     
     // Following bytes are all Command bytes, i.e. address = 0x00
