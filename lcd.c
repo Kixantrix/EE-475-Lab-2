@@ -1,6 +1,7 @@
 #include <stdint.h>
 
 #include "xc.h"
+#include "mcc_generated_files/mcc.h"
 #define I2C_IO_V1 //make sure we use the right pins
 #include "i2c.h"
 //#include "utils.h"
