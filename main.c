@@ -416,9 +416,9 @@ void testSendNum()
 
 void testSRAM() {
   TEST_LOOP(
-    uint8_t writedata = 0xAC; // 172
+    uint8_t writedata = 0x2A; // 42
     uint8_t readdata;
-    uint8_t addr = 2;
+    uint8_t addr = 0xA;
     
     sendString("Testing SRAM...\n");
     writeSRAM(addr, writedata);
