@@ -122,6 +122,11 @@ void main(void) {
             if (data == '\r') {
                 set_row((row++)&0x3); //0-3
             }
+            else if (data == 127 || data == 8) { //delete or backspace
+                backspace();
+                send_char(' ');
+                backspace();
+            }
             else {
                 send_char(data);
             }
