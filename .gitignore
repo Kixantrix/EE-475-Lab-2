@@ -1,3 +1,8 @@
 /build/*
 /dist/*
 /mcc_generated_files/*
+/ngproject/*
+/Lab2Slave/dist/*
+/Lab2Slave/build/*
+/Lab2Slave/mcc_generated_files/*
+/Lab2Slave/nbproject/*
