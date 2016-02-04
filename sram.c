@@ -12,7 +12,7 @@ SRAM control signals are active low
 
 #define OE OE_PORT
 #define WE WE_PORT
-#define CE CE_PORT
+#define CE DATA_10_CE_PORT
 
 void set_addr(uint8_t addr);
 

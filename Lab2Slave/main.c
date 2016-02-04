@@ -24,30 +24,11 @@
 // Peripheral library includes
 #include "mcc_generated_files/mcc.h"
 
-// Defines for functionality
-#define MODE_FREQ 0
-#define MODE_PER 1
-#define MODE_COUNT 2
-#define MODE_ANALYSIS 3
-#define MODE_INTERVAL 4
-#define NUM_MODES 20
+#include "network.h"
 
 /******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
-
-enum DataType {
-    NONE,
-    FREQ_HIGH, 
-    FREQ_LOW, 
-    PERIOD_HIGH, 
-    PERIOD_LOW, 
-    COUNT_HIGH, 
-    COUNT_LOW, 
-    INTERVAL_HIGH,
-    INTERVAL_LOW,
-    ANALYSIS
-};
 
 enum DataType sramDataTypes[16] = {NONE};
 
@@ -56,4 +37,8 @@ void main(void)
     PIN_MANAGER_Initialize();
     SYSTEM_Initialize();
     OSCILLATOR_Initialize();
+    SPI1_Initialize();
+    
+    while(1)
+        listenForMaster();
 }
