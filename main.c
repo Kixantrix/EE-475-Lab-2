@@ -23,7 +23,6 @@
 #include "uartcomms.h"
 #include "bus.h"
 #include "sram.h"
-#include "lcd_2.h"
 #include "counter.h"
 #include <pic18.h>
 //#include <plib/i2c.h>
@@ -73,7 +72,6 @@ void measureFreq(int resolution, uint8_t currAddr);
 void measurePeriod(int resolution, uint8_t currAddr);
 void measureCount(int resolution, uint8_t currAddr);
 void measureInterval(int resolution, uint8_t currAddr);
-void testLCD();
 void printHelpInfo();
 void printFromSRAM(uint8_t currAddr);
 
@@ -116,8 +114,6 @@ void main(void)
     testSendNum();
     // Test SRAM read/write
     testSRAM();
-    // Test LCD
-    testLCD();
     // Default Posedge activation.
     int edgeActivation = 0;
     
@@ -463,32 +459,6 @@ void testUart()
         data = EUSART1_Read();
         EUSART1_Write(data);
         if (data == '\n' || data == '\r') {
-            return;
-        }
-    }
-}
-
-/*
-* Test I2C functionality
-*/
-void testLCD()
-{
-    while(1) {
-        char data = EUSART1_Read();
-        if(data == 't') {
-            sendString("\r\nLCD Test\r\n");
-            lcd_init();
-            write_str("Testing...", 1);
-            write_str("Testing...", 2);
-            write_str("Testing...", 3);
-            write_str("Testing...", 4);
-            //lcd_write('H');
-            //backlight();
-            //__delay_ms(100);
-            //noBacklight();
-            //__delay_ms(100);
-            //LCD_Write_String("LCD Test");
-        } else if (data == ('\n') || data == '\r') {
             return;
         }
     }
