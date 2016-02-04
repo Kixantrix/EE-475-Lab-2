@@ -46,6 +46,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "mcc_generated_files/mcc.h"
 #include "lcd.h"
+#include "mcc_generated_files/eusart1.h"
+
+void delay(int delay);
 
 /*
                          Main application
@@ -82,11 +85,57 @@ void main(void) {
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
 
-    init_lcd();
+    lcd_init();
     
     while (1) {
-        __delay_ms(1000);
-        send_char('c');
+        delay(100);
+        clear();
+        delay(100);
+        send_char('F');
+        send_char('U');
+        send_char('C');
+        send_char('K');
+        set_row(1);
+        send_char('T');
+        send_char('H');
+        send_char('I');
+        send_char('S');
+        set_row(2);
+        send_char('Y');
+        send_char('O');
+        send_char('L');
+        send_char('O');
+        send_char(' ');
+        send_char('S');
+        send_char('W');
+        send_char('A');
+        send_char('G');
+        set_row(3);
+        send_str("Python is the best:)");
+        home();
+        delay(100);
+        clear();
+        char data;
+        uint8_t row = 0;
+        while(1) {
+            data = EUSART1_Read();
+            if (data == '\r') {
+                set_row((row++)&0x3); //0-3
+            }
+            else {
+                send_char(data);
+            }
+            EUSART1_Write(data);
+        }
+    }
+}
+
+/*
+ * Delay utility function
+ */
+void delay(int delay) {
+    for(int i=0; i<delay; i++){
+        __delay_ms(10);
     }
 }
 /**

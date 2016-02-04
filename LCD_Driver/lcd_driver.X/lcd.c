@@ -13,7 +13,17 @@
  * Init the lcd following the procedure in the datasheet. 
  */
 void lcd_init() {
-    __delay_ms(20); //insure we wait long enough for internal reset
+    __delay_ms(100); //insure we wait long enough for internal reset
+    //full from 0 init
+    set_data(0x30, 0);
+    __delay_ms(10);
+    set_data(0x30, 0);
+    __delay_ms(10);
+    set_data(0x30, 0);
+    __delay_ms(10);
+    set_data(0x30, 0);
+    __delay_ms(10);
+    //general init
     set_data(0x38, 0);
     __delay_ms(2);
     set_data(0x0E, 0);
@@ -68,17 +78,36 @@ void home() {
  */
 void set_row(uint8_t row) {
     switch (row) {
-        case 1:
+        case 0:
             set_data(0x40, 0);
             break;
-        case 2:
+        case 1:
             set_data(0xa8, 0);
             break;
-        case 3:
-            set_data(0x8e, 0);
+        case 2:
+            set_data(0x94, 0);
             break;
-        case 4:
-            set_data(0xb6, 0);
+        case 3:
+            set_data(0xd4, 0);
             break;
     }
+}
+
+/*
+ * Send a string, not that we need to
+ */
+void send_str(char msg[]) {
+    uint8_t i = 0;
+    while(msg[i] != '\0') {
+        send_char(msg[i]);
+        i++;
+    }
+}
+
+/*
+ * Backspace
+ */
+
+void backspace() {
+    set_data(0x10, 0);
 }

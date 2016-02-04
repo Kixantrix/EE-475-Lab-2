@@ -24,6 +24,7 @@ void send_char(char c);
 void clear();
 void home();
 void set_row(uint8_t row);
+void send_str(char msg[]);
 
 #ifdef	__cplusplus
 }
