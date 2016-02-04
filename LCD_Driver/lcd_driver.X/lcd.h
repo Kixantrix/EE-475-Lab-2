@@ -12,6 +12,8 @@
 extern "C" {
 #endif
 
+#include <stdint.h>
+    
 #define DATABUS LATB
 #define En LATC3
 #define Rs LATC1
@@ -19,6 +21,9 @@ extern "C" {
 void lcd_init();
 void set_data(uint8_t byte, uint8_t rs);
 void send_char(char c);
+void clear();
+void home();
+void set_row(uint8_t row);
 
 #ifdef	__cplusplus
 }
