@@ -25,7 +25,8 @@
 #include "sram.h"
 #include "counter.h"
 #include <pic18.h>
-//#include <plib/i2c.h>
+#include "Lab2Slave/datatypes.h"
+#include "Lab2Slave/network.h"
 
 // Peripheral library includes
 #include "mcc_generated_files/adc.h"
@@ -74,19 +75,7 @@ void measureCount(int resolution, uint8_t currAddr);
 void measureInterval(int resolution, uint8_t currAddr);
 void printHelpInfo();
 void printFromSRAM(uint8_t currAddr);
-
-enum DataType {
-    NONE,
-    FREQ_HIGH, 
-    FREQ_LOW, 
-    PERIOD_HIGH, 
-    PERIOD_LOW, 
-    COUNT_HIGH, 
-    COUNT_LOW, 
-    INTERVAL_HIGH,
-    INTERVAL_LOW,
-    ANALYSIS
-};
+void remoteNode(uint8_t resolution);
 
 enum DataType sramDataTypes[16] = {NONE};
 
@@ -215,6 +204,9 @@ void main(void)
                     }
                     runTestFlag = 1;
                     break;
+                // Request remote information over network
+                case 'r':
+                    remoteNode(resolution);
                 // Toggles mode
                 case 't':
                     measureMode = (measureMode + 1) % NUM_MODES;
@@ -313,7 +305,76 @@ void printFromSRAM(uint8_t currAddr) {
     sendString(message); 
 }
 
+// Prompts user  for information on remote node, and then requests data  from the node,
+// printing it to uart output.
+void remoteNode(uint8_t resolution) {
+    sendString("Slave addr? (0-5)\r\n");
+    char slave_read = (char)EUSART1_Read();
+    uint8_t slave_addr = 0;
+    if(slave_addr <= '5' && slave_addr >= '0') {
+        slave_addr = '5' - slave_read;
+    }
+    sendString("Function?\r\n");
+    char function = (char) EUSART1_Read();
+    uint8_t sram_addr = 0;
+    enum DataType dataType = NONE;
+    switch(function) { 
+        // Frequency
+        case 'f':
+            if(resolution) {
+                dataType = FREQ_HIGH;
+            } else {
+                dataType = FREQ_LOW;
+            }
+            break;
+        // Period
+        case 'p':
+            if(resolution) {
+                dataType = PERIOD_HIGH;
+            } else {
+                dataType = PERIOD_LOW;
+            }
+            break;
+        // Count
+        case 'c':
+            if(resolution) {
+                dataType = COUNT_HIGH;
+            } else {
+                dataType = COUNT_LOW;
+            }
+            break;
+        // Time Interval
+        case 'd':
+            if(resolution) {
+                dataType = INTERVAL_HIGH;
+            } else {
+                dataType = INTERVAL_LOW;
+            }
+            break;
+        // Analysis
+        case 'a':
+            dataType = ANALYSIS;
+            break;
+        // Prints from sram
+        case 's':
+            dataType = SRAM;
+            sendString("Addr? (0-9, a-f)");
+            char addr = (char)EUSART1_Read();
+            if(addr <= '9' && addr >= '0') {
+                sram_addr = addr - '0'; 
+            } else if(addr <= 'f' && addr >= 'a'){
+                sram_addr = addr - 'a';
+            } else {
+                sram_addr = 0;
+            }
+            break;
+        default :
+            sendString("Undefined command");
+            return;
+    }
+    uint16_t requestData = requestFromSlave(slave_addr, datatype, sram_addr);
 
+}
 
 /*
  * Measure frequency through counting
