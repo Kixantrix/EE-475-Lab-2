@@ -207,6 +207,7 @@ void main(void)
                 // Request remote information over network
                 case 'r':
                     remoteNode(resolution);
+                    break;
                 // Toggles mode
                 case 't':
                     measureMode = (measureMode + 1) % NUM_MODES;
