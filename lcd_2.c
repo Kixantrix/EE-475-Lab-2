@@ -8,57 +8,87 @@
 #include "mcc_generated_files/mcc.h"
 #include <string.h>
 
-uint8_t  _cols = 20;
-uint8_t  _rows = 4;
-uint8_t  _backlightval = LCD_BACKLIGHT;
-uint8_t _displayfunction;
-uint8_t _displaycontrol;
-uint8_t _displaymode;
-uint8_t _numlines;
-
-void begin(uint8_t cols, uint8_t lines, uint8_t dotsize);
-void send(uint8_t value, uint8_t mode);
-void pulseEnable(uint8_t _data);
-void expanderWrite(uint8_t _data);
-inline void command(uint8_t value);
-void send(uint8_t value, uint8_t mode);
-void lcd_write4bits(uint8_t value);
-
-uint8_t toggle_en(uint8_t packet);
-uint8_t send_packet(uint8_t bits[6], uint8_t en);
+void toggle_en(uint8_t packet);
+void send_packet(uint8_t bits[6], uint8_t en);
 
 void lcd_init(void) {
-    //_displayfunction = LCD_4BITMODE | LCD_2LINE | LCD_5x8DOTS;
-	//begin(_cols, _rows, 0);  
-    uint8_t data = {1, 1, 0, 0, 0, 0};
+    uint8_t data[6] = {1, 1, 0, 0, 0, 0};
     send_packet(data, 1);
-    __delay_ms(5);
+    __delay_ms(30);
     send_packet(data, 1);
-    __delay_us(150);
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {0,1,0,0,0,0};
+    //end init
+    //begin config
+    uint8_t data[6] = {0,1,0,0,0,0};
     send_packet(data, 1);
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {0,0,1,0,0,0};
+    //
+    uint8_t data[6] = {0,0,0,1,0,0}; //set n=1, f=0
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {0,0,0,0,0,0};
+    uint8_t data[6] = {0,0,0,0,0,0};
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {0,0,0,1,0,0};
+    //function set
+    uint8_t data[6] = {0,0,0,1,0,0};
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {0,0,0,0,0,0};
+        //function set d/l = 4 bits
+    uint8_t data[6] = {0,0,0,0,0,0};
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {1,0,0,0,0,0};
+    uint8_t data[6] = {1,0,0,0,0,0};
+    __delay_ms(30);
     send_packet(data, 1);
-    data = {0,0,0,0,0,0};
+    //set icnrmentation + shift
+    uint8_t data[6] = {0,0,0,0,0,0};
+    __delay_ms(30);
+    //
     send_packet(data, 1);
-    data = {0,1,1,0,0,0}; //Increment by one, cursor by 1, no shift
+    uint8_t data[6] = {1,1,1,0,0,0}; //Increment by one, cursor by 1, no shift
+    __delay_ms(30);
     send_packet(data, 1);
+    //Function set
+    uint8_t data[6] = {0,1,0,0,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //function set
+    uint8_t data[6] = {0,1,0,0,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //and again...
+    uint8_t data[6] = {0,1,0,0,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //Display on/off
+    uint8_t data[6] = {0,0,0,0,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //continueing...
+    uint8_t data[6] = {0,1,1,1,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //Entry mode set
+    uint8_t data[6] = {0,0,0,0,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //continuing
+    uint8_t data[6] = {0,1,1,0,0,0}; 
+    __delay_ms(30);
+    send_packet(data, 1);
+    //Should be good to write chars to disp
+    //
+    //write_byte(0x0C); //enable backlight
+    //__delay_ms(5);
+    //write_byte(0x08); //untoggle en
 }
 
 /*Build a char packet and send it off to the display
 in four bit increments. 
  */
-uint8_t send_char(char c) {
+void send_char(char c) {
     uint8_t data[6];
     data[5] = 1; //Rs bit
     data[4] = 0; //R/W bit
@@ -77,7 +107,7 @@ uint8_t send_char(char c) {
 /*Gross method for sending a string to the display
 Doesnt take into account placment of that string...
 */
-uint8_t send_str(char msg[], uint8_t length) {
+void send_str(char msg[], uint8_t length) {
     for(int i = 0; i < length; i++) {
         send_char(msg[i]);
     }
@@ -96,6 +126,7 @@ void send_packet(uint8_t bits[6], uint8_t en) {
     packet |= bits[3] << D7;
     packet |= bits[4] << Rw;
     packet |= bits[5] << Rs;
+    packet |= 1 << 3; //always enable backlight.
     if (en) {
         toggle_en(packet);
     }
@@ -107,9 +138,10 @@ void send_packet(uint8_t bits[6], uint8_t en) {
 /*
  * Toggle the en / clk pin of the display to lock data in. 
  */
-uint8_t toggle_en(uint8_t packet) {
+void toggle_en(uint8_t packet) {
     packet |= 1 << En;
     write_byte(packet);
+    __delay_ms(1);
     uint8_t mask = ~(1 << En);
     packet &= mask;
     write_byte(packet);
