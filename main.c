@@ -372,7 +372,7 @@ void remoteNode(uint8_t resolution) {
             sendString("Undefined command");
             return;
     }
-    uint16_t requestData = requestFromSlave(slave_addr, datatype, sram_addr);
+    uint16_t requestData = requestFromSlave(slave_addr, dataType, sram_addr);
 
 }
 
