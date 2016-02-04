@@ -127,7 +127,7 @@ void main(void) {
                 send_char(' ');
                 backspace();
             }
-            else {
+            else if (data < 128 && data != '\n') {
                 send_char(data);
             }
             EUSART1_Write(data);
