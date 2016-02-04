@@ -274,6 +274,36 @@ void printHelpInfo() {
         Accepted inputs from buttons: switch resolution, toggle display state.\r\n" );\
 }
 
+void printFromRemote(uint16_t data, enum DataType datatype, uint8_t currAddr) {
+    uint8_t data1 = 0xFF & (data >> 8);
+    uint8_t data2 = 0xFF & data;
+    
+    char message[64];
+    if (datatype == FREQ_HIGH)
+        sprintf(message, "%d: %02d.%02d KHz\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (datatype == FREQ_LOW)
+        sprintf(message, "%d: %02d.%02d Hz\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (datatype == PERIOD_HIGH)
+        sprintf(message, "%d: %02d.%02d ms\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (datatype == PERIOD_LOW)
+        sprintf(message, "%d: %02d.%02d s\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (datatype == INTERVAL_HIGH)
+        sprintf(message, "%d: %02d.%02d ms\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (datatype == INTERVAL_LOW)
+        sprintf(message, "%d: %02d.%02d s\r\n", currAddr/2, (int)data1, (int)data2);
+    else if (datatype == COUNT_HIGH)
+        sprintf(message, "%d: %02d events in 10 ms\r\n", currAddr/2, (data2 << 8) | data1);
+    else if (datatype == COUNT_LOW)
+        sprintf(message, "%d: %02d events in 1 s\r\n", currAddr/2, (data2 << 8) | data1);
+    else if (datatype == ANALYSIS)
+        sprintf(message, "%d: %lu Hz \r\n", currAddr/2, (unsigned long)((data2 << 8) | data1));
+    else
+        sprintf(message, "%d: Unknown datatype\r\n", currAddr/2);
+        
+    sendString(message); 
+    
+}
+
 /*
 Prints 16 bits of data from sram stored at currAddr.
 */
@@ -372,8 +402,9 @@ void remoteNode(uint8_t resolution) {
             sendString("Undefined command");
             return;
     }
+    
     uint16_t requestData = requestFromSlave(slave_addr, dataType, sram_addr);
-
+    printFromRemote(requestData, dataType, sram_addr);
 }
 
 /*
