@@ -39,8 +39,8 @@ uint16_t requestFromSlave(uint8_t slave_addr, enum DataType datatype, uint8_t sr
     // Read phase
     
     // Clear for sanity
-    data_write[0] = 0;
-    data_write[1] = 0;
+    data_write[0] = 0xFF;
+    data_write[1] = 0xFF;
     
     total = 0;
     do
@@ -82,8 +82,8 @@ void listenForMaster() {
     // Read phase
     
     // Clear for sanity
-    data_write[0] = 0;
-    data_write[1] = 0;
+    data_write[0] = 0xFF;
+    data_write[1] = 0xFF;
     
     uint8_t total = 0;
     do
