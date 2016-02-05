@@ -111,3 +111,14 @@ void send_str(char msg[]) {
 void backspace() {
     set_data(0x10, 0);
 }
+
+/*
+ Scroll lines on display!
+ */
+void scroll(char lines[4][21]) {
+    clear();
+    for (int i = 0; i < 4; i++) {
+        set_row(i);
+        send_str(lines[i]);
+    }
+}

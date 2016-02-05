@@ -117,18 +117,22 @@ void main(void) {
         clear();
         char data;
         uint8_t row = 0;
+        char display_str[21];
+        display_str[20] = '\0';
+        uint8_t count = 0;
         while(1) {
             data = EUSART1_Read();
-            if (data == '\r') {
+            if (data == '\r' || count==20) {
+                send_str(display_str);
+                for(int i = 0; i<19; i++){
+                    display_str[i] = ' ';
+                }
+                display_str[20] = '\0';
                 set_row((row++)&0x3); //0-3
             }
-            else if (data == 127 || data == 8) { //delete or backspace
-                backspace();
-                send_char(' ');
-                backspace();
-            }
-            else if (data < 128 && data != '\n') {
-                send_char(data);
+            if (data >= ' ' && data <= '~') {
+                display_str[count] == data;
+                count++;
             }
             EUSART1_Write(data);
         }
