@@ -10,6 +10,7 @@
 #include "mcc_generated_files/spi1.h"
 
 #include "datatypes.h"
+#include "network.h"
 
 #define SPI_LEN 2
 uint8_t data_write[SPI_LEN];
@@ -22,33 +23,22 @@ uint8_t data_read[SPI_LEN];
 // MASTER FUNCTIONS
 
 // Sends a slave request on the network
-// in the format:
-//   Slave Address [2:0] : Datatype [4:0] : SRAM Address [7:0]
-uint16_t requestFromSlave(uint8_t slave_addr, enum DataType datatype, uint8_t sram_addr) {
-    data_write[0] = SLAVE_ADDR_MASK & (slave_addr << SLAVE_ADDR_SHIFT);
-    data_write[0] &= DATATYPE_MASK & (uint8_t)datatype;
-    data_write[1] = sram_addr;
+struct SlaveResponse requestFromSlave(uint8_t slave_addr, enum DataType datatype, uint8_t sram_addr) {
+    int8_t dummy = 0;
+    struct SlaveResponse response;
     
-    // Write phase
-    uint8_t total = 0;
-    do
-    {
-        total = SPI1_Exchange8bitBuffer(&data_write[total], SPI_LEN - total, &data_read[total]);
-    } while(total < SPI_LEN);
+    // request
+    dummy = SPI1_Exchange8bit(slave_addr);
+    dummy = SPI1_Exchange8bit(datatype);
+    if (datatype == SRAM)
+        dummy = SPI1_Exchange8bit(sram_addr);
     
-    // Read phase
+    // response
+    response.datatype = SPI1_Exchange8bit(dummy);
+    response.data1 = SPI1_Exchange8bit(dummy);
+    response.data2 = SPI1_Exchange8bit(dummy);
     
-    // Clear for sanity
-    data_write[0] = 0xFF;
-    data_write[1] = 0xFF;
-    
-    total = 0;
-    do
-    {
-        total = SPI1_Exchange8bitBuffer(&data_write[total], SPI_LEN - total, &data_read[total]);
-    } while(total < SPI_LEN);
-       
-    return (uint16_t)((data_read[0] << 8) & data_read[1]);
+    return response;
 }
 
 // SLAVE FUNCTIONS
@@ -57,50 +47,111 @@ uint16_t requestFromSlave(uint8_t slave_addr, enum DataType datatype, uint8_t sr
 uint16_t slave_data[] = 
     {
         0xFFFF, // NONE
-        4, // FREQ_HIGH
-        8, // FREQ_LOW, 
-        16, // PERIOD_HIGH, 
-        32, // PERIOD_LOW, 
-        64, // COUNT_HIGH, 
-        128, // COUNT_LOW, 
-        256, // INTERVAL_HIGH,
-        512, // INTERVAL_LOW,
-        1024, // ANALYSIS,
-        2048, // SRAM
+        4,      // FREQ_HIGH
+        8,      // FREQ_LOW, 
+        16,     // PERIOD_HIGH, 
+        32,     // PERIOD_LOW, 
+        64,     // COUNT_HIGH, 
+        128,    // COUNT_LOW, 
+        256,    // INTERVAL_HIGH,
+        512,    // INTERVAL_LOW,
+        1024,   // ANALYSIS,
+        2048,   // SRAM
     };
 
-uint16_t getDataForMaster(uint8_t slave_addr, enum DataType datatype, uint8_t sram_addr) {
-    // Invalid things
-    if (slave_addr > 5 || datatype == NONE || sram_addr > 15)
-        return 0xFFFF;
-    
-    return (slave_addr+1)*slave_data[datatype] + sram_addr;
-}
+enum DataType sram_dataypes[] =
+    {
+        FREQ_HIGH,      // 0
+        FREQ_LOW,       // 1
+        PERIOD_HIGH,    // 2
+        PERIOD_LOW,     // 3
+        COUNT_HIGH,     // 4
+        COUNT_LOW,      // 5
+        INTERVAL_HIGH,  // 6
+        INTERVAL_LOW,   // 7
+        ANALYSIS,       // 8
+        FREQ_HIGH,      // 9
+        FREQ_LOW,       // 10
+        PERIOD_HIGH,    // 11
+        PERIOD_LOW,     // 12
+        COUNT_HIGH,     // 13
+        COUNT_LOW,      // 14
+        INTERVAL_HIGH   // 15
+    };
 
 // waits for communication from the master and acts accordingly
 void listenForMaster() {
-    // Read phase
+    int8_t dummy = 0;
+    uint8_t slave_addr; 
+    enum DataType datatype;
+    uint8_t sram_addr = 0;
+    uint8_t data1, data2;
     
-    // Clear for sanity
-    data_write[0] = 0xFF;
-    data_write[1] = 0xFF;
+    // request
+    slave_addr = SPI1_Exchange8bit(dummy);
+    if (slave_addr > 5) {
+        // unrecognized address, must be doing a test
+        dummy = SPI1_Exchange8bit(~slave_addr);
+        return;
+    }
     
-    uint8_t total = 0;
-    do
-    {
-        total = SPI1_Exchange8bitBuffer(&data_write[total], SPI_LEN - total, &data_read[total]);
-    } while(total < SPI_LEN);
+    datatype = SPI1_Exchange8bit(dummy);
+    if (datatype == SRAM)
+        sram_addr = SPI1_Exchange8bit(dummy);
     
-    uint16_t data = getDataForMaster(SLAVE_ADDR_MASK & (data_read[0] << SLAVE_ADDR_SHIFT), 
-            DATATYPE_MASK & data_read[0],
-            data_write[1]);
-    data_write[0] = (uint8_t) (0xF & (data >> 8));
-    data_write[1] = (uint8_t) (0xF & data);
+    // response
+    uint8_t to_add = 0;
+    if (datatype == SRAM) {
+        datatype = sram_dataypes[sram_addr];
+        to_add = 10;
+    }
     
-    // Write phase
-    total = 0;
-    do
-    {
-        total = SPI1_Exchange8bitBuffer(&data_write[total], SPI_LEN - total, &data_read[total]);
-    } while(total < SPI_LEN);
+    switch (datatype) {
+        case FREQ_HIGH: // 1.001 kHz, SRAM: 1.011 kHz
+            data1 = 1;
+            data2 = 001;
+            break;
+        case FREQ_LOW: // 1.002 Hz, SRAM: 1.012 Hz
+            data1 = 1;
+            data2 = 002;
+            break;
+        case PERIOD_HIGH: // 2.001 ms, SRAM: 2.011 ms
+            data1 = 2;
+            data2 = 001;
+            break;
+        case PERIOD_LOW: // 2.002 s, SRAM: 2.012 s
+            data1 = 2;
+            data2 = 002;
+            break;
+        case COUNT_HIGH: // 401, SRAM: 411
+            data1 = 145;
+            data2 = 1;
+            break;
+        case COUNT_LOW: // 402, SRAM: 412
+            data1 = 146;
+            data2 = 1;
+            break;
+        case INTERVAL_HIGH: // 3.001 ms, SRAM: 3.011 ms
+            data1 = 3;
+            data2 = 001;
+            break;
+        case INTERVAL_LOW: // 3.002 s, SRAM: 3.012 s
+            data1 = 3;
+            data2 = 002;
+            break;
+        case ANALYSIS: // 500, SRAM: 510
+            data1 = 244;
+            data2 = 1;
+            break;
+        default:
+            data1 = 0xFF;
+            data2 = 0xFF;
+            break;
+    }
+    
+    data1 += to_add;
+    
+    dummy = SPI1_Exchange8bit(datatype);
+    dummy = SPI1_Exchange8bit(data1);
+    dummy = SPI1_Exchange8bit(data2);
 }
