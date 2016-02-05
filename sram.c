@@ -2,6 +2,7 @@
 #include "mcc_generated_files/pin_manager.h"
 #include <stdint.h>
 #include "sram.h"
+#include "mcc_generated_files/mcc.h"
 
 /*
 SRAM control signals are active low
@@ -42,15 +43,16 @@ uint8_t readSRAM(uint8_t addr) {
     
     // configure the bus for read
     switchBus(BUS_SRAM_READ);
-    
+    __delay_ms(1);
     // trigger read
     CE = 0; WE = 1; OE = 0;
-    
+    //delay
+    __delay_ms(1);
     // grab the data
     uint8_t data = BUS;
-    
     // reset state
     CE = 1; WE = 1; OE = 1;
+    __delay_ms(1);
 	return data;
 }
 
