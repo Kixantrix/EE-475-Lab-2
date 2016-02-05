@@ -281,21 +281,21 @@ void printHelpInfo() {
 void printData(uint8_t data1, uint8_t data2, enum DataType datatype, uint8_t sram_addr) {
     char message[64];
     if (datatype == FREQ_HIGH)
-        sprintf(message, "%d: %02d.%02d KHz\r\n", sram_addr, (int)data1, (int)data2);
+        sprintf(message, "%d: %d.%03d KHz\r\n", sram_addr, (int)data1, (int)data2);
     else if (datatype == FREQ_LOW)
-        sprintf(message, "%d: %02d.%02d Hz\r\n", sram_addr, (int)data1, (int)data2);
+        sprintf(message, "%d: %d.%03d Hz\r\n", sram_addr, (int)data1, (int)data2);
     else if (datatype == PERIOD_HIGH)
-        sprintf(message, "%d: %02d.%02d ms\r\n", sram_addr, (int)data1, (int)data2);
+        sprintf(message, "%d: %d.%03d ms\r\n", sram_addr, (int)data1, (int)data2);
     else if (datatype == PERIOD_LOW)
-        sprintf(message, "%d: %02d.%02d s\r\n", sram_addr, (int)data1, (int)data2);
+        sprintf(message, "%d: %d.%03d s\r\n", sram_addr, (int)data1, (int)data2);
     else if (datatype == INTERVAL_HIGH)
-        sprintf(message, "%d: %02d.%02d ms\r\n", sram_addr, (int)data1, (int)data2);
+        sprintf(message, "%d: %d.%03d ms\r\n", sram_addr, (int)data1, (int)data2);
     else if (datatype == INTERVAL_LOW)
-        sprintf(message, "%d: %02d.%02d s\r\n", sram_addr, (int)data1, (int)data2);
+        sprintf(message, "%d: %d.%03d s\r\n", sram_addr, (int)data1, (int)data2);
     else if (datatype == COUNT_HIGH)
-        sprintf(message, "%d: %02d events in 10 ms\r\n", sram_addr, (data2 << 8) | data1);
+        sprintf(message, "%d: %d events in 10 ms\r\n", sram_addr, (data2 << 8) | data1);
     else if (datatype == COUNT_LOW)
-        sprintf(message, "%d: %02d events in 1 s\r\n", sram_addr, (data2 << 8) | data1);
+        sprintf(message, "%d: %d events in 1 s\r\n", sram_addr, (data2 << 8) | data1);
     else if (datatype == ANALYSIS)
         sprintf(message, "%d: %lu Hz \r\n", sram_addr, (unsigned long)((data2 << 8) | data1));
     else
@@ -414,6 +414,9 @@ void measureFreq(int resolution, uint8_t currAddr) {
     sendString(message);
     // Print to two places in SRAM
     writeSRAM(currAddr, (uint8_t)freq);
+    // TODO: if the decimal part of freq is > .256, the *1000 overflows the int
+    // this also means we can only store (printing above might work depending on #bit in an int) up to 255 Hz in low res
+    // and 255 KHz in high res, and similar for the decimal part
     writeSRAM((currAddr + 1) % 32, (uint8_t)(freq-(int)(freq))*1000);
     /*
     Write to LCD here
@@ -599,7 +602,7 @@ void testSRAM() {
 
 void testSPI() {
   TEST_LOOP(
-    int8_t testval = 0xA;
+    int8_t testval = 6;
     int8_t retval;
     
     sendString("Testing SPI...\r\n");
