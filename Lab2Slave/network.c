@@ -100,56 +100,60 @@ void listenForMaster() {
         sram_addr = SPI1_Exchange8bit(dummy);
     
     // response
-    uint8_t to_add = 0;
+    uint8_t data_add = slave_addr;
     if (datatype == SRAM) {
         datatype = sram_dataypes[sram_addr];
-        to_add = 10;
+        data_add += sram_addr*10;
     }
     
+    uint16_t data;
+    // Four digit format:
+    // [datatype:1] [sram_addr:2] [slave_addr:1]
     switch (datatype) {
-        case FREQ_HIGH: // 1.001 kHz, SRAM: 1.011 kHz
+        case FREQ_HIGH:
             data1 = 1;
-            data2 = 001;
+            data2 = data_add; 
             break;
-        case FREQ_LOW: // 1.002 Hz, SRAM: 1.012 Hz
-            data1 = 1;
-            data2 = 002;
-            break;
-        case PERIOD_HIGH: // 2.001 ms, SRAM: 2.011 ms
+        case FREQ_LOW:
             data1 = 2;
-            data2 = 001;
+            data2 = data_add; 
             break;
-        case PERIOD_LOW: // 2.002 s, SRAM: 2.012 s
-            data1 = 2;
-            data2 = 002;
-            break;
-        case COUNT_HIGH: // 401, SRAM: 411
-            data1 = 145;
-            data2 = 1;
-            break;
-        case COUNT_LOW: // 402, SRAM: 412
-            data1 = 146;
-            data2 = 1;
-            break;
-        case INTERVAL_HIGH: // 3.001 ms, SRAM: 3.011 ms
+        case PERIOD_HIGH:
             data1 = 3;
-            data2 = 001;
+            data2 = data_add; 
             break;
-        case INTERVAL_LOW: // 3.002 s, SRAM: 3.012 s
-            data1 = 3;
-            data2 = 002;
+        case PERIOD_LOW:
+            data1 = 4;
+            data2 = data_add; 
             break;
-        case ANALYSIS: // 500, SRAM: 510
-            data1 = 244;
-            data2 = 1;
+        case COUNT_HIGH:
+            data = 5000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
+            break;
+        case COUNT_LOW:
+            data = 6000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
+            break;
+        case INTERVAL_HIGH:
+            data1 = 7;
+            data2 = data_add; 
+            break;
+        case INTERVAL_LOW:
+            data1 = 8;
+            data2 = data_add; 
+            break;
+        case ANALYSIS:
+            data = 9000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         default:
             data1 = 0xFF;
             data2 = 0xFF;
             break;
     }
-    
-    data1 += to_add;
     
     dummy = SPI1_Exchange8bit(datatype);
     dummy = SPI1_Exchange8bit(data1);
