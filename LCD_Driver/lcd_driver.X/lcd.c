@@ -37,9 +37,9 @@ void lcd_init() {
  */
 void toggle_en() {
     En = 1;
-    __delay_ms(1);
+    __delay_us(100);
     En = 0;
-    __delay_ms(1);
+    __delay_us(100);
 }
 
 /*

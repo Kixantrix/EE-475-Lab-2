@@ -136,13 +136,6 @@ void main(void) {
         while(1) {
             data = EUSART1_Read();
             if (data == '\r' || count==20) {
-                //for(int r=0; r<3; r++) {
-                //    for(int i = 0; i<19; i++){
-                //        display_strs[r][i] = display_strs[r][i];
-                //    }
-                //    display_strs[r][20] = '\0';
-                //}
-                //print_4_lines(display_strs);
                 row = (row++)&0x3;
                 count = 0;
                 set_row(row);
@@ -151,7 +144,6 @@ void main(void) {
                 send_char(data);
                 count++;
             }
-            EUSART1_Write(data);
         }
          
     }
