@@ -417,7 +417,7 @@ void measureFreq(int resolution, uint8_t currAddr) {
     // TODO: if the decimal part of freq is > .256, the *1000 overflows the int
     // this also means we can only store (printing above might work depending on #bit in an int) up to 255 Hz in low res
     // and 255 KHz in high res, and similar for the decimal part
-    writeSRAM((currAddr + 1) % 32, (uint8_t)(freq-(int)(freq))*1000);
+    writeSRAM((currAddr + 1) % 32, (uint8_t)((freq-(int)(freq))*1000));
     /*
     Write to LCD here
     */
@@ -451,7 +451,7 @@ void measurePeriod(int resolution, uint8_t currAddr) {
     sendString(message);
     // Print to two places in SRAM
     writeSRAM(currAddr, (uint8_t)per);
-    writeSRAM((currAddr + 1) % 32, (uint8_t)(per-(int)(per))*1000);
+    writeSRAM((currAddr + 1) % 32, (uint8_t)((per-(int)(per))*1000));
     /*
     Write to LCD here
     */
