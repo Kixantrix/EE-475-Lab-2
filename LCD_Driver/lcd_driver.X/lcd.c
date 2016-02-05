@@ -79,7 +79,7 @@ void home() {
 void set_row(uint8_t row) {
     switch (row) {
         case 0:
-            set_data(0x40, 0);
+            set_data(0x00, 0);
             break;
         case 1:
             set_data(0xa8, 0);
@@ -115,10 +115,10 @@ void backspace() {
 /*
  Scroll lines on display!
  */
-void print_4_lines(char lines[4][21]) {
+void print_4_lines(char * lines[4]) {
     clear();
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         set_row(i);
-        send_str(lines[i+1]);
+        send_str(lines[i]);
     }
 }

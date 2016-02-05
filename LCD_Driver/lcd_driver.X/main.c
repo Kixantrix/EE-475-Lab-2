@@ -112,9 +112,20 @@ void main(void) {
         send_char('G');
         set_row(3);
         send_str("Python is the best:)");
+        delay(500);
+        set_row(0);
+        send_str("Rust is the best:)");
         home();
         delay(100);
+        char * display_strs[4];
+        display_strs[0] = "YOLOSWAGBAGGINS";
+        display_strs[1] = "WENT ON A JOURNEY";
+        display_strs[2] = "TO FIND THE YOLO";
+        display_strs[3] = "IN THE LONELY MT.";
+        print_4_lines(display_strs);
+        delay(1000);
         clear();
+        /*
         char data;
         char display_strs[4][21];
         for (int i = 0; i < 4; i++) {
@@ -138,6 +149,7 @@ void main(void) {
             }
             EUSART1_Write(data);
         }
+         * */
     }
 }
 
