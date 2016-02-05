@@ -135,7 +135,7 @@ void main(void) {
         uint8_t row = 0;
         while(1) {
             data = EUSART1_Read();
-            if (data == '\r' || count==20) {
+            if (data == '\r' || data == '\n' || count==20) {
                 row = (row++)&0x3;
                 count = 0;
                 set_row(row);
