@@ -26,6 +26,7 @@ void home();
 void set_row(uint8_t row);
 void send_str(char msg[]);
 void backspace();
+void print_4_lines(char lines[4][21]);
 
 #ifdef	__cplusplus
 }

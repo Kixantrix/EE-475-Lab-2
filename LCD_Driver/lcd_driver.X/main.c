@@ -116,22 +116,24 @@ void main(void) {
         delay(100);
         clear();
         char data;
-        uint8_t row = 0;
-        char display_str[21];
-        display_str[20] = '\0';
+        char display_strs[4][21];
+        for (int i = 0; i < 4; i++) {
+            display_strs[i][20] = '\0';
+        }
         uint8_t count = 0;
         while(1) {
             data = EUSART1_Read();
             if (data == '\r' || count==20) {
-                send_str(display_str);
-                for(int i = 0; i<19; i++){
-                    display_str[i] = ' ';
+                for(int r=0; r<3; r++) {
+                    for(int i = 0; i<19; i++){
+                        display_strs[r][i] = display_strs[r][i];
+                    }
+                    display_strs[r][20] = '\0';
                 }
-                display_str[20] = '\0';
-                set_row((row++)&0x3); //0-3
+                print_4_lines(display_strs);
             }
             if (data >= ' ' && data <= '~') {
-                display_str[count] == data;
+                display_strs[3][count] == data;
                 count++;
             }
             EUSART1_Write(data);

@@ -115,10 +115,10 @@ void backspace() {
 /*
  Scroll lines on display!
  */
-void scroll(char lines[4][21]) {
+void print_4_lines(char lines[4][21]) {
     clear();
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
         set_row(i);
-        send_str(lines[i]);
+        send_str(lines[i+1]);
     }
 }
