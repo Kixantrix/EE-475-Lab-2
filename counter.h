@@ -39,6 +39,8 @@
 // Number of miliseconds in high res mode. 2 ms.
 #define HIGH_RES 2
 
+#define HIGH_CAL 17
+
 // Returns the value stored on the counter;
 // Takes delay time in microseconds.
 uint16_t readCounter(int delayTime);

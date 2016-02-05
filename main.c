@@ -399,7 +399,7 @@ void measureFreq(int resolution, uint8_t currAddr) {
         // High frequency measurement
         count = readCounter(HIGH_RES);
         // Frequency in KHZ
-        freq = 1.0 * count / 10;
+        freq = count*(10.0/(float)HIGH_RES) / (float)10 - HIGH_CAL;
         sprintf(message, "%02d.%02d KHz\r\n", (int)freq, (int)((freq-(int)(freq))*1000));
         sramDataTypes[currAddr/2] = FREQ_HIGH;
     } else {
@@ -432,7 +432,7 @@ void measurePeriod(int resolution, uint8_t currAddr) {
         // small period measurement
         count = readCounter(HIGH_RES);
         // period in ms
-        per = (HIGH_RES/1.0) / count;
+        per = (HIGH_RES/1.0) / (float) count;
         sprintf(message, "%02d.%02d ms\r\n", (int)per, (int)((per-(int)(per))*1000));
         sramDataTypes[currAddr/2] = PERIOD_HIGH;
     } else {
