@@ -23,19 +23,24 @@ uint16_t readCounter(int delayTime) {
 	} else {
 		__delay_ms(HIGH_RES);
 	}
-
+    
+    uint8_t A = PORTA;
+    uint8_t C = PORTC;
+    uint8_t B = PORTB;
+            
+    COUNTER_ENABLE_SetLow();
 	// Count of events
 	uint16_t count = 0;
 	// Add masked/shifted value from bit 6 A shifted to 11.
-	uint16_t maskedABits = (0x040 & PORTA) << 5;
+	uint16_t maskedABits = (0x040 & A) << 5;
 	count += maskedABits;
 	// Add masked value from bottom 8 bits B with no shift.
-	uint16_t maskedBBits = (0x0FF & PORTB);
+	uint16_t maskedBBits = (0x0FF & B);
 	count += maskedBBits;
 	// Add masked and shifted value from bottom 3 bits C shifted to 8;
-	uint16_t maskedCBits= (0x007 & PORTC) << 8;
+	uint16_t maskedCBits= (0x007 & C) << 8;
 	count += maskedCBits;
 	// Set to not read from counter.
-	COUNTER_ENABLE_SetLow();
+	
 	return count;
 }
