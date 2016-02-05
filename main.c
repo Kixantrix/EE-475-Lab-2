@@ -432,14 +432,14 @@ void measurePeriod(int resolution, uint8_t currAddr) {
         // small period measurement
         count = readCounter(HIGH_RES);
         // period in ms
-        per = 1.0 / count;
+        per = (HIGH_RES/1.0) / count;
         sprintf(message, "%02d.%02d ms\r\n", (int)per, (int)((per-(int)(per))*1000));
         sramDataTypes[currAddr/2] = PERIOD_HIGH;
     } else {
         // large period measurement
         count = readCounter(LOW_RES);
         // Period in s.
-        per = 0.1 / count;
+        per = (LOW_RES/1000.0) / count;
         sprintf(message, "%02d.%02d s\r\n", (int)per, (int)((per-(int)(per))*1000));
         sramDataTypes[currAddr/2] = PERIOD_LOW;
 
@@ -502,7 +502,7 @@ void measureCount(int resolution, uint8_t currAddr) {
     if(resolution) {
         // short time measurement
         count = readCounter(HIGH_RES);
-        sprintf(message, "%02d events in 10 ms\r\n", count);
+        sprintf(message, "%02d events in 10 ms\r\n", count*(10/HIGH_RES));
         sramDataTypes[currAddr/2] = COUNT_HIGH;
     } else {
         // long time measurement

@@ -36,8 +36,8 @@
 
 // Number of miliseconds in low res mode.  10 seconds.
 #define LOW_RES 100
-// Number of miliseconds in high res mode. 10 ms.
-#define HIGH_RES 10
+// Number of miliseconds in high res mode. 2 ms.
+#define HIGH_RES 2
 
 // Returns the value stored on the counter;
 // Takes delay time in microseconds.
