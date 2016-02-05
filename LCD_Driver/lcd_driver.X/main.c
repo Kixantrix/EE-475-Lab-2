@@ -125,31 +125,35 @@ void main(void) {
         print_4_lines(display_strs);
         delay(1000);
         clear();
-        /*
+        
         char data;
-        char display_strs[4][21];
+        //char display_strs[4][21];
         for (int i = 0; i < 4; i++) {
             display_strs[i][20] = '\0';
         }
         uint8_t count = 0;
+        uint8_t row = 0;
         while(1) {
             data = EUSART1_Read();
             if (data == '\r' || count==20) {
-                for(int r=0; r<3; r++) {
-                    for(int i = 0; i<19; i++){
-                        display_strs[r][i] = display_strs[r][i];
-                    }
-                    display_strs[r][20] = '\0';
-                }
-                print_4_lines(display_strs);
+                //for(int r=0; r<3; r++) {
+                //    for(int i = 0; i<19; i++){
+                //        display_strs[r][i] = display_strs[r][i];
+                //    }
+                //    display_strs[r][20] = '\0';
+                //}
+                //print_4_lines(display_strs);
+                row = (row++)&0x3;
+                count = 0;
+                set_row(row);
             }
             if (data >= ' ' && data <= '~') {
-                display_strs[3][count] == data;
+                send_char(data);
                 count++;
             }
             EUSART1_Write(data);
         }
-         * */
+         
     }
 }
 
