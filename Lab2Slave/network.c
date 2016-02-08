@@ -24,7 +24,7 @@ uint8_t data_read[SPI_LEN];
 
 // Sends a slave request on the network
 struct SlaveResponse requestFromSlave(uint8_t slave_addr, enum DataType datatype, uint8_t sram_addr) {
-    int8_t dummy = 0;
+    uint8_t dummy = 0;
     struct SlaveResponse response;
     
     // request
@@ -40,24 +40,6 @@ struct SlaveResponse requestFromSlave(uint8_t slave_addr, enum DataType datatype
     
     return response;
 }
-
-// SLAVE FUNCTIONS
-// data will be multiplied by the slave_address (1-6)
-// so must be between 0-10922
-uint16_t slave_data[] = 
-    {
-        0xFFFF, // NONE
-        4,      // FREQ_HIGH
-        8,      // FREQ_LOW, 
-        16,     // PERIOD_HIGH, 
-        32,     // PERIOD_LOW, 
-        64,     // COUNT_HIGH, 
-        128,    // COUNT_LOW, 
-        256,    // INTERVAL_HIGH,
-        512,    // INTERVAL_LOW,
-        1024,   // ANALYSIS,
-        2048,   // SRAM
-    };
 
 enum DataType sram_dataypes[] =
     {
