@@ -27,7 +27,7 @@ int16_t max_index;
 unsigned long sample_freq;
 unsigned long peak_freq;
 // returns the peak frequency
-unsigned long fftSingleCycle() {
+uint16_t fftSingleCycle() {
     // 10 bits to 6 bits unsigned, range [0, 63]
     // then shift so have range [-32, 31]
     uint16_t start_t = TMR0;
