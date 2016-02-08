@@ -399,7 +399,7 @@ void measureFreq(int resolution, uint8_t currAddr) {
         // High frequency measurement
         count = readCounter(HIGH_RES);
         // Frequency in KHZ
-        freq = count*(10.0/(float)HIGH_RES) / (float)10 - HIGH_CAL;
+        freq = count/ (float)HIGH_RES;
         sprintf(message, "%02d.%02d KHz\r\n", (int)freq, (int)((freq-(int)(freq))*1000));
         sramDataTypes[currAddr/2] = FREQ_HIGH;
     } else {
