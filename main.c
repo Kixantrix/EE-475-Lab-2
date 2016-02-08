@@ -323,7 +323,7 @@ void remoteNode(uint8_t resolution) {
     char slave_read = (char)EUSART1_Read();
     uint8_t slave_addr = 0;
     if(slave_read <= '5' && slave_read >= '0') {
-        slave_addr = '5' - slave_read;
+        slave_addr = slave_read - '0';
     }
     sendString("Function?\r\n");
     char function = (char) EUSART1_Read();
