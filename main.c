@@ -399,7 +399,7 @@ void measureFreq(int resolution, uint8_t currAddr) {
         // High frequency measurement
         count = readCounter(HIGH_RES);
         // Frequency in KHZ
-        freq = count/ (float)HIGH_RES;
+        freq = count/(float)HIGH_RES;
         sprintf(message, "%02d.%02d KHz\r\n", (int)freq, (int)((freq-(int)(freq))*1000));
         sramDataTypes[currAddr/2] = FREQ_HIGH;
     } else {
@@ -474,15 +474,15 @@ void measureInterval(int resolution, uint8_t currAddr) {
     start_count = PORTB;
     
     if(resolution) {
-        while(start_count != PORTB && delay < 100) {
+        while(start_count == PORTB && delay < 1000) {
             __delay_us(10);
             delay++;
         }
         
-        sprintf(message, "time interval of %02d.%02d ms\r\n", delay / 100, delay % 100);
+        sprintf(message, "time interval of %02d.%02d ms\r\n", delay / 1000, delay % 1000);
         sramDataTypes[currAddr/2] = INTERVAL_HIGH;
     } else {
-        while(start_count != PORTB && delay < 100) {
+        while(start_count == PORTB && delay < 100) {
             __delay_ms(10);
             delay++;
         }
