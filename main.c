@@ -374,7 +374,7 @@ void remoteNode(uint8_t resolution) {
             if(addr <= '9' && addr >= '0') {
                 sram_addr = addr - '0'; 
             } else if(addr <= 'f' && addr >= 'a'){
-                sram_addr = addr - 'a';
+                sram_addr = addr - 'a' + 10;
             } else {
                 sram_addr = 0;
             }
