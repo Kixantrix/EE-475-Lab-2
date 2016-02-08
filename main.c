@@ -392,7 +392,7 @@ void remoteNode(uint8_t resolution) {
  * Measure frequency through counting
  */
 void measureFreq(int resolution, uint8_t currAddr) {
-    uint16_t count = 0;
+    float count = 0;
     float freq = 0;
     char message[32];
     if(resolution) {
@@ -428,7 +428,7 @@ void measureFreq(int resolution, uint8_t currAddr) {
  */
 
 void measurePeriod(int resolution, uint8_t currAddr) {
-    uint16_t count = 0;
+    float count = 0;
     float per = 0;
     char message[32];
     if(resolution) {
@@ -504,7 +504,7 @@ void measureInterval(int resolution, uint8_t currAddr) {
  * Measures a count of events over a period specified by resolution
  */
 void measureCount(int resolution, uint8_t currAddr) {
-    uint16_t count = 0;
+    float count = 0;
     char message[32];
     if(resolution) {
         // short time measurement
@@ -521,8 +521,8 @@ void measureCount(int resolution, uint8_t currAddr) {
     // Print on serial
     sendString(message);
     // Print to two places in SRAM
-    writeSRAM(currAddr, (uint8_t) 0x0FF & count);
-    writeSRAM((currAddr + 1) % 32, (uint8_t) (0x0FF00 & count) >> 8);
+    writeSRAM(currAddr, (uint8_t) 0x0FF & (uint16_t)count);
+    writeSRAM((currAddr + 1) % 32, (uint8_t) (0x0FF00 & (uint16_t)count) >> 8);
     /*
     Write to LCD here
     */

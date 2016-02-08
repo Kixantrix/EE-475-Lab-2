@@ -8,7 +8,7 @@
 
 // Returns the value stored on the counter;
 // Takes delay time in miliseconds.
-uint16_t readCounter(int delayTime) {
+float readCounter(int delayTime) {
 	// Switch bus to read from counter.
 	switchBus(BUS_COUNTER_READ);
 	// Set to read from counter.
@@ -27,7 +27,7 @@ uint16_t readCounter(int delayTime) {
     uint8_t B = PORTB;
     uint8_t C = PORTC;
     uint8_t A = PORTA;
-            
+
     COUNTER_ENABLE_SetLow();
 	// Count of events
 	uint16_t count = 0;
@@ -42,5 +42,6 @@ uint16_t readCounter(int delayTime) {
 	count += maskedCBits;
 	// Set to not read from counter.
 	
-	return count;
+	float calibratedCount = (count * 0.95);
+	return calibratedCount;
 }

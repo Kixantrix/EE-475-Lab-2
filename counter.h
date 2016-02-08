@@ -43,7 +43,7 @@
 
 // Returns the value stored on the counter;
 // Takes delay time in microseconds.
-uint16_t readCounter(int delayTime);
+float readCounter(int delayTime);
 
 #endif	/* COUNTER_H */
 
