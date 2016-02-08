@@ -42,6 +42,6 @@ float readCounter(int delayTime) {
 	count += maskedCBits;
 	// Set to not read from counter.
 	
-	float calibratedCount = (count * 0.95);
+	float calibratedCount = (count * 0.987);
 	return calibratedCount;
 }
