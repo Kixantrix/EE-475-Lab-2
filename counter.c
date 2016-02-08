@@ -24,9 +24,9 @@ uint16_t readCounter(int delayTime) {
 		__delay_ms(HIGH_RES);
 	}
     
-    uint8_t A = PORTA;
-    uint8_t C = PORTC;
     uint8_t B = PORTB;
+    uint8_t C = PORTC;
+    uint8_t A = PORTA;
             
     COUNTER_ENABLE_SetLow();
 	// Count of events
