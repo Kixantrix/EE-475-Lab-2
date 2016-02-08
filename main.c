@@ -493,8 +493,8 @@ void measureInterval(int resolution, uint8_t currAddr) {
             __delay_us(10);
             delay++;
         }
-        
-        sprintf(message, "time interval of %02d.%02d ms\r\n", delay / 1000, delay % 1000);
+       
+        sprintf(message, "time interval of %02d.%02d ms\r\n", delay / 100, delay % 100);
         sramDataTypes[currAddr/2] = INTERVAL_HIGH;
         writeSRAM(currAddr, (uint8_t)(delay / 100 >> 2));
         writeSRAM((currAddr + 1) % 32, (uint8_t)(delay % 100 >> 2));
