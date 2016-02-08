@@ -24,7 +24,7 @@ uint8_t data_read[SPI_LEN];
 
 // Sends a slave request on the network
 struct SlaveResponse requestFromSlave(uint8_t slave_addr, enum DataType datatype, uint8_t sram_addr) {
-    uint8_t dummy = 0;
+    int8_t dummy = 0;
     struct SlaveResponse response;
     
     // request
