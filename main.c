@@ -284,23 +284,23 @@ void printData(uint8_t data1, uint8_t data2, enum DataType datatype, uint8_t sra
     data |= data1;
     char message[64];
     if (datatype == FREQ_HIGH)
-        sprintf(message, "%d: %d.%03d KHz\r\n", sram_addr, data/1000, data % 1000);
+        sprintf(message, "%d: %d.%03d MHz\r\n", sram_addr, data/1000, data % 1000);
     else if (datatype == FREQ_LOW)
-        sprintf(message, "%d: %d.%03d Hz\r\n", sram_addr, data/10, data % 10);
+        sprintf(message, "%d: %d.%01d Hz\r\n", sram_addr, data/10, data % 10);
     else if (datatype == PERIOD_HIGH)
-        sprintf(message, "%d: %d.%03d ms\r\n", sram_addr, data/100, data % 100);
+        sprintf(message, "%d: %d.%02d ms\r\n", sram_addr, data/100, data % 100);
     else if (datatype == PERIOD_LOW)
-        sprintf(message, "%d: %d.%03d s\r\n", sram_addr, data/100, data % 100);
+        sprintf(message, "%d: %d.%02d s\r\n", sram_addr, data/100, data % 100);
     else if (datatype == INTERVAL_HIGH)
-        sprintf(message, "%d: %d.%03d ms\r\n", sram_addr, data/100, data % 100);
+        sprintf(message, "%d: %d.%02d ms\r\n", sram_addr, data/100, data % 100);
     else if (datatype == INTERVAL_LOW)
-        sprintf(message, "%d: %d.%03d s\r\n", sram_addr, data/100, data % 100);
+        sprintf(message, "%d: %d.%02d s\r\n", sram_addr, data/100, data % 100);
     else if (datatype == COUNT_HIGH)
         sprintf(message, "%d: %d events in 10 ms\r\n", sram_addr, data);
     else if (datatype == COUNT_LOW)
         sprintf(message, "%d: %d events in 1 s\r\n", sram_addr, data);
     else if (datatype == ANALYSIS)
-        sprintf(message, "%d: %s Hz \r\n", sram_addr, data);
+        sprintf(message, "%d: %d Hz \r\n", sram_addr, data);
     else
         sprintf(message, "%d: Unknown datatype\r\n", sram_addr);
         

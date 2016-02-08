@@ -215,8 +215,8 @@
             <setting name="BCLI" option="false"/>
             <setting name="WriteBufferSize" option="8"/>
             <setting name="ReadBufferSize" option="8"/>
-            <file checksum="99438411" modified="false" name="spi1.c" path="mcc_generated_files/spi1.c"/>
-            <file checksum="814266474" modified="false" name="spi1.h" path="mcc_generated_files/spi1.h"/>
+            <file checksum="3517993669" modified="false" name="spi1.c" path="mcc_generated_files/spi1.c"/>
+            <file checksum="1242938340" modified="false" name="spi1.h" path="mcc_generated_files/spi1.h"/>
         </module>
     </modules>
 </configuration>

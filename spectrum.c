@@ -51,5 +51,5 @@ uint16_t fftSingleCycle() {
     
     max_index = optfft(fftReal, fftImag);
     peak_freq = (max_index * sample_freq) >> (FFT_LEN_BITS+2);
-    return peak_freq;
+    return (uint16_t)peak_freq;
 }

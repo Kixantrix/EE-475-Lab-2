@@ -93,20 +93,24 @@ void listenForMaster() {
     // [datatype:1] [sram_addr:2] [slave_addr:1]
     switch (datatype) {
         case FREQ_HIGH:
-            data1 = 1;
-            data2 = data_add; 
+            data = 1000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         case FREQ_LOW:
-            data1 = 2;
-            data2 = data_add; 
+            data = 2000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         case PERIOD_HIGH:
-            data1 = 3;
-            data2 = data_add; 
+            data = 3000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         case PERIOD_LOW:
-            data1 = 4;
-            data2 = data_add; 
+            data = 4000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         case COUNT_HIGH:
             data = 5000 + data_add;
@@ -119,12 +123,14 @@ void listenForMaster() {
             data2 = 0xFF & (data >> 8);
             break;
         case INTERVAL_HIGH:
-            data1 = 7;
-            data2 = data_add; 
+            data = 7000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         case INTERVAL_LOW:
-            data1 = 8;
-            data2 = data_add; 
+            data = 8000 + data_add;
+            data1 = 0xFF & data;
+            data2 = 0xFF & (data >> 8);
             break;
         case ANALYSIS:
             data = 9000 + data_add;
