@@ -470,7 +470,18 @@ void measureInterval(int resolution, uint8_t currAddr) {
     start_count = PORTB;
     
     // wait for the first button press & reset the reference value
-    while (start_count == PORTB) ;
+    // wait a few seconds for the first button press
+    uint32_t first_delay = 0;
+    while (start_count == PORTB) {
+            __delay_us(1);
+            first_delay++;
+            
+            if (first_delay >= 5000000) {
+                sendString("Signal timeout");
+                return;
+            }
+    }
+        
     start_count = PORTB;
     
     if(resolution) {
