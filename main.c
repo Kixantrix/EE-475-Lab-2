@@ -466,11 +466,15 @@ void measureInterval(int resolution, uint8_t currAddr) {
     switchBus(BUS_COUNTER_READ);
     COUNTER_ENABLE_SetHigh();
     
+    // set an initial value
     start_count = PORTB;
+    
+    // wait for the first button press & reset the reference value
     while (start_count == PORTB) ;
     start_count = PORTB;
+    
     if(resolution) {
-        while(start_count != PORTB) {
+        while(start_count != PORTB && delay < 100) {
             __delay_us(10);
             delay++;
         }
@@ -478,7 +482,7 @@ void measureInterval(int resolution, uint8_t currAddr) {
         sprintf(message, "time interval of %02d.%02d ms\r\n", delay / 100, delay % 100);
         sramDataTypes[currAddr/2] = INTERVAL_HIGH;
     } else {
-        while(start_count != PORTB) {
+        while(start_count != PORTB && delay < 100) {
             __delay_ms(10);
             delay++;
         }
